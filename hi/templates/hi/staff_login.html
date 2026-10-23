@@ -1,14 +1,14 @@
-{% extends 'hi/auth_base.html' %}
-{% block title %}Вход для администратора — МойСайт{% endblock %}
+{% extends 'hi/auth_base.html' %}{% load i18n %}
+{% block title %}{% translate "Вход для администратора — МойСайт" %}{% endblock %}
 {% block auth_content %}
-<span class="eyebrow">УПРАВЛЕНИЕ САЙТОМ</span>
-<h2 id="auth-heading">Вход для команды</h2>
-<p class="auth-description">Используйте аккаунт с правами администратора.</p>
+<span class="eyebrow">{% translate "УПРАВЛЕНИЕ САЙТОМ" %}</span>
+<h2 id="auth-heading">{% translate "Вход для команды" %}</h2>
+<p class="auth-description">{% translate "Используйте аккаунт с правами администратора." %}</p>
 <form method="post" class="auth-form">
     {% csrf_token %}
     {{ form.as_p }}
-    <div class="form-link-row"><a href="{% url 'recovery_request' %}">Восстановить доступ ↗</a></div>
-    <button type="submit" class="btn-primary">Открыть панель <span aria-hidden="true">→</span></button>
+    <div class="form-link-row"><a href="{% url 'recovery_request' %}">{% translate "Восстановить доступ ↗" %}</a></div>
+    <button type="submit" class="btn-primary">{% translate "Открыть панель" %} <span aria-hidden="true">→</span></button>
 </form>
-<p class="auth-footer"><a href="{% url 'login' %}">← Обычный вход</a></p>
+<p class="auth-footer"><a href="{% url 'login' %}">{% translate "← Обычный вход" %}</a></p>
 {% endblock %}

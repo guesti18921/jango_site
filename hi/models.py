@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy
 import uuid
 
 from django.db import models
@@ -33,49 +34,49 @@ class CSVImportJob(models.Model):
 
 # --- Модель для медиаконтента ---
 class MediaContent(models.Model):
-    title = models.CharField(max_length=200, verbose_name="Название контента")
-    image = models.ImageField(upload_to='uploads/', verbose_name="Изображение")
-    description = models.TextField(blank=True, default='', verbose_name="Описание")
-    is_published = models.BooleanField(default=True, verbose_name="Опубликовано")
+    title = models.CharField(max_length=200, verbose_name=gettext_lazy("Название контента"))
+    image = models.ImageField(upload_to='uploads/', verbose_name=gettext_lazy("Изображение"))
+    description = models.TextField(blank=True, default='', verbose_name=gettext_lazy("Описание"))
+    is_published = models.BooleanField(default=True, verbose_name=gettext_lazy("Опубликовано"))
     author = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name='media_items',
-        verbose_name="Автор",
+        verbose_name=gettext_lazy("Автор"),
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата добавления")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата обновления")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=gettext_lazy("Дата добавления"))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=gettext_lazy("Дата обновления"))
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = "Медиа контент"
-        verbose_name_plural = "Медиа контент"
+        verbose_name = gettext_lazy("Медиа контент")
+        verbose_name_plural = gettext_lazy("Медиа контент")
         ordering = ['-created_at']
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(MediaContent, on_delete=models.CASCADE, related_name='comments', verbose_name='Пост')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_comments', verbose_name='Автор')
-    text = models.TextField(max_length=2000, verbose_name='Комментарий')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+    post = models.ForeignKey(MediaContent, on_delete=models.CASCADE, related_name='comments', verbose_name=gettext_lazy('Пост'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_comments', verbose_name=gettext_lazy('Автор'))
+    text = models.TextField(max_length=2000, verbose_name=gettext_lazy('Комментарий'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=gettext_lazy('Дата'))
 
     class Meta:
         ordering = ['-created_at', '-pk']
-        verbose_name = 'Комментарий'
-        verbose_name_plural = 'Комментарии'
+        verbose_name = gettext_lazy('Комментарий')
+        verbose_name_plural = gettext_lazy('Комментарии')
 
     def __str__(self):
         return f'{self.user}: {self.text[:60]}'
 
 
 class Rating(models.Model):
-    post = models.ForeignKey(MediaContent, on_delete=models.CASCADE, related_name='ratings', verbose_name='Пост')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_ratings', verbose_name='Пользователь')
-    value = models.PositiveSmallIntegerField(choices=[(n, str(n)) for n in range(1, 6)], verbose_name='Оценка')
+    post = models.ForeignKey(MediaContent, on_delete=models.CASCADE, related_name='ratings', verbose_name=gettext_lazy('Пост'))
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_ratings', verbose_name=gettext_lazy('Пользователь'))
+    value = models.PositiveSmallIntegerField(choices=[(n, str(n)) for n in range(1, 6)], verbose_name=gettext_lazy('Оценка'))
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -83,8 +84,8 @@ class Rating(models.Model):
             models.UniqueConstraint(fields=['post', 'user'], name='one_rating_per_user_post'),
             models.CheckConstraint(condition=models.Q(value__gte=1, value__lte=5), name='rating_between_one_and_five'),
         ]
-        verbose_name = 'Оценка'
-        verbose_name_plural = 'Оценки'
+        verbose_name = gettext_lazy('Оценка')
+        verbose_name_plural = gettext_lazy('Оценки')
 
     def __str__(self):
         return f'{self.user}: {self.value}/5'
@@ -92,86 +93,86 @@ class Rating(models.Model):
 
 # --- Модели для портфолио / резюме ---
 class Developer(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Имя разработчика")
-    role = models.CharField(max_length=100, verbose_name="Роль / Профессия")
-    tagline = models.CharField(max_length=200, verbose_name="Слоган")
-    photo = models.ImageField(upload_to='developer/', verbose_name="Фотография")
-    about_text = models.TextField(verbose_name="О себе")
-    experience_years = models.PositiveIntegerField(verbose_name="Опыт работы (лет)")
+    name = models.CharField(max_length=100, verbose_name=gettext_lazy("Имя разработчика"))
+    role = models.CharField(max_length=100, verbose_name=gettext_lazy("Роль / Профессия"))
+    tagline = models.CharField(max_length=200, verbose_name=gettext_lazy("Слоган"))
+    photo = models.ImageField(upload_to='developer/', verbose_name=gettext_lazy("Фотография"))
+    about_text = models.TextField(verbose_name=gettext_lazy("О себе"))
+    experience_years = models.PositiveIntegerField(verbose_name=gettext_lazy("Опыт работы (лет)"))
     email = models.EmailField(verbose_name="Email")
-    phone = models.CharField(max_length=20, verbose_name="Телефон")
-    address = models.CharField(max_length=200, verbose_name="Адрес")
-    github = models.URLField(verbose_name="Ссылка на GitHub", blank=True, null=True)
-    linkedin = models.URLField(verbose_name="Ссылка на LinkedIn", blank=True, null=True)
+    phone = models.CharField(max_length=20, verbose_name=gettext_lazy("Телефон"))
+    address = models.CharField(max_length=200, verbose_name=gettext_lazy("Адрес"))
+    github = models.URLField(verbose_name=gettext_lazy("Ссылка на GitHub"), blank=True, null=True)
+    linkedin = models.URLField(verbose_name=gettext_lazy("Ссылка на LinkedIn"), blank=True, null=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = "Разработчик"
-        verbose_name_plural = "Разработчики"
+        verbose_name = gettext_lazy("Разработчик")
+        verbose_name_plural = gettext_lazy("Разработчики")
 
 
 class Skill(models.Model):
-    name = models.CharField(max_length=50, verbose_name="Название навыка")
-    level = models.PositiveIntegerField(verbose_name="Уровень владения (%)")
-    order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортировки")
+    name = models.CharField(max_length=50, verbose_name=gettext_lazy("Название навыка"))
+    level = models.PositiveIntegerField(verbose_name=gettext_lazy("Уровень владения (%)"))
+    order = models.PositiveIntegerField(default=0, verbose_name=gettext_lazy("Порядок сортировки"))
 
     def __str__(self):
         return self.name
 
     class Meta:
         ordering = ['order']
-        verbose_name = "Навык"
-        verbose_name_plural = "Навыки"
+        verbose_name = gettext_lazy("Навык")
+        verbose_name_plural = gettext_lazy("Навыки")
 
 
 class Experience(models.Model):
-    position = models.CharField(max_length=100, verbose_name="Должность")
-    company = models.CharField(max_length=100, verbose_name="Компания")
-    period = models.CharField(max_length=50, verbose_name="Период работы")
-    description = models.TextField(verbose_name="Обязанности и достижения")
-    order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортировки")
+    position = models.CharField(max_length=100, verbose_name=gettext_lazy("Должность"))
+    company = models.CharField(max_length=100, verbose_name=gettext_lazy("Компания"))
+    period = models.CharField(max_length=50, verbose_name=gettext_lazy("Период работы"))
+    description = models.TextField(verbose_name=gettext_lazy("Обязанности и достижения"))
+    order = models.PositiveIntegerField(default=0, verbose_name=gettext_lazy("Порядок сортировки"))
 
     def __str__(self):
-        return f"{self.position} в {self.company}"
+        return (gettext_lazy('%(value0)s в %(value1)s') % {'value0': self.position, 'value1': self.company})
 
     class Meta:
         ordering = ['order']
-        verbose_name = "Опыт работы"
-        verbose_name_plural = "Опыт работы"
+        verbose_name = gettext_lazy("Опыт работы")
+        verbose_name_plural = gettext_lazy("Опыт работы")
 
 
 class Project(models.Model):
-    title = models.CharField(max_length=100, verbose_name="Название проекта")
-    description = models.TextField(verbose_name="Описание проекта")
-    tech_list = models.CharField(max_length=200, verbose_name="Технологии (через запятую)")
-    url = models.URLField(verbose_name="Ссылка на проект", blank=True, null=True)
-    order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортировки")
+    title = models.CharField(max_length=100, verbose_name=gettext_lazy("Название проекта"))
+    description = models.TextField(verbose_name=gettext_lazy("Описание проекта"))
+    tech_list = models.CharField(max_length=200, verbose_name=gettext_lazy("Технологии (через запятую)"))
+    url = models.URLField(verbose_name=gettext_lazy("Ссылка на проект"), blank=True, null=True)
+    order = models.PositiveIntegerField(default=0, verbose_name=gettext_lazy("Порядок сортировки"))
 
     def __str__(self):
         return self.title
 
     class Meta:
         ordering = ['order']
-        verbose_name = "Проект"
-        verbose_name_plural = "Проекты"
+        verbose_name = gettext_lazy("Проект")
+        verbose_name_plural = gettext_lazy("Проекты")
 
 
 class Education(models.Model):
-    institution = models.CharField(max_length=150, verbose_name="Учебное заведение")
-    specialty = models.CharField(max_length=150, verbose_name="Специальность")
-    degree = models.CharField(max_length=100, verbose_name="Степень / Квалификация")
-    period = models.CharField(max_length=50, verbose_name="Период обучения")
-    order = models.PositiveIntegerField(default=0, verbose_name="Порядок сортировки")
+    institution = models.CharField(max_length=150, verbose_name=gettext_lazy("Учебное заведение"))
+    specialty = models.CharField(max_length=150, verbose_name=gettext_lazy("Специальность"))
+    degree = models.CharField(max_length=100, verbose_name=gettext_lazy("Степень / Квалификация"))
+    period = models.CharField(max_length=50, verbose_name=gettext_lazy("Период обучения"))
+    order = models.PositiveIntegerField(default=0, verbose_name=gettext_lazy("Порядок сортировки"))
 
     def __str__(self):
         return self.institution
 
     class Meta:
         ordering = ['order']
-        verbose_name = "Образование"
-        verbose_name_plural = "Образование"
+        verbose_name = gettext_lazy("Образование")
+        verbose_name_plural = gettext_lazy("Образование")
 
 
 # --- Модели компании / команды ---
@@ -218,17 +219,17 @@ class HistoryItem(models.Model):
 # --- Профиль пользователя (расширение стандартного User) ---
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
-    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name="Аватар")
-    bio = models.TextField(max_length=500, blank=True, verbose_name="О себе")
-    city = models.CharField(max_length=100, blank=True, verbose_name="Город")
-    birth_date = models.DateField(null=True, blank=True, verbose_name="Дата рождения")
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name=gettext_lazy("Аватар"))
+    bio = models.TextField(max_length=500, blank=True, verbose_name=gettext_lazy("О себе"))
+    city = models.CharField(max_length=100, blank=True, verbose_name=gettext_lazy("Город"))
+    birth_date = models.DateField(null=True, blank=True, verbose_name=gettext_lazy("Дата рождения"))
 
     def __str__(self):
-        return f"Профиль: {self.user.username}"
+        return (gettext_lazy('Профиль: %(value0)s') % {'value0': self.user.username})
 
     class Meta:
-        verbose_name = "Профиль"
-        verbose_name_plural = "Профили"
+        verbose_name = gettext_lazy("Профиль")
+        verbose_name_plural = gettext_lazy("Профили")
 
 
 # Автоматически создаём Profile при создании User

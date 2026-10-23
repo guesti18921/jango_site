@@ -2,9 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.i18n import JavaScriptCatalog
+from django.views.decorators.cache import never_cache
 from hi import views, recovery_views, csv_views, post_views
 
 urlpatterns = [
+    path('jsi18n/', never_cache(JavaScriptCatalog.as_view(packages=['hi'])), name='javascript-catalog'),
+    path('i18n/', include('django.conf.urls.i18n')),
     # Django-админка (можно оставить на отдельный URL, например /django-admin/)
     path('django-admin/', admin.site.urls),
 

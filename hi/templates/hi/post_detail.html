@@ -1,47 +1,47 @@
-{% extends 'hi/base.html' %}
-{% block title %}{{ post.title }} — МойСайт{% endblock %}
+{% extends 'hi/base.html' %}{% load i18n %}
+{% block title %}{{ post.title }} {% translate "— МойСайт" %}{% endblock %}
 {% block content %}
-<a href="{% url 'home' %}" class="post-back">← К медиаколлекции</a>
+<a href="{% url 'home' %}" class="post-back">{% translate "← К медиаколлекции" %}</a>
 <article class="post-detail">
-    <div class="post-picture"><img src="{{ post.image.url }}" alt="{{ post.title }}"></div>
+    <div class="post-picture"><img src="{{ post.image.url }}" alt="{{ post.title }}" style="view-transition-name: post-{{ post.pk }}"></div>
     <div class="post-copy">
-        <span class="eyebrow">{% if post.is_published %}ИЗ КОЛЛЕКЦИИ{% else %}ЧЕРНОВИК · ВИДЕН ПЕРСОНАЛУ{% endif %}</span>
+        <span class="eyebrow">{% if post.is_published %}{% translate "ИЗ КОЛЛЕКЦИИ" %}{% else %}{% translate "ЧЕРНОВИК · ВИДЕН ПЕРСОНАЛУ" %}{% endif %}</span>
         <h1>{{ post.title }}</h1>
         <p class="media-date">{{ post.author.username|default:'МойСайт' }} · {{ post.created_at|date:'d.m.Y H:i' }}</p>
         {% if post.description %}<div class="post-description">{{ post.description|linebreaksbr }}</div>{% endif %}
         <section id="rating" class="rating-section" aria-labelledby="rating-heading">
-            <h2 id="rating-heading">Как вам этот пост?</h2>
-            <p class="rating-summary"><span aria-hidden="true">★</span> {% if summary.total %}<strong>{{ summary.average|floatformat:1 }} из 5</strong> · Оценок: {{ summary.total }}{% else %}Пока нет оценок. Будьте первым.{% endif %}</p>
+            <h2 id="rating-heading">{% translate "Как вам этот пост?" %}</h2>
+            <p class="rating-summary"><span aria-hidden="true">★</span> {% if summary.total %}<strong>{{ summary.average|floatformat:1 }} {% translate "из 5" %}</strong> {% translate "· Оценок:" %} {{ summary.total }}{% else %}{% translate "Пока нет оценок. Будьте первым." %}{% endif %}</p>
             <form method="post" action="{% url 'rate_post' post.pk %}" class="rating-form">
                 {% csrf_token %}
                 {{ rating_form.non_field_errors }}
-                <fieldset><legend>Ваша оценка{% if own_rating %}: {{ own_rating.value }} из 5{% endif %}</legend>
+                <fieldset><legend>{% translate "Ваша оценка" %}{% if own_rating %}: {{ own_rating.value }} {% translate "из 5" %}{% endif %}</legend>
                     {{ rating_form.value.errors }}
                     <div class="rating-options">{% for radio in rating_form.value %}<label class="rating-option">{{ radio.tag }}<span>{{ radio.choice_label }}</span></label>{% endfor %}</div>
                 </fieldset>
-                <button type="submit" class="btn-primary">{% if own_rating %}Изменить оценку{% else %}Оценить пост{% endif %}</button>
-                <p class="muted">Одна оценка на аккаунт. Её можно изменить.</p>
+                <button type="submit" class="btn-primary">{% if own_rating %}{% translate "Изменить оценку" %}{% else %}{% translate "Оценить пост" %}{% endif %}</button>
+                <p class="muted">{% translate "Одна оценка на аккаунт. Её можно изменить." %}</p>
             </form>
         </section>
     </div>
 </article>
 <section class="comments-section" id="comments" aria-labelledby="comments-heading">
-    <div class="section-heading"><h2 id="comments-heading" class="section-title">Обсуждение <span class="comment-total">{{ comments.paginator.count }}</span></h2><span class="section-caption">Ваше мнение имеет значение</span></div>
+    <div class="section-heading"><h2 id="comments-heading" class="section-title">{% translate "Обсуждение" %} <span class="comment-total">{{ comments.paginator.count }}</span></h2><span class="section-caption">{% translate "Ваше мнение имеет значение" %}</span></div>
     <div class="comment-layout">
         <form method="post" action="{% url 'add_comment' post.pk %}" class="auth-form comment-compose">
             {% csrf_token %}{{ comment_form.as_p }}
-            <p class="muted">До 2000 символов. Пишите по теме и уважайте собеседников.</p>
-            <button type="submit" class="btn-primary">Оставить комментарий <span aria-hidden="true">→</span></button>
+            <p class="muted">{% translate "До 2000 символов. Пишите по теме и уважайте собеседников." %}</p>
+            <button type="submit" class="btn-primary">{% translate "Оставить комментарий" %} <span aria-hidden="true">→</span></button>
         </form>
         <div class="comment-list">
             {% for comment in comments %}
                 <article class="comment-card">
                     <div class="comment-heading"><div class="comment-avatar" aria-hidden="true">{{ comment.user.username|first|upper }}</div><div><h3>{{ comment.user.username }}</h3><time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:'d.m.Y H:i' }}</time></div></div>
                     <p class="comment-text">{{ comment.text|linebreaksbr }}</p>
-                    {% if comment.user_id == user.pk or can_moderate %}<form method="post" action="{% url 'delete_comment' comment.pk %}" class="comment-delete">{% csrf_token %}<button type="submit">Удалить комментарий</button></form>{% endif %}
+                    {% if comment.user_id == user.pk or can_moderate %}<form method="post" action="{% url 'delete_comment' comment.pk %}" class="comment-delete">{% csrf_token %}<button type="submit">{% translate "Удалить комментарий" %}</button></form>{% endif %}
                 </article>
-            {% empty %}<div class="empty-state"><h3>Начните разговор</h3><p>Здесь появятся комментарии к этому посту.</p></div>{% endfor %}
-            {% if comments.has_other_pages %}<nav class="pagination" aria-label="Страницы комментариев">{% if comments.has_previous %}<a class="btn-secondary" href="?page={{ comments.previous_page_number }}#comments">← Новее</a>{% endif %}<span>{{ comments.number }} / {{ comments.paginator.num_pages }}</span>{% if comments.has_next %}<a class="btn-secondary" href="?page={{ comments.next_page_number }}#comments">Раньше →</a>{% endif %}</nav>{% endif %}
+            {% empty %}<div class="empty-state"><h3>{% translate "Начните разговор" %}</h3><p>{% translate "Здесь появятся комментарии к этому посту." %}</p></div>{% endfor %}
+            {% if comments.has_other_pages %}<nav class="pagination" aria-label="{% translate "Страницы комментариев" %}">{% if comments.has_previous %}<a class="btn-secondary" href="?page={{ comments.previous_page_number }}#comments">{% translate "← Новее" %}</a>{% endif %}<span>{{ comments.number }} / {{ comments.paginator.num_pages }}</span>{% if comments.has_next %}<a class="btn-secondary" href="?page={{ comments.next_page_number }}#comments">{% translate "Раньше →" %}</a>{% endif %}</nav>{% endif %}
         </div>
     </div>
 </section>

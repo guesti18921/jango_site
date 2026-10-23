@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy
 from datetime import timedelta
 import uuid
 
@@ -17,10 +18,10 @@ from .models import CSVImportJob, MediaContent
 
 
 class CSVImportForm(forms.Form):
-    file = forms.FileField(label='Файл CSV', widget=forms.ClearableFileInput(attrs={'accept': '.csv,text/csv'}))
+    file = forms.FileField(label=gettext_lazy('Файл CSV'), widget=forms.ClearableFileInput(attrs={'accept': '.csv,text/csv'}))
     update_existing = forms.BooleanField(
-        label='Обновлять существующие записи по ID', required=False, initial=True,
-        help_text='Пустой ID создаёт новую запись. Указанный ID обновляет существующую.',
+        label=gettext_lazy('Обновлять существующие записи по ID'), required=False, initial=True,
+        help_text=gettext_lazy('Пустой ID создаёт новую запись. Указанный ID обновляет существующую.'),
     )
 
     def clean_file(self):
@@ -52,24 +53,24 @@ def import_media(request):
                 try:
                     token = uuid.UUID(request.POST.get('job', ''))
                 except (ValueError, AttributeError):
-                    raise ValidationError('Некорректный запрос импорта. Загрузите CSV заново.')
+                    raise ValidationError(gettext_lazy('Некорректный запрос импорта. Загрузите CSV заново.'))
                 # First write locks the batch, including on SQLite. Replays cannot duplicate rows.
                 claimed = CSVImportJob.objects.filter(
                     pk=token, user=request.user, consumed=False, expires_at__gt=timezone.now(),
                 ).update(consumed=True)
                 if not claimed:
-                    raise ValidationError('Предпросмотр истёк или уже использован. Загрузите CSV заново.')
+                    raise ValidationError(gettext_lazy('Предпросмотр истёк или уже использован. Загрузите CSV заново.'))
                 job = CSVImportJob.objects.get(pk=token)
                 created, updated = import_csv(job.csv_text, job.update_existing)
                 job.csv_text = ''
                 job.save(update_fields=['csv_text'])
-            messages.success(request, f'CSV импортирован. Добавлено: {created}, обновлено: {updated}.')
+            messages.success(request, (gettext_lazy('CSV импортирован. Добавлено: %(value0)s, обновлено: %(value1)s.') % {'value0': created, 'value1': updated}))
             return redirect('dashboard')
         except ValidationError as exc:
             for error in exc.messages:
                 messages.error(request, error)
         except DatabaseError:
-            messages.error(request, 'Не удалось сохранить данные. Изменения отменены. Повторите импорт.')
+            messages.error(request, gettext_lazy('Не удалось сохранить данные. Изменения отменены. Повторите импорт.'))
     elif request.method == 'POST' and form.is_valid():
         try:
             rows = parse_csv(form.csv_text, form.cleaned_data['update_existing'])

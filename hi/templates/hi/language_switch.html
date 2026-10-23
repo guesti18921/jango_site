@@ -1,0 +1,9 @@
+{% load i18n %}{% get_current_language as current_language %}
+<form action="{% url 'set_language' %}" method="post" class="language-switch" aria-label="{% translate 'Язык интерфейса' %}">
+    {% csrf_token %}<input type="hidden" name="next" value="{{ language_next|default:request.get_full_path }}">
+    <svg class="icon" aria-hidden="true"><use href="#i-language"/></svg>
+    <div class="language-track" data-language="{{ current_language|slice:':2' }}"><span class="language-indicator" aria-hidden="true"></span>
+        <button type="submit" name="language" value="ru" lang="ru" aria-label="Русский" aria-pressed="{% if current_language|slice:':2' == 'ru' %}true{% else %}false{% endif %}">RU</button>
+        <button type="submit" name="language" value="en" lang="en" aria-label="English" aria-pressed="{% if current_language|slice:':2' == 'en' %}true{% else %}false{% endif %}">EN</button>
+    </div>
+</form>

@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
 from django.contrib.auth.models import User
@@ -6,16 +7,16 @@ from .models import Profile
 
 class RecoveryRequestForm(forms.Form):
     identifier = forms.CharField(
-        label='Логин или email', max_length=254,
+        label=gettext_lazy('Логин или email'), max_length=254,
         widget=forms.TextInput(attrs={'autocomplete': 'username', 'autofocus': True,
-                                     'placeholder': 'Введите логин или email'}),
+                                     'placeholder': gettext_lazy('Введите логин или email')}),
     )
 
 
 class RecoveryConfirmForm(SetPasswordForm):
     code = forms.RegexField(
-        regex=r'^[0-9]{6}$', label='Код подтверждения',
-        error_messages={'invalid': 'Введите код из шести цифр.'},
+        regex=r'^[0-9]{6}$', label=gettext_lazy('Код подтверждения'),
+        error_messages={'invalid': gettext_lazy('Введите код из шести цифр.')},
         widget=forms.PasswordInput(attrs={'type': 'text', 'inputmode': 'numeric', 'autocomplete': 'one-time-code',
                                      'maxlength': 6, 'placeholder': '000000', 'autofocus': True}),
     )
@@ -42,7 +43,7 @@ class StaffLoginForm(AuthenticationForm):
         super().confirm_login_allowed(user)
         if not user.is_staff:
             raise forms.ValidationError(
-                "Это вход только для администраторов. Используйте обычную страницу входа.",
+                gettext_lazy("Это вход только для администраторов. Используйте обычную страницу входа."),
                 code='not_staff',
             )
 
@@ -54,7 +55,7 @@ class ProfileForm(forms.ModelForm):
         fields = ['avatar', 'bio', 'city', 'birth_date']
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
-            'bio': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Пара слов о себе...'}),
+            'bio': forms.Textarea(attrs={'rows': 4, 'placeholder': gettext_lazy('Пара слов о себе...')}),
         }
 
 
@@ -67,13 +68,13 @@ class UserForm(forms.ModelForm):
 
 class CommentForm(forms.Form):
     text = forms.CharField(
-        label='Ваш комментарий', max_length=2000,
-        widget=forms.Textarea(attrs={'rows': 4, 'placeholder': 'Поделитесь впечатлением о посте…', 'maxlength': 2000}),
+        label=gettext_lazy('Ваш комментарий'), max_length=2000,
+        widget=forms.Textarea(attrs={'rows': 4, 'placeholder': gettext_lazy('Поделитесь впечатлением о посте…'), 'maxlength': 2000}),
     )
 
 
 class RatingForm(forms.Form):
     value = forms.TypedChoiceField(
-        label='Ваша оценка', choices=[(n, f'{n} ★') for n in range(1, 6)], coerce=int,
+        label=gettext_lazy('Ваша оценка'), choices=[(n, f'{n} ★') for n in range(1, 6)], coerce=int,
         widget=forms.RadioSelect,
     )

@@ -1,13 +1,13 @@
-{% extends 'hi/auth_base.html' %}
-{% block title %}Регистрация — МойСайт{% endblock %}
+{% extends 'hi/auth_base.html' %}{% load i18n %}
+{% block title %}{% translate "Регистрация — МойСайт" %}{% endblock %}
 {% block auth_content %}
-<span class="eyebrow">НАЧНИТЕ СВОЮ ИСТОРИЮ</span>
-<h2 id="auth-heading">Создать аккаунт</h2>
-<p class="auth-description">Всего несколько деталей — и вы с нами.</p>
+<span class="eyebrow">{% translate "НАЧНИТЕ СВОЮ ИСТОРИЮ" %}</span>
+<h2 id="auth-heading">{% translate "Создать аккаунт" %}</h2>
+<p class="auth-description">{% translate "Всего несколько деталей — и вы с нами." %}</p>
 <form method="post" class="auth-form">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn-primary">Зарегистрироваться <span aria-hidden="true">→</span></button>
+    <button type="submit" class="btn-primary">{% translate "Зарегистрироваться" %} <span aria-hidden="true">→</span></button>
 </form>
-<p class="auth-footer">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+<p class="auth-footer">{% translate "Уже есть аккаунт?" %} <a href="{% url 'login' %}">{% translate "Войти" %}</a></p>
 {% endblock %}

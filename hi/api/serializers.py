@@ -3,6 +3,9 @@ from ..models import MediaContent
 
 
 class MediaContentSerializer(serializers.ModelSerializer):
+    average_rating = serializers.FloatField(read_only=True, allow_null=True)
+    rating_count = serializers.IntegerField(read_only=True)
+    comment_count = serializers.IntegerField(read_only=True)
     # Абсолютный URL картинки: http://127.0.0.1:8000/media/uploads/foo.jpg
     image = serializers.ImageField(use_url=True)
 
@@ -12,7 +15,7 @@ class MediaContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = MediaContent
         fields = [
-            'id',
+            'id', 'average_rating', 'rating_count', 'comment_count',
             'title',
             'description',
             'image',

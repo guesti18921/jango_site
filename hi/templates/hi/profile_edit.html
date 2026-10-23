@@ -1,22 +1,22 @@
-{% extends 'hi/base.html' %}
+{% extends 'hi/base.html' %}{% load i18n %}
 
-{% block title %}Редактирование профиля{% endblock %}
+{% block title %}{% translate "Редактирование профиля" %}{% endblock %}
 
 {% block content %}
 <div class="auth-card">
-    <h2>Редактирование профиля</h2>
+    <h2>{% translate "Редактирование профиля" %}</h2>
 
     <form method="post" enctype="multipart/form-data" class="auth-form">
         {% csrf_token %}
 
-        <h3 class="form-section">Основное</h3>
+        <h3 class="form-section">{% translate "Основное" %}</h3>
         {{ u_form.as_p }}
 
-        <h3 class="form-section">Профиль</h3>
+        <h3 class="form-section">{% translate "Профиль" %}</h3>
         {{ p_form.as_p }}
 
-        <button type="submit" class="btn-primary">Сохранить</button>
-        <a href="{% url 'profile' %}" class="btn-secondary" style="margin-top:10px;display:block;text-align:center;">Отмена</a>
+        <button type="submit" class="btn-primary">{% translate "Сохранить" %}</button>
+        <a href="{% url 'profile' %}" class="btn-secondary" style="margin-top:10px;display:block;text-align:center;">{% translate "Отмена" %}</a>
     </form>
 </div>
 {% endblock %}

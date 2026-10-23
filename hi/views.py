@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -22,7 +23,7 @@ def index(request):
     all_media = MediaContent.objects.all()
     if not request.user.is_staff:
         all_media = all_media.filter(is_published=True)
-    all_media = all_media.annotate(
+    all_media = all_media.select_related('author__profile').annotate(
         average_rating=Avg('ratings__value'), rating_count=Count('ratings', distinct=True),
         comment_count=Count('comments', distinct=True),
     ).order_by('-created_at', '-pk')
@@ -38,7 +39,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, f"Добро пожаловать, {user.username}!")
+            messages.success(request, (gettext_lazy('Добро пожаловать, %(value0)s!') % {'value0': user.username}))
             return redirect('home')
     else:
         form = UserRegisterForm()
@@ -77,7 +78,7 @@ def staff_login_view(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            messages.error(request, "Доступ запрещён. Это вход только для администраторов.")
+            messages.error(request, gettext_lazy("Доступ запрещён. Это вход только для администраторов."))
     else:
         form = StaffLoginForm()
 
@@ -104,7 +105,7 @@ def profile_edit(request):
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
-            messages.success(request, "Профиль обновлён!")
+            messages.success(request, gettext_lazy("Профиль обновлён!"))
             return redirect('profile')
     else:
         u_form = UserForm(instance=request.user)

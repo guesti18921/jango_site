@@ -1,45 +1,45 @@
-{% extends 'hi/base.html' %}
-{% block title %}Импорт CSV — МойСайт{% endblock %}
+{% extends 'hi/base.html' %}{% load i18n %}
+{% block title %}{% translate "Импорт CSV — МойСайт" %}{% endblock %}
 {% block content %}
 <div class="dashboard-header">
-    <span class="eyebrow">РАБОТА С ДАННЫМИ</span>
-    <h1>Импорт медиаколлекции</h1>
-    <p>Загрузите CSV, проверьте результат и подтвердите изменения.</p>
+    <span class="eyebrow">{% translate "РАБОТА С ДАННЫМИ" %}</span>
+    <h1>{% translate "Импорт медиаколлекции" %}</h1>
+    <p>{% translate "Загрузите CSV, проверьте результат и подтвердите изменения." %}</p>
 </div>
 {% if preview %}
 <section class="dashboard-block">
-    <h2>Данные проверены</h2>
-    <p class="auth-description">Всего записей: {{ preview.count }}. Будет добавлено: {{ preview.created }}, обновлено: {{ preview.updated }}. Ни одна запись ещё не сохранена.</p>
-    <div class="csv-table-wrap" tabindex="0" role="region" aria-label="Предпросмотр CSV">
-        <table class="csv-table"><caption>Первые 20 записей. При подтверждении импортируется весь файл.</caption>
-            <thead><tr><th scope="col">Действие</th><th scope="col">Название</th><th scope="col">Изображение</th><th scope="col">Автор</th><th scope="col">Публикация</th></tr></thead>
-            <tbody>{% for item in preview.rows %}<tr><td>{% if item.pk %}Обновить #{{ item.pk }}{% else %}Добавить{% endif %}</td><td>{{ item.title }}</td><td>{{ item.image.name }}</td><td>{{ item.author.username|default:'—' }}</td><td>{{ item.is_published|yesno:'Да,Нет' }}</td></tr>{% endfor %}</tbody>
+    <h2>{% translate "Данные проверены" %}</h2>
+    <p class="auth-description">{% translate "Всего записей:" %} {{ preview.count }}{% translate ". Будет добавлено:" %} {{ preview.created }}{% translate ", обновлено:" %} {{ preview.updated }}{% translate ". Ни одна запись ещё не сохранена." %}</p>
+    <div class="csv-table-wrap" tabindex="0" role="region" aria-label="{% translate "Предпросмотр CSV" %}">
+        <table class="csv-table"><caption>{% translate "Первые 20 записей. При подтверждении импортируется весь файл." %}</caption>
+            <thead><tr><th scope="col">{% translate "Действие" %}</th><th scope="col">{% translate "Название" %}</th><th scope="col">{% translate "Изображение" %}</th><th scope="col">{% translate "Автор" %}</th><th scope="col">{% translate "Публикация" %}</th></tr></thead>
+            <tbody>{% for item in preview.rows %}<tr><td>{% if item.pk %}{% translate "Обновить #" %}{{ item.pk }}{% else %}{% translate "Добавить" %}{% endif %}</td><td>{{ item.title }}</td><td>{{ item.image.name }}</td><td>{{ item.author.username|default:'—' }}</td><td>{{ item.is_published|yesno:_("Да,Нет") }}</td></tr>{% endfor %}</tbody>
         </table>
     </div>
     <form method="post" class="csv-actions">
         {% csrf_token %}<input type="hidden" name="action" value="import"><input type="hidden" name="job" value="{{ preview.job }}">
-        <button class="btn-primary" type="submit">Подтвердить импорт</button>
-        <a class="btn-secondary" href="{% url 'csv_import' %}">Выбрать другой файл</a>
+        <button class="btn-primary" type="submit">{% translate "Подтвердить импорт" %}</button>
+        <a class="btn-secondary" href="{% url 'csv_import' %}">{% translate "Выбрать другой файл" %}</a>
     </form>
-    <p class="muted">Предпросмотр действует 15 минут. Все изменения сохраняются вместе.</p>
+    <p class="muted">{% translate "Предпросмотр действует 15 минут. Все изменения сохраняются вместе." %}</p>
 </section>
 {% else %}
 <div class="dashboard-columns">
     <section class="dashboard-block">
-        <h2>Выберите файл</h2>
-        <p class="auth-description">До 1 МБ и 1000 записей. UTF-8 или Windows-1251; разделитель — точка с запятой, запятая или табуляция.</p>
+        <h2>{% translate "Выберите файл" %}</h2>
+        <p class="auth-description">{% translate "До 1 МБ и 1000 записей. UTF-8 или Windows-1251; разделитель — точка с запятой, запятая или табуляция." %}</p>
         <form method="post" enctype="multipart/form-data" class="auth-form">
             {% csrf_token %}{{ form.as_p }}
-            <button class="btn-primary" type="submit" name="action" value="preview">Проверить файл <span aria-hidden="true">→</span></button>
+            <button class="btn-primary" type="submit" name="action" value="preview">{% translate "Проверить файл" %} <span aria-hidden="true">→</span></button>
         </form>
     </section>
     <aside class="dashboard-block csv-guide">
-        <h3>Как подготовить CSV</h3>
-        <ol><li>Скачайте <a href="{% url 'csv_import' %}?template=1">шаблон CSV</a> {% if perms.hi.view_mediacontent %}или <a href="{% url 'csv_export' %}">экспорт текущих данных</a>{% endif %}.</li><li>Заполните таблицу, сохранив заголовки колонок.</li><li>Загрузите файл и проверьте предпросмотр.</li></ol>
-        <dl><dt>id</dt><dd>Пусто — новая запись. Существующий ID — обновление.</dd><dt>title / description</dt><dd>Название (до 200 символов) и описание.</dd><dt>image</dt><dd>Путь к существующему файлу, например uploads/photo.jpg.</dd><dt>author</dt><dd>Логин существующего пользователя или пустое значение.</dd><dt>is_published</dt><dd>1 — опубликовано, 0 — скрыто. Также true / false.</dd></dl>
-        <p class="recovery-note">CSV переносит данные о материалах. Сами изображения должны уже находиться в папке <code>media/uploads</code> сервера. Импорт не удаляет записи.</p>
+        <h3>{% translate "Как подготовить CSV" %}</h3>
+        <ol><li>{% translate "Скачайте" %} <a href="{% url 'csv_import' %}?template=1">{% translate "шаблон CSV" %}</a> {% if perms.hi.view_mediacontent %}{% translate "или" %} <a href="{% url 'csv_export' %}">{% translate "экспорт текущих данных" %}</a>{% endif %}.</li><li>{% translate "Заполните таблицу, сохранив заголовки колонок." %}</li><li>{% translate "Загрузите файл и проверьте предпросмотр." %}</li></ol>
+        <dl><dt>id</dt><dd>{% translate "Пусто — новая запись. Существующий ID — обновление." %}</dd><dt>title / description</dt><dd>{% translate "Название (до 200 символов) и описание." %}</dd><dt>image</dt><dd>{% translate "Путь к существующему файлу, например uploads/photo.jpg." %}</dd><dt>author</dt><dd>{% translate "Логин существующего пользователя или пустое значение." %}</dd><dt>is_published</dt><dd>{% translate "1 — опубликовано, 0 — скрыто. Также true / false." %}</dd></dl>
+        <p class="recovery-note">{% translate "CSV переносит данные о материалах. Сами изображения должны уже находиться в папке" %} <code>media/uploads</code> {% translate "сервера. Импорт не удаляет записи." %}</p>
     </aside>
 </div>
 {% endif %}
-<p class="auth-footer"><a href="{% url 'dashboard' %}">← Вернуться в панель управления</a></p>
+<p class="auth-footer"><a href="{% url 'dashboard' %}">{% translate "← Вернуться в панель управления" %}</a></p>
 {% endblock %}

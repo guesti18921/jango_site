@@ -1,15 +1,15 @@
-{% extends 'hi/auth_base.html' %}
-{% block title %}Новый пароль — МойСайт{% endblock %}
+{% extends 'hi/auth_base.html' %}{% load i18n %}
+{% block title %}{% translate "Новый пароль — МойСайт" %}{% endblock %}
 {% block auth_content %}
-<ol class="recovery-steps" aria-label="Этапы восстановления"><li>01 · Аккаунт</li><li class="current" aria-current="step">02 · Новый пароль</li></ol>
-<h2 id="auth-heading">Новый старт</h2>
-<p class="auth-description">Введите шестизначный код и придумайте новый пароль.</p>
-<div class="recovery-note compact"><p>Если аккаунт найден, код выведен в консоль сервера. Код действует 10 минут. Запрос: <strong>{{ request_id }}</strong>.</p></div>
+<ol class="recovery-steps" aria-label="{% translate "Этапы восстановления" %}"><li>{% translate "01 · Аккаунт" %}</li><li class="current" aria-current="step">{% translate "02 · Новый пароль" %}</li></ol>
+<h2 id="auth-heading">{% translate "Новый старт" %}</h2>
+<p class="auth-description">{% translate "Введите шестизначный код и придумайте новый пароль." %}</p>
+<div class="recovery-note compact"><p>{% translate "Если аккаунт найден, код выведен в консоль сервера. Код действует 10 минут. Запрос:" %} <strong>{{ request_id }}</strong>.</p></div>
 <form method="post" class="auth-form" autocomplete="off">
     {% csrf_token %}
     {{ form.as_p }}
-    <p class="attempts-note" role="status">Осталось попыток: {{ attempts_left }}</p>
-    <button type="submit" class="btn-primary">Сохранить новый пароль <span aria-hidden="true">→</span></button>
+    <p class="attempts-note" role="status">{% translate "Осталось попыток:" %} {{ attempts_left }}</p>
+    <button type="submit" class="btn-primary">{% translate "Сохранить новый пароль" %} <span aria-hidden="true">→</span></button>
 </form>
-<p class="auth-footer"><a href="{% url 'recovery_request' %}">Запросить другой код</a> · <a href="{% url 'login' %}">Ко входу</a></p>
+<p class="auth-footer"><a href="{% url 'recovery_request' %}">{% translate "Запросить другой код" %}</a> · <a href="{% url 'login' %}">{% translate "Ко входу" %}</a></p>
 {% endblock %}

@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy
 from django.contrib import admin
 from .models import (
     Developer, Skill, Experience, Project, Education,
@@ -18,13 +19,13 @@ class MediaContentAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description')
     readonly_fields = ('created_at', 'updated_at', 'author')
     fieldsets = (
-        ('Контент', {
+        (gettext_lazy('Контент'), {
             'fields': ('title', 'description', 'image')
         }),
-        ('Публикация', {
+        (gettext_lazy('Публикация'), {
             'fields': ('is_published',)
         }),
-        ('Служебное', {
+        (gettext_lazy('Служебное'), {
             'fields': ('author', 'created_at', 'updated_at'),
             'classes': ('collapse',),
         }),
@@ -44,8 +45,8 @@ class MediaContentAdmin(admin.ModelAdmin):
 class DeveloperAdmin(admin.ModelAdmin):
     list_display = ('name', 'role', 'experience_years')
     fieldsets = (
-        ('Основное', {'fields': ('name', 'role', 'tagline', 'photo', 'about_text', 'experience_years')}),
-        ('Контакты', {'fields': ('email', 'phone', 'address', 'github', 'linkedin')}),
+        (gettext_lazy('Основное'), {'fields': ('name', 'role', 'tagline', 'photo', 'about_text', 'experience_years')}),
+        (gettext_lazy('Контакты'), {'fields': ('email', 'phone', 'address', 'github', 'linkedin')}),
     )
 
     def has_add_permission(self, request):
@@ -91,8 +92,8 @@ class EducationAdmin(admin.ModelAdmin):
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ('name', 'founded_year', 'team_size')
     fieldsets = (
-        ('Основное', {'fields': ('name', 'tagline', 'description', 'founded_year', 'team_size', 'mission')}),
-        ('Контакты', {'fields': ('email', 'phone', 'address', 'telegram')}),
+        (gettext_lazy('Основное'), {'fields': ('name', 'tagline', 'description', 'founded_year', 'team_size', 'mission')}),
+        (gettext_lazy('Контакты'), {'fields': ('email', 'phone', 'address', 'telegram')}),
     )
 
     def has_add_permission(self, request):

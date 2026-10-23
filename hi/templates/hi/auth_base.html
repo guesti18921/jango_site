@@ -1,19 +1,5 @@
-{% extends 'hi/base.html' %}
-{% block content %}
-<div class="auth-layout">
-    <aside class="auth-story">
-        <span class="eyebrow">ВАШЕ ЛИЧНОЕ ПРОСТРАНСТВО</span>
-        <h1>Всё важное.<br>В одном месте.</h1>
-        <p>Сохраняйте моменты, находите вдохновение и делитесь тем, что вам близко.</p>
-        <div class="story-art" aria-hidden="true">
-            <div class="art-orbit"></div><div class="art-tile art-tile-back"></div>
-            <div class="art-tile art-tile-front"><span class="art-sun"></span><span class="art-mountain"></span></div>
-            <span class="art-caption">Маленькая коллекция больших идей</span>
-        </div>
-        <span class="story-footnote"><span class="status-dot"></span> Контент, который объединяет</span>
-    </aside>
-    <section class="auth-panel" aria-labelledby="auth-heading">
-        {% block auth_content %}{% endblock %}
-    </section>
-</div>
-{% endblock %}
+{% extends 'hi/base.html' %}{% load i18n %}
+{% block content %}<div class="auth-layout">
+<aside class="auth-story"><span class="eyebrow">{% translate 'ЛИЧНОЕ ПРОСТРАНСТВО' %}</span><h1>{% translate 'Меньше шума.' %}<br><span>{% translate 'Больше вашего.' %}</span></h1><p>{% translate 'Моменты, идеи и разговоры, к которым хочется возвращаться.' %}</p><div class="auth-editorial" aria-hidden="true"><span>01 / 03</span><div class="editorial-lines"><i></i><i></i><i></i></div><p>МойСайт<span>— {% translate 'сохраните главное' %}</span></p></div><span class="story-footnote"><span class="status-dot"></span>{% translate 'Ваша коллекция начинается здесь.' %}</span></aside>
+<section class="auth-panel" aria-labelledby="auth-heading">{% block auth_content %}{% endblock %}</section>
+</div>{% endblock %}

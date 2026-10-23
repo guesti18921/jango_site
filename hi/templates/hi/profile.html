@@ -1,18 +1,18 @@
-{% extends 'hi/base.html' %}
+{% extends 'hi/base.html' %}{% load i18n %}
 
-{% block title %}Личный кабинет{% endblock %}
+{% block title %}{% translate "Личный кабинет" %}{% endblock %}
 
 {% block content %}
 <div class="profile-card">
     {% if profile.avatar %}
-        <img src="{{ profile.avatar.url }}" alt="Аватар" class="profile-avatar-img">
+        <img src="{{ profile.avatar.url }}" alt="{% translate "Аватар" %}" class="profile-avatar-img">
     {% else %}
         <div class="profile-avatar">{{ user.username|first|upper }}</div>
     {% endif %}
 
     <h2>{{ user.first_name|default:user.username }}</h2>
     <p class="profile-role">
-        {% if user.is_staff %}Администратор{% else %}Пользователь{% endif %}
+        {% if user.is_staff %}{% translate "Администратор" %}{% else %}{% translate "Пользователь" %}{% endif %}
     </p>
 
     {% if profile.bio %}
@@ -20,21 +20,21 @@
     {% endif %}
 
     <ul class="profile-info">
-        <li><strong>Логин</strong><span>{{ user.username }}</span></li>
+        <li><strong>{% translate "Логин" %}</strong><span>{{ user.username }}</span></li>
         <li><strong>Email</strong><span>{{ user.email|default:"—" }}</span></li>
         {% if profile.city %}
-            <li><strong>Город</strong><span>{{ profile.city }}</span></li>
+            <li><strong>{% translate "Город" %}</strong><span>{{ profile.city }}</span></li>
         {% endif %}
         {% if profile.birth_date %}
-            <li><strong>Дата рождения</strong><span>{{ profile.birth_date|date:"d.m.Y" }}</span></li>
+            <li><strong>{% translate "Дата рождения" %}</strong><span>{{ profile.birth_date|date:"d.m.Y" }}</span></li>
         {% endif %}
-        <li><strong>Регистрация</strong><span>{{ user.date_joined|date:"d.m.Y H:i" }}</span></li>
-        <li><strong>Последний вход</strong><span>{{ user.last_login|date:"d.m.Y H:i" }}</span></li>
+        <li><strong>{% translate "Регистрация" %}</strong><span>{{ user.date_joined|date:"d.m.Y H:i" }}</span></li>
+        <li><strong>{% translate "Последний вход" %}</strong><span>{{ user.last_login|date:"d.m.Y H:i" }}</span></li>
     </ul>
 
     <div class="profile-actions">
-        <a href="{% url 'profile_edit' %}" class="btn-primary">Редактировать</a>
-        <a href="{% url 'logout' %}" class="btn-danger">Выйти</a>
+        <a href="{% url 'profile_edit' %}" class="btn-primary">{% translate "Редактировать" %}</a>
+        <a href="{% url 'logout' %}" class="btn-danger">{% translate "Выйти" %}</a>
     </div>
 </div>
 {% endblock %}

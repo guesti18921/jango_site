@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -42,7 +43,7 @@ def add_comment(request, pk):
     if not form.is_valid():
         return render_post(request, post, comment_form=form, status=400)
     Comment.objects.create(post=post, user=request.user, text=form.cleaned_data['text'])
-    messages.success(request, 'Комментарий добавлен.')
+    messages.success(request, gettext_lazy('Комментарий добавлен.'))
     return redirect(reverse('post_detail', args=[post.pk]) + '#comments')
 
 
@@ -54,7 +55,7 @@ def rate_post(request, pk):
     if not form.is_valid():
         return render_post(request, post, rating_form=form, status=400)
     Rating.objects.update_or_create(post=post, user=request.user, defaults={'value': form.cleaned_data['value']})
-    messages.success(request, 'Ваша оценка сохранена.')
+    messages.success(request, gettext_lazy('Ваша оценка сохранена.'))
     return redirect(reverse('post_detail', args=[post.pk]) + '#rating')
 
 
@@ -66,5 +67,5 @@ def delete_comment(request, pk):
         raise PermissionDenied
     post_id = comment.post_id
     comment.delete()
-    messages.success(request, 'Комментарий удалён.')
+    messages.success(request, gettext_lazy('Комментарий удалён.'))
     return redirect(reverse('post_detail', args=[post_id]) + '#comments')

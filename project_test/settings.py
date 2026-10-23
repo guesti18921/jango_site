@@ -12,10 +12,23 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 import os
 from pathlib import Path
+from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure--qqnmf%i=7c$iu=ekzeqerepe#gd^&es3=vd(86xrm=poxmmfj'
+# Keep a stable local key across restarts without publishing credentials.
+# An environment variable can override the local file for managed deployments.
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+if not SECRET_KEY:
+    _key_path = BASE_DIR / '.django-secret-key'
+    try:
+        _fd = os.open(_key_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+    except FileExistsError:
+        pass
+    else:
+        with os.fdopen(_fd, 'w', encoding='utf-8') as _key_file:
+            _key_file.write(get_random_secret_key())
+    SECRET_KEY = _key_path.read_text(encoding='utf-8').strip()
 
 DEBUG = True
 
@@ -39,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -51,11 +65,12 @@ ROOT_URLCONF = 'project_test.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'hi' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
+                'hi.context_processors.layout',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -91,7 +106,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'ru'
+LANGUAGES = [('ru', 'Русский'), ('en', 'English')]
+LOCALE_PATHS = [BASE_DIR / 'locale']
+LANGUAGE_COOKIE_AGE = 60 * 60 * 24 * 365
 
 TIME_ZONE = 'Europe/Moscow'
 

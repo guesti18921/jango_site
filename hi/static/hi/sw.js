@@ -1,42 +1,9 @@
-const CACHE_NAME = 'media-app-v2';
-const URLS = [
-    '/app/',
-    '/static/hi/app.css',
-    '/static/hi/app.js',
-];
-
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => cache.addAll(URLS))
-    );
-    self.skipWaiting();
-});
-
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys().then((keys) =>
-            Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-        )
-    );
-    self.clients.claim();
-});
-
-self.addEventListener('fetch', (event) => {
-    const req = event.request;
-    if (req.method !== 'GET') return;
-
-    // API — всегда из сети, без кэша
-    if (req.url.includes('/api/')) return;
-
-    event.respondWith(
-        caches.match(req).then((cached) => {
-            return cached || fetch(req).then((resp) => {
-                if (resp.ok && req.url.startsWith(self.location.origin)) {
-                    const clone = resp.clone();
-                    caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
-                }
-                return resp;
-            });
-        })
-    );
+// Only cache versioned static assets. Never cache account pages, locale catalogs or API data.
+const CACHE_NAME='mysite-static-v10';
+self.addEventListener('install',()=>self.skipWaiting());
+self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('media-app-')||key.startsWith('mysite-static-')&&key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
+self.addEventListener('fetch',event=>{
+    const url=new URL(event.request.url);
+    if(event.request.method!=='GET'||url.origin!==self.location.origin||!url.pathname.startsWith('/static/hi/'))return;
+    event.respondWith(fetch(event.request).then(response=>{if(response.ok){const copy=response.clone();event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.put(event.request,copy)));}return response;}).catch(()=>caches.match(event.request)));
 });

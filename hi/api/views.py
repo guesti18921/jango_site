@@ -1,3 +1,4 @@
+from django.db.models import Avg, Count
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 
@@ -21,4 +22,6 @@ class MediaContentViewSet(viewsets.ReadOnlyModelViewSet):
             MediaContent.objects
             .filter(is_published=True)
             .select_related('author')
+            .annotate(average_rating=Avg('ratings__value'), rating_count=Count('ratings', distinct=True), comment_count=Count('comments', distinct=True))
+            .order_by('-created_at', '-pk')
         )

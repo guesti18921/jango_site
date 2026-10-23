@@ -1,0 +1,1147 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-23 18:00+0300\n"
+"PO-Revision-Date: 2026-10-23 18:00+0300\n"
+"Last-Translator: MySite\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: hi/admin.py:22
+msgid "Контент"
+msgstr "Content"
+
+#: hi/admin.py:25 hi/templates/hi/csv_import.html:15
+msgid "Публикация"
+msgstr "Publication"
+
+#: hi/admin.py:28
+msgid "Служебное"
+msgstr "Details"
+
+#: hi/admin.py:48 hi/admin.py:95 hi/templates/hi/profile_edit.html:12
+msgid "Основное"
+msgstr "General"
+
+#: hi/admin.py:49 hi/admin.py:96
+msgid "Контакты"
+msgstr "Contact details"
+
+#: hi/client_messages.py:5
+msgid "Комментарии и оценки"
+msgstr "Comments and ratings"
+
+#: hi/client_messages.py:5 hi/models.py:70 hi/templates/hi/index.html:11
+msgid "Комментарии"
+msgstr "Comments"
+
+#: hi/client_messages.py:6
+msgid "Пока нет медиа."
+msgstr "No media yet."
+
+#: hi/client_messages.py:6 hi/templates/hi/csv_import.html:12
+msgid "Всего записей:"
+msgstr "Total records:"
+
+#: hi/client_messages.py:7
+msgid "Показано:"
+msgstr "Showing:"
+
+#: hi/client_messages.py:7
+msgid "Не удалось загрузить. Проверьте соединение."
+msgstr "Unable to load. Please check your connection."
+
+#: hi/csv_tools.py:56
+msgid "Выберите файл с расширением .csv."
+msgstr "Choose a file with the .csv extension."
+
+#: hi/csv_tools.py:59
+msgid "Размер CSV не должен превышать 1 МБ."
+msgstr "The CSV file must not exceed 1 MB."
+
+#: hi/csv_tools.py:61
+msgid "Файл пуст или не является текстовым CSV."
+msgstr "The file is empty or is not a text CSV file."
+
+#: hi/csv_tools.py:68
+msgid "Сохраните CSV в кодировке UTF-8 или Windows-1251."
+msgstr "Save the CSV using UTF-8 or Windows-1251 encoding."
+
+#: hi/csv_tools.py:75
+msgid "image: нужен относительный путь uploads/имя_файла без ../ и URL."
+msgstr "image: use a relative uploads/filename path without ../ or a URL."
+
+#: hi/csv_tools.py:83
+#, python-format
+msgid "image: файл «%(value0)s» не найден в папке media/uploads."
+msgstr "image: file \"%(value0)s\" was not found in media/uploads."
+
+#: hi/csv_tools.py:95
+msgid "Неверные заголовки. Используйте колонки: "
+msgstr "Invalid headers. Use these columns: "
+
+#: hi/csv_tools.py:101
+#, python-format
+msgid "В одном CSV допускается не более %(value0)s записей."
+msgstr "A CSV file may contain at most %(value0)s records."
+
+#: hi/csv_tools.py:105
+msgid "число значений не совпадает с числом колонок."
+msgstr "the number of values does not match the number of columns."
+
+#: hi/csv_tools.py:110
+msgid "id: требуется положительное целое число."
+msgstr "id: enter a positive whole number."
+
+#: hi/csv_tools.py:113
+#, python-format
+msgid "id %(value0)s повторяется в файле."
+msgstr "id %(value0)s occurs more than once in the file."
+
+#: hi/csv_tools.py:116
+msgid ""
+"для обновления ID включите соответствующий флажок или очистите колонку id "
+"для новой записи."
+msgstr "enable ID updates or clear the id column to create a new record."
+
+#: hi/csv_tools.py:120
+#, python-format
+msgid "запись с id %(value0)s не найдена. Для создания оставьте id пустым."
+msgstr ""
+"record %(value0)s was not found. Leave id blank to create a new record."
+
+#: hi/csv_tools.py:125
+msgid "title: название не может быть пустым."
+msgstr "title: a title is required."
+
+#: hi/csv_tools.py:129
+#, python-format
+msgid "author: пользователь «%(value0)s» не найден."
+msgstr "author: user \"%(value0)s\" was not found."
+
+#: hi/csv_tools.py:132
+msgid "is_published: допустимы 1, 0, true или false."
+msgstr "is_published: use 1, 0, true or false."
+
+#: hi/csv_tools.py:141
+#, python-format
+msgid "Строка %(value0)s: "
+msgstr "Row %(value0)s: "
+
+#: hi/csv_tools.py:147
+msgid "В CSV нет записей. Добавьте строки после заголовков."
+msgstr "The CSV has no records. Add rows below the headers."
+
+#: hi/csv_tools.py:150
+#, python-format
+msgid "Некорректный CSV: %(value0)s. Проверьте кавычки и разделители."
+msgstr "Invalid CSV: %(value0)s. Check quotes and delimiters."
+
+#: hi/csv_views.py:21
+msgid "Файл CSV"
+msgstr "CSV file"
+
+#: hi/csv_views.py:23
+msgid "Обновлять существующие записи по ID"
+msgstr "Update existing records by ID"
+
+#: hi/csv_views.py:24
+msgid "Пустой ID создаёт новую запись. Указанный ID обновляет существующую."
+msgstr "A blank ID creates a new record. An existing ID updates that record."
+
+#: hi/csv_views.py:56
+msgid "Некорректный запрос импорта. Загрузите CSV заново."
+msgstr "Invalid import request. Upload the CSV again."
+
+#: hi/csv_views.py:62
+msgid "Предпросмотр истёк или уже использован. Загрузите CSV заново."
+msgstr ""
+"The preview has expired or has already been used. Upload the CSV again."
+
+#: hi/csv_views.py:67
+#, python-format
+msgid "CSV импортирован. Добавлено: %(value0)s, обновлено: %(value1)s."
+msgstr "CSV imported. Created: %(value0)s, updated: %(value1)s."
+
+#: hi/csv_views.py:73
+msgid "Не удалось сохранить данные. Изменения отменены. Повторите импорт."
+msgstr "Unable to save data. All changes were rolled back. Please try again."
+
+#: hi/forms.py:10
+msgid "Логин или email"
+msgstr "Username or email"
+
+#: hi/forms.py:12
+msgid "Введите логин или email"
+msgstr "Enter your username or email"
+
+#: hi/forms.py:18
+msgid "Код подтверждения"
+msgstr "Confirmation code"
+
+#: hi/forms.py:19
+msgid "Введите код из шести цифр."
+msgstr "Enter a six-digit code."
+
+#: hi/forms.py:46
+msgid ""
+"Это вход только для администраторов. Используйте обычную страницу входа."
+msgstr ""
+"This sign-in page is for administrators. Please use the standard sign-in "
+"page."
+
+#: hi/forms.py:58
+msgid "Пара слов о себе..."
+msgstr "A little about you..."
+
+#: hi/forms.py:71
+msgid "Ваш комментарий"
+msgstr "Your comment"
+
+#: hi/forms.py:72
+msgid "Поделитесь впечатлением о посте…"
+msgstr "Share your thoughts on this post…"
+
+#: hi/forms.py:78 hi/templates/hi/post_detail.html:18
+msgid "Ваша оценка"
+msgstr "Your rating"
+
+#: hi/models.py:37
+msgid "Название контента"
+msgstr "Post title"
+
+#: hi/models.py:38 hi/templates/hi/csv_import.html:15
+msgid "Изображение"
+msgstr "Image"
+
+#: hi/models.py:39
+msgid "Описание"
+msgstr "Description"
+
+#: hi/models.py:40
+msgid "Опубликовано"
+msgstr "Published"
+
+#: hi/models.py:47 hi/models.py:63 hi/templates/hi/csv_import.html:15
+msgid "Автор"
+msgstr "Author"
+
+#: hi/models.py:49
+msgid "Дата добавления"
+msgstr "Created at"
+
+#: hi/models.py:50
+msgid "Дата обновления"
+msgstr "Updated at"
+
+#: hi/models.py:56 hi/models.py:57
+msgid "Медиа контент"
+msgstr "Media content"
+
+#: hi/models.py:62 hi/models.py:77
+msgid "Пост"
+msgstr "Post"
+
+#: hi/models.py:64 hi/models.py:69
+msgid "Комментарий"
+msgstr "Comment"
+
+#: hi/models.py:65
+msgid "Дата"
+msgstr "Date"
+
+#: hi/models.py:78 hi/templates/hi/profile.html:15
+msgid "Пользователь"
+msgstr "User"
+
+#: hi/models.py:79 hi/models.py:87
+msgid "Оценка"
+msgstr "Rating"
+
+#: hi/models.py:88
+msgid "Оценки"
+msgstr "Ratings"
+
+#: hi/models.py:96
+msgid "Имя разработчика"
+msgstr "Developer name"
+
+#: hi/models.py:97
+msgid "Роль / Профессия"
+msgstr "Role / profession"
+
+#: hi/models.py:98
+msgid "Слоган"
+msgstr "Tagline"
+
+#: hi/models.py:99
+msgid "Фотография"
+msgstr "Photo"
+
+#: hi/models.py:100 hi/models.py:223
+msgid "О себе"
+msgstr "About"
+
+#: hi/models.py:101
+msgid "Опыт работы (лет)"
+msgstr "Experience (years)"
+
+#: hi/models.py:103
+msgid "Телефон"
+msgstr "Phone"
+
+#: hi/models.py:104
+msgid "Адрес"
+msgstr "Address"
+
+#: hi/models.py:105
+msgid "Ссылка на GitHub"
+msgstr "GitHub URL"
+
+#: hi/models.py:106
+msgid "Ссылка на LinkedIn"
+msgstr "LinkedIn URL"
+
+#: hi/models.py:112
+msgid "Разработчик"
+msgstr "Developer"
+
+#: hi/models.py:113
+msgid "Разработчики"
+msgstr "Developers"
+
+#: hi/models.py:117
+msgid "Название навыка"
+msgstr "Skill name"
+
+#: hi/models.py:118
+msgid "Уровень владения (%)"
+msgstr "Proficiency (%)"
+
+#: hi/models.py:119 hi/models.py:135 hi/models.py:151 hi/models.py:167
+msgid "Порядок сортировки"
+msgstr "Sort order"
+
+#: hi/models.py:126
+msgid "Навык"
+msgstr "Skill"
+
+#: hi/models.py:127
+msgid "Навыки"
+msgstr "Skills"
+
+#: hi/models.py:131
+msgid "Должность"
+msgstr "Position"
+
+#: hi/models.py:132
+msgid "Компания"
+msgstr "Company"
+
+#: hi/models.py:133
+msgid "Период работы"
+msgstr "Employment period"
+
+#: hi/models.py:134
+msgid "Обязанности и достижения"
+msgstr "Responsibilities and achievements"
+
+#: hi/models.py:138
+#, python-format
+msgid "%(value0)s в %(value1)s"
+msgstr "%(value0)s at %(value1)s"
+
+#: hi/models.py:142 hi/models.py:143
+msgid "Опыт работы"
+msgstr "Experience"
+
+#: hi/models.py:147
+msgid "Название проекта"
+msgstr "Project title"
+
+#: hi/models.py:148
+msgid "Описание проекта"
+msgstr "Project description"
+
+#: hi/models.py:149
+msgid "Технологии (через запятую)"
+msgstr "Technologies (comma-separated)"
+
+#: hi/models.py:150
+msgid "Ссылка на проект"
+msgstr "Project URL"
+
+#: hi/models.py:158
+msgid "Проект"
+msgstr "Project"
+
+#: hi/models.py:159
+msgid "Проекты"
+msgstr "Projects"
+
+#: hi/models.py:163
+msgid "Учебное заведение"
+msgstr "Institution"
+
+#: hi/models.py:164
+msgid "Специальность"
+msgstr "Specialization"
+
+#: hi/models.py:165
+msgid "Степень / Квалификация"
+msgstr "Degree / qualification"
+
+#: hi/models.py:166
+msgid "Период обучения"
+msgstr "Study period"
+
+#: hi/models.py:174 hi/models.py:175
+msgid "Образование"
+msgstr "Education"
+
+#: hi/models.py:222 hi/templates/hi/profile.html:8
+msgid "Аватар"
+msgstr "Avatar"
+
+#: hi/models.py:224 hi/templates/hi/profile.html:26
+msgid "Город"
+msgstr "City"
+
+#: hi/models.py:225 hi/templates/hi/profile.html:29
+msgid "Дата рождения"
+msgstr "Date of birth"
+
+#: hi/models.py:228
+#, python-format
+msgid "Профиль: %(value0)s"
+msgstr "Profile: %(value0)s"
+
+#: hi/models.py:231 hi/templates/hi/base.html:43
+#: hi/templates/hi/profile_edit.html:15
+msgid "Профиль"
+msgstr "Profile"
+
+#: hi/models.py:232
+msgid "Профили"
+msgstr "Profiles"
+
+#: hi/post_views.py:46
+msgid "Комментарий добавлен."
+msgstr "Comment posted."
+
+#: hi/post_views.py:58
+msgid "Ваша оценка сохранена."
+msgstr "Your rating has been saved."
+
+#: hi/post_views.py:70
+msgid "Комментарий удалён."
+msgstr "Comment deleted."
+
+#: hi/recovery.py:108
+msgid "Код неверен или больше не действует."
+msgstr "The code is incorrect or no longer valid."
+
+#: hi/recovery_views.py:22
+msgid "Повторный запрос доступен через минуту. Не более 5 запросов в час."
+msgstr ""
+"You can request another code in one minute. Limit: 5 requests per hour."
+
+#: hi/recovery_views.py:40 hi/recovery_views.py:51
+msgid "Код истёк или попытки закончились. Запросите новый код."
+msgstr "The code expired or you ran out of attempts. Request a new code."
+
+#: hi/recovery_views.py:47
+msgid "Пароль изменён. Войдите с новым паролем."
+msgstr "Password changed. Sign in with your new password."
+
+#: hi/templates/admin/base_site.html:3 hi/templates/hi/base.html:21
+#: hi/templates/hi/base.html:45
+msgid "Управление"
+msgstr "Manage"
+
+#: hi/templates/admin/hi/mediacontent/change_list.html:3
+msgid "Экспорт CSV"
+msgstr "Export CSV"
+
+#: hi/templates/admin/hi/mediacontent/change_list.html:4
+msgid "Импорт CSV"
+msgstr "Import CSV"
+
+#: hi/templates/hi/api-test.html:2 hi/templates/hi/api-test.html:5
+msgid "Проверка API"
+msgstr "API preview"
+
+#: hi/templates/hi/api-test.html:2 hi/templates/hi/app.html:2
+#: hi/templates/hi/index.html:2 hi/templates/hi/post_detail.html:2
+msgid "— МойСайт"
+msgstr "— МойСайт"
+
+#: hi/templates/hi/api-test.html:5
+msgid "Данные медиаколлекции из API приложения."
+msgstr "Media collection data from the application API."
+
+#: hi/templates/hi/api-test.html:6 hi/templates/hi/app.html:5
+msgid "Обновить"
+msgstr "Refresh"
+
+#: hi/templates/hi/api-test.html:7 hi/templates/hi/api-test.html:8
+#: hi/templates/hi/app.html:6
+msgid "Загрузка..."
+msgstr "Loading..."
+
+#: hi/templates/hi/api-test.html:7 hi/templates/hi/app.html:6
+msgid "Загрузить ещё"
+msgstr "Load more"
+
+#: hi/templates/hi/api-test.html:8
+msgid "Сырой JSON от API"
+msgstr "Raw API JSON"
+
+#: hi/templates/hi/app.html:2 hi/templates/hi/app.html:5
+#: hi/templates/hi/base.html:20 hi/templates/hi/base.html:44
+msgid "Приложение"
+msgstr "App"
+
+#: hi/templates/hi/app.html:5
+msgid "МойСайт / APP"
+msgstr "МойСайт / APP"
+
+#: hi/templates/hi/app.html:5
+msgid "Ваша коллекция в компактном формате."
+msgstr "Your collection, in a compact view."
+
+#: hi/templates/hi/app.html:7
+msgid "Назад"
+msgstr "Back"
+
+#: hi/templates/hi/auth_base.html:3
+msgid "ЛИЧНОЕ ПРОСТРАНСТВО"
+msgstr "YOUR OWN SPACE"
+
+#: hi/templates/hi/auth_base.html:3
+msgid "Меньше шума."
+msgstr "Less noise."
+
+#: hi/templates/hi/auth_base.html:3
+msgid "Больше вашего."
+msgstr "More of you."
+
+#: hi/templates/hi/auth_base.html:3
+msgid "Моменты, идеи и разговоры, к которым хочется возвращаться."
+msgstr "Moments, ideas and conversations worth coming back to."
+
+#: hi/templates/hi/auth_base.html:3
+msgid "сохраните главное"
+msgstr "keep what matters"
+
+#: hi/templates/hi/auth_base.html:3
+msgid "Ваша коллекция начинается здесь."
+msgstr "Your collection starts here."
+
+#: hi/templates/hi/base.html:13
+msgid "Перейти к содержимому"
+msgstr "Skip to content"
+
+#: hi/templates/hi/base.html:15
+msgid "Основная навигация"
+msgstr "Main navigation"
+
+#: hi/templates/hi/base.html:18 hi/templates/hi/base.html:42
+#: hi/templates/hi/index.html:2 hi/templates/hi/index.html:4
+msgid "Лента"
+msgstr "Feed"
+
+#: hi/templates/hi/base.html:19 hi/templates/hi/base.html:32
+msgid "Мой профиль"
+msgstr "My profile"
+
+#: hi/templates/hi/base.html:23 hi/templates/hi/base.html:30
+msgid "Личное пространство"
+msgstr "Your own space"
+
+#: hi/templates/hi/base.html:23
+msgid "Для ваших моментов и идей."
+msgstr "For your moments and ideas."
+
+#: hi/templates/hi/base.html:24 hi/templates/hi/base.html:32
+#: hi/templates/hi/profile.html:37
+msgid "Выйти"
+msgstr "Sign out"
+
+#: hi/templates/hi/base.html:32
+msgid "Меню аккаунта"
+msgstr "Account menu"
+
+#: hi/templates/hi/base.html:32 hi/templates/hi/register.html:12
+msgid "Войти"
+msgstr "Sign in"
+
+#: hi/templates/hi/base.html:39
+msgid "Ваши моменты. Ваше пространство."
+msgstr "Your moments. Your space."
+
+#: hi/templates/hi/base.html:41
+msgid "Мобильная навигация"
+msgstr "Mobile navigation"
+
+#: hi/templates/hi/csv_import.html:2
+msgid "Импорт CSV — МойСайт"
+msgstr "Import CSV — МойСайт"
+
+#: hi/templates/hi/csv_import.html:5 hi/templates/hi/dashboard.html:34
+msgid "РАБОТА С ДАННЫМИ"
+msgstr "YOUR DATA"
+
+#: hi/templates/hi/csv_import.html:6
+msgid "Импорт медиаколлекции"
+msgstr "Import your collection"
+
+#: hi/templates/hi/csv_import.html:7
+msgid "Загрузите CSV, проверьте результат и подтвердите изменения."
+msgstr "Upload a CSV, review the preview and confirm your changes."
+
+#: hi/templates/hi/csv_import.html:11
+msgid "Данные проверены"
+msgstr "Ready to import"
+
+#: hi/templates/hi/csv_import.html:12
+msgid ". Будет добавлено:"
+msgstr ". To create:"
+
+#: hi/templates/hi/csv_import.html:12
+msgid ", обновлено:"
+msgstr ", to update:"
+
+#: hi/templates/hi/csv_import.html:12
+msgid ". Ни одна запись ещё не сохранена."
+msgstr ". No records have been saved yet."
+
+#: hi/templates/hi/csv_import.html:13
+msgid "Предпросмотр CSV"
+msgstr "CSV preview"
+
+#: hi/templates/hi/csv_import.html:14
+msgid "Первые 20 записей. При подтверждении импортируется весь файл."
+msgstr "The first 20 records. Confirming imports the entire file."
+
+#: hi/templates/hi/csv_import.html:15
+msgid "Действие"
+msgstr "Action"
+
+#: hi/templates/hi/csv_import.html:15
+msgid "Название"
+msgstr "Title"
+
+#: hi/templates/hi/csv_import.html:16
+msgid "Обновить #"
+msgstr "Update #"
+
+#: hi/templates/hi/csv_import.html:16
+msgid "Добавить"
+msgstr "Create"
+
+#: hi/templates/hi/csv_import.html:16
+msgid "Да,Нет"
+msgstr "Yes,No"
+
+#: hi/templates/hi/csv_import.html:21
+msgid "Подтвердить импорт"
+msgstr "Confirm import"
+
+#: hi/templates/hi/csv_import.html:22
+msgid "Выбрать другой файл"
+msgstr "Choose another file"
+
+#: hi/templates/hi/csv_import.html:24
+msgid "Предпросмотр действует 15 минут. Все изменения сохраняются вместе."
+msgstr "The preview expires in 15 minutes. All changes are saved together."
+
+#: hi/templates/hi/csv_import.html:29
+msgid "Выберите файл"
+msgstr "Choose a file"
+
+#: hi/templates/hi/csv_import.html:30
+msgid ""
+"До 1 МБ и 1000 записей. UTF-8 или Windows-1251; разделитель — точка с "
+"запятой, запятая или табуляция."
+msgstr ""
+"Up to 1 MB and 1,000 records. UTF-8 or Windows-1251; separated by "
+"semicolons, commas or tabs."
+
+#: hi/templates/hi/csv_import.html:33
+msgid "Проверить файл"
+msgstr "Check file"
+
+#: hi/templates/hi/csv_import.html:37
+msgid "Как подготовить CSV"
+msgstr "Prepare your CSV"
+
+#: hi/templates/hi/csv_import.html:38
+msgid "Скачайте"
+msgstr "Download the"
+
+#: hi/templates/hi/csv_import.html:38
+msgid "шаблон CSV"
+msgstr "CSV template"
+
+#: hi/templates/hi/csv_import.html:38
+msgid "или"
+msgstr "or"
+
+#: hi/templates/hi/csv_import.html:38
+msgid "экспорт текущих данных"
+msgstr "export your current data"
+
+#: hi/templates/hi/csv_import.html:38
+msgid "Заполните таблицу, сохранив заголовки колонок."
+msgstr "Fill in the table, keeping the column headers."
+
+#: hi/templates/hi/csv_import.html:38
+msgid "Загрузите файл и проверьте предпросмотр."
+msgstr "Upload the file and review the preview."
+
+#: hi/templates/hi/csv_import.html:39
+msgid "Пусто — новая запись. Существующий ID — обновление."
+msgstr "Leave blank for a new record. An existing ID updates that record."
+
+#: hi/templates/hi/csv_import.html:39
+msgid "Название (до 200 символов) и описание."
+msgstr "Title (up to 200 characters) and description."
+
+#: hi/templates/hi/csv_import.html:39
+msgid "Путь к существующему файлу, например uploads/photo.jpg."
+msgstr "Path to an existing file, such as uploads/photo.jpg."
+
+#: hi/templates/hi/csv_import.html:39
+msgid "Логин существующего пользователя или пустое значение."
+msgstr "An existing username, or leave blank."
+
+#: hi/templates/hi/csv_import.html:39
+msgid "1 — опубликовано, 0 — скрыто. Также true / false."
+msgstr "1 means published, 0 means hidden. You can also use true / false."
+
+#: hi/templates/hi/csv_import.html:40
+msgid ""
+"CSV переносит данные о материалах. Сами изображения должны уже находиться в "
+"папке"
+msgstr ""
+"CSV transfers media metadata. The actual images must already be in the "
+"server's"
+
+#: hi/templates/hi/csv_import.html:40
+msgid "сервера. Импорт не удаляет записи."
+msgstr "folder. Import does not delete records."
+
+#: hi/templates/hi/csv_import.html:44
+msgid "← Вернуться в панель управления"
+msgstr "← Back to management"
+
+#: hi/templates/hi/dashboard.html:3 hi/templates/hi/dashboard.html:7
+msgid "Админ-панель"
+msgstr "Management"
+
+#: hi/templates/hi/dashboard.html:8
+msgid "Вы вошли как"
+msgstr "Signed in as"
+
+#: hi/templates/hi/dashboard.html:14
+msgid "Медиафайлов"
+msgstr "Media posts"
+
+#: hi/templates/hi/dashboard.html:18
+msgid "Пользователей"
+msgstr "Users"
+
+#: hi/templates/hi/dashboard.html:22
+msgid "Администраторов"
+msgstr "Administrators"
+
+#: hi/templates/hi/dashboard.html:27
+msgid "Добавить медиа"
+msgstr "Add media"
+
+#: hi/templates/hi/dashboard.html:28
+msgid "Все медиа"
+msgstr "All media"
+
+#: hi/templates/hi/dashboard.html:29
+msgid "Все пользователи"
+msgstr "All users"
+
+#: hi/templates/hi/dashboard.html:30
+msgid "Django-админка"
+msgstr "Django admin"
+
+#: hi/templates/hi/dashboard.html:34
+msgid "Медиаколлекция в CSV"
+msgstr "Your collection, in CSV"
+
+#: hi/templates/hi/dashboard.html:34
+msgid "Скачайте данные или загрузите изменения из таблицы."
+msgstr "Download your data or import changes from a spreadsheet."
+
+#: hi/templates/hi/dashboard.html:36
+msgid "↓ Экспорт CSV"
+msgstr "↓ Export CSV"
+
+#: hi/templates/hi/dashboard.html:37
+msgid "↑ Импорт CSV"
+msgstr "↑ Import CSV"
+
+#: hi/templates/hi/dashboard.html:42
+msgid "Последние медиа"
+msgstr "Recent media"
+
+#: hi/templates/hi/dashboard.html:53 hi/templates/hi/dashboard.html:69
+msgid "Пока пусто."
+msgstr "Nothing here yet."
+
+#: hi/templates/hi/dashboard.html:58
+msgid "Новые пользователи"
+msgstr "New members"
+
+#: hi/templates/hi/index.html:4
+msgid "ВАША КОЛЛЕКЦИЯ"
+msgstr "YOUR COLLECTION"
+
+#: hi/templates/hi/index.html:4
+msgid "Моменты, которыми хочется поделиться"
+msgstr "Moments worth sharing"
+
+#: hi/templates/hi/index.html:4
+msgid "Открыть приложение"
+msgstr "Open app"
+
+#: hi/templates/hi/index.html:5
+msgid "Последние публикации"
+msgstr "Latest posts"
+
+#: hi/templates/hi/index.html:8
+msgid "Черновик"
+msgstr "Draft"
+
+#: hi/templates/hi/index.html:11
+msgid "Оценить"
+msgstr "Rate"
+
+#: hi/templates/hi/index.html:14
+msgid "Здесь начинается ваша коллекция"
+msgstr "Your collection starts here"
+
+#: hi/templates/hi/index.html:14
+msgid "Новые материалы появятся здесь после добавления."
+msgstr "New posts will appear here when they are added."
+
+#: hi/templates/hi/index.html:14
+msgid "Добавить первый пост"
+msgstr "Add your first post"
+
+#: hi/templates/hi/language_switch.html:2
+msgid "Язык интерфейса"
+msgstr "Interface language"
+
+#: hi/templates/hi/login.html:2
+msgid "Вход — МойСайт"
+msgstr "Sign in — МойСайт"
+
+#: hi/templates/hi/login.html:4
+msgid "С ВОЗВРАЩЕНИЕМ"
+msgstr "WELCOME BACK"
+
+#: hi/templates/hi/login.html:5
+msgid "Рады вас видеть"
+msgstr "Good to see you"
+
+#: hi/templates/hi/login.html:6
+msgid "Войдите, чтобы открыть свою коллекцию."
+msgstr "Sign in to open your collection."
+
+#: hi/templates/hi/login.html:10
+msgid "Восстановить доступ"
+msgstr "Recover access"
+
+#: hi/templates/hi/login.html:11
+msgid "Войти в аккаунт"
+msgstr "Sign in"
+
+#: hi/templates/hi/login.html:13
+msgid "Впервые здесь?"
+msgstr "New here?"
+
+#: hi/templates/hi/login.html:13 hi/templates/hi/register.html:5
+msgid "Создать аккаунт"
+msgstr "Create an account"
+
+#: hi/templates/hi/login.html:15
+msgid "Вход для администратора"
+msgstr "Administrator sign in"
+
+#: hi/templates/hi/post_detail.html:4
+msgid "← К медиаколлекции"
+msgstr "← Back to collection"
+
+#: hi/templates/hi/post_detail.html:8
+msgid "ИЗ КОЛЛЕКЦИИ"
+msgstr "FROM THE COLLECTION"
+
+#: hi/templates/hi/post_detail.html:8
+msgid "ЧЕРНОВИК · ВИДЕН ПЕРСОНАЛУ"
+msgstr "DRAFT · STAFF ONLY"
+
+#: hi/templates/hi/post_detail.html:13
+msgid "Как вам этот пост?"
+msgstr "What do you think?"
+
+#: hi/templates/hi/post_detail.html:14 hi/templates/hi/post_detail.html:18
+msgid "из 5"
+msgstr "out of 5"
+
+#: hi/templates/hi/post_detail.html:14
+msgid "· Оценок:"
+msgstr "· Ratings:"
+
+#: hi/templates/hi/post_detail.html:14
+msgid "Пока нет оценок. Будьте первым."
+msgstr "No ratings yet. Be the first."
+
+#: hi/templates/hi/post_detail.html:22
+msgid "Изменить оценку"
+msgstr "Update rating"
+
+#: hi/templates/hi/post_detail.html:22
+msgid "Оценить пост"
+msgstr "Rate post"
+
+#: hi/templates/hi/post_detail.html:23
+msgid "Одна оценка на аккаунт. Её можно изменить."
+msgstr "One rating per account. You can change it anytime."
+
+#: hi/templates/hi/post_detail.html:29
+msgid "Обсуждение"
+msgstr "Discussion"
+
+#: hi/templates/hi/post_detail.html:29
+msgid "Ваше мнение имеет значение"
+msgstr "Your opinion matters"
+
+#: hi/templates/hi/post_detail.html:33
+msgid "До 2000 символов. Пишите по теме и уважайте собеседников."
+msgstr "Up to 2,000 characters. Stay on topic and respect others."
+
+#: hi/templates/hi/post_detail.html:34
+msgid "Оставить комментарий"
+msgstr "Post comment"
+
+#: hi/templates/hi/post_detail.html:41
+msgid "Удалить комментарий"
+msgstr "Delete comment"
+
+#: hi/templates/hi/post_detail.html:43
+msgid "Начните разговор"
+msgstr "Start a conversation"
+
+#: hi/templates/hi/post_detail.html:43
+msgid "Здесь появятся комментарии к этому посту."
+msgstr "Comments on this post will appear here."
+
+#: hi/templates/hi/post_detail.html:44
+msgid "Страницы комментариев"
+msgstr "Comment pages"
+
+#: hi/templates/hi/post_detail.html:44
+msgid "← Новее"
+msgstr "← Newer"
+
+#: hi/templates/hi/post_detail.html:44
+msgid "Раньше →"
+msgstr "Older →"
+
+#: hi/templates/hi/profile.html:3
+msgid "Личный кабинет"
+msgstr "Your profile"
+
+#: hi/templates/hi/profile.html:15
+msgid "Администратор"
+msgstr "Administrator"
+
+#: hi/templates/hi/profile.html:23
+msgid "Логин"
+msgstr "Username"
+
+#: hi/templates/hi/profile.html:31
+msgid "Регистрация"
+msgstr "Joined"
+
+#: hi/templates/hi/profile.html:32
+msgid "Последний вход"
+msgstr "Last sign in"
+
+#: hi/templates/hi/profile.html:36
+msgid "Редактировать"
+msgstr "Edit profile"
+
+#: hi/templates/hi/profile_edit.html:3 hi/templates/hi/profile_edit.html:7
+msgid "Редактирование профиля"
+msgstr "Edit profile"
+
+#: hi/templates/hi/profile_edit.html:18
+msgid "Сохранить"
+msgstr "Save"
+
+#: hi/templates/hi/profile_edit.html:19
+msgid "Отмена"
+msgstr "Cancel"
+
+#: hi/templates/hi/recovery_confirm.html:2
+msgid "Новый пароль — МойСайт"
+msgstr "New password — МойСайт"
+
+#: hi/templates/hi/recovery_confirm.html:4
+#: hi/templates/hi/recovery_request.html:4
+msgid "Этапы восстановления"
+msgstr "Recovery steps"
+
+#: hi/templates/hi/recovery_confirm.html:4
+#: hi/templates/hi/recovery_request.html:4
+msgid "01 · Аккаунт"
+msgstr "01 · Account"
+
+#: hi/templates/hi/recovery_confirm.html:4
+#: hi/templates/hi/recovery_request.html:4
+msgid "02 · Новый пароль"
+msgstr "02 · New password"
+
+#: hi/templates/hi/recovery_confirm.html:5
+msgid "Новый старт"
+msgstr "A fresh start"
+
+#: hi/templates/hi/recovery_confirm.html:6
+msgid "Введите шестизначный код и придумайте новый пароль."
+msgstr "Enter the six-digit code and choose a new password."
+
+#: hi/templates/hi/recovery_confirm.html:7
+msgid ""
+"Если аккаунт найден, код выведен в консоль сервера. Код действует 10 минут. "
+"Запрос:"
+msgstr ""
+"If the account was found, the code is in the server console. It expires in "
+"10 minutes. Request:"
+
+#: hi/templates/hi/recovery_confirm.html:11
+msgid "Осталось попыток:"
+msgstr "Attempts left:"
+
+#: hi/templates/hi/recovery_confirm.html:12
+msgid "Сохранить новый пароль"
+msgstr "Save new password"
+
+#: hi/templates/hi/recovery_confirm.html:14
+msgid "Запросить другой код"
+msgstr "Request another code"
+
+#: hi/templates/hi/recovery_confirm.html:14
+msgid "Ко входу"
+msgstr "Sign in"
+
+#: hi/templates/hi/recovery_request.html:2
+msgid "Восстановление доступа — МойСайт"
+msgstr "Recover access — МойСайт"
+
+#: hi/templates/hi/recovery_request.html:5
+msgid "Вернём вам доступ"
+msgstr "Get back to your account"
+
+#: hi/templates/hi/recovery_request.html:6
+msgid "Укажите логин или email вашего аккаунта."
+msgstr "Enter your account's username or email."
+
+#: hi/templates/hi/recovery_request.html:10
+msgid "Получить код"
+msgstr "Get a code"
+
+#: hi/templates/hi/recovery_request.html:12
+msgid "Без писем и ссылок"
+msgstr "No emails or links"
+
+#: hi/templates/hi/recovery_request.html:12
+msgid ""
+"Код появится в консоли, где запущен сайт. Если сервер у администратора, "
+"попросите его передать вам код."
+msgstr ""
+"The code appears in the console running this website. If an administrator "
+"runs the server, ask them for your code."
+
+#: hi/templates/hi/recovery_request.html:13
+msgid "← Вернуться ко входу"
+msgstr "← Back to sign in"
+
+#: hi/templates/hi/register.html:2
+msgid "Регистрация — МойСайт"
+msgstr "Create an account — МойСайт"
+
+#: hi/templates/hi/register.html:4
+msgid "НАЧНИТЕ СВОЮ ИСТОРИЮ"
+msgstr "START YOUR STORY"
+
+#: hi/templates/hi/register.html:6
+msgid "Всего несколько деталей — и вы с нами."
+msgstr "A few details, and you're in."
+
+#: hi/templates/hi/register.html:10
+msgid "Зарегистрироваться"
+msgstr "Create account"
+
+#: hi/templates/hi/register.html:12
+msgid "Уже есть аккаунт?"
+msgstr "Already have an account?"
+
+#: hi/templates/hi/staff_login.html:2
+msgid "Вход для администратора — МойСайт"
+msgstr "Administrator sign in — МойСайт"
+
+#: hi/templates/hi/staff_login.html:4
+msgid "УПРАВЛЕНИЕ САЙТОМ"
+msgstr "SITE MANAGEMENT"
+
+#: hi/templates/hi/staff_login.html:5
+msgid "Вход для команды"
+msgstr "Team sign in"
+
+#: hi/templates/hi/staff_login.html:6
+msgid "Используйте аккаунт с правами администратора."
+msgstr "Use an account with administrator access."
+
+#: hi/templates/hi/staff_login.html:10
+msgid "Восстановить доступ ↗"
+msgstr "Recover access ↗"
+
+#: hi/templates/hi/staff_login.html:11
+msgid "Открыть панель"
+msgstr "Open management"
+
+#: hi/templates/hi/staff_login.html:13
+msgid "← Обычный вход"
+msgstr "← Standard sign in"
+
+#: hi/views.py:42
+#, python-format
+msgid "Добро пожаловать, %(value0)s!"
+msgstr "Welcome, %(value0)s!"
+
+#: hi/views.py:81
+msgid "Доступ запрещён. Это вход только для администраторов."
+msgstr "Access denied. This sign-in page is for administrators."
+
+#: hi/views.py:108
+msgid "Профиль обновлён!"
+msgstr "Profile updated!"

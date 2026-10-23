@@ -1,53 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-    <meta name="theme-color" content="#111827">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Media">
-    <title>Media</title>
-    <link rel="manifest" href="{% static 'hi/manifest.json' %}">
-    <link rel="stylesheet" href="{% static 'hi/app.css' %}">
-</head>
-<body>
-
-<header class="app-header">
-    <h1 class="app-title">Media</h1>
-    <div class="header-actions">
-        <a href="/" class="icon-btn" aria-label="На сайт" title="На сайт">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12l9-9 9 9"/>
-                <path d="M5 10v10h14V10"/>
-            </svg>
-        </a>
-        <button class="icon-btn" id="refresh-btn" aria-label="Обновить">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12a9 9 0 1 1-3-6.7L21 8"/>
-                <path d="M21 3v5h-5"/>
-            </svg>
-        </button>
-    </div>
-</header>
-
-<main id="view-list" class="view">
-    <div id="loading" class="state">Загрузка...</div>
-    <div id="error" class="state state-error" hidden></div>
-    <div id="grid" class="grid" hidden></div>
-</main>
-
-<main id="view-detail" class="view" hidden>
-    <button class="back-btn" id="back-btn">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M15 18l-6-6 6-6"/>
-        </svg>
-        <span>Назад</span>
-    </button>
-    <div id="detail-body"></div>
-</main>
-
-<script src="{% static 'hi/app.js' %}?v=2"></script>
-</body>
-</html>
+{% extends 'hi/base.html' %}{% load static i18n %}
+{% block title %}{% translate 'Приложение' %} {% translate "— МойСайт" %}{% endblock %}
+{% block extra_styles %}<link rel="manifest" href="{% static 'hi/manifest.json' %}"><link rel="stylesheet" href="{% static 'hi/app.css' %}?v=10">{% endblock %}
+{% block content %}
+<header class="feed-header"><div><span class="eyebrow">{% translate "МойСайт / APP" %}</span><h1>{% translate 'Приложение' %}</h1><p>{% translate 'Ваша коллекция в компактном формате.' %}</p></div><button id="refresh-btn" class="btn-secondary" type="button">{% translate 'Обновить' %} ↻</button></header>
+<section id="view-list" class="view"><div id="loading" class="state" role="status">{% translate 'Загрузка...' %}</div><div id="error" class="state state-error" role="alert" hidden></div><div id="grid" class="grid" hidden></div><button id="load-more" type="button" class="btn-secondary" hidden>{% translate 'Загрузить ещё' %}</button></section>
+<section id="view-detail" class="view" hidden><button type="button" class="back-btn" id="back-btn">← {% translate 'Назад' %}</button><div id="detail-body"></div></section>
+{% endblock %}
+{% block extra_scripts %}<script src="{% url 'javascript-catalog' %}"></script><script src="{% static 'hi/app.js' %}?v=10"></script>{% endblock %}

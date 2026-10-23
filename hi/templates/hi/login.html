@@ -1,16 +1,16 @@
-{% extends 'hi/auth_base.html' %}
-{% block title %}Вход — МойСайт{% endblock %}
+{% extends 'hi/auth_base.html' %}{% load i18n %}
+{% block title %}{% translate "Вход — МойСайт" %}{% endblock %}
 {% block auth_content %}
-<span class="eyebrow">С ВОЗВРАЩЕНИЕМ</span>
-<h2 id="auth-heading">Рады вас видеть</h2>
-<p class="auth-description">Войдите, чтобы открыть свою коллекцию.</p>
+<span class="eyebrow">{% translate "С ВОЗВРАЩЕНИЕМ" %}</span>
+<h2 id="auth-heading">{% translate "Рады вас видеть" %}</h2>
+<p class="auth-description">{% translate "Войдите, чтобы открыть свою коллекцию." %}</p>
 <form method="post" class="auth-form">
     {% csrf_token %}
     {{ form.as_p }}
-    <div class="form-link-row"><a href="{% url 'recovery_request' %}">Восстановить доступ <span aria-hidden="true">↗</span></a></div>
-    <button type="submit" class="btn-primary">Войти в аккаунт <span aria-hidden="true">→</span></button>
+    <div class="form-link-row"><a href="{% url 'recovery_request' %}">{% translate "Восстановить доступ" %} <span aria-hidden="true">↗</span></a></div>
+    <button type="submit" class="btn-primary">{% translate "Войти в аккаунт" %} <span aria-hidden="true">→</span></button>
 </form>
-<p class="auth-footer">Впервые здесь? <a href="{% url 'register' %}">Создать аккаунт</a></p>
+<p class="auth-footer">{% translate "Впервые здесь?" %} <a href="{% url 'register' %}">{% translate "Создать аккаунт" %}</a></p>
 <div class="auth-divider"></div>
-<a class="quiet-link" href="{% url 'staff-login' %}">Вход для администратора <span aria-hidden="true">↗</span></a>
+<a class="quiet-link" href="{% url 'staff-login' %}">{% translate "Вход для администратора" %} <span aria-hidden="true">↗</span></a>
 {% endblock %}

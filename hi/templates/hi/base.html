@@ -1,57 +1,48 @@
-{% load static %}
+{% load static i18n %}{% get_current_language as language_code %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="{{ language_code|slice:':2' }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Мой сайт{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'hi/style.css' %}?v=4">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#171917">
+    <title>{% block title %}МойСайт{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'hi/style.css' %}?v=10">
+    {% block extra_styles %}{% endblock %}
+    <script src="{% static 'hi/site.js' %}?v=1" defer></script>
 </head>
-<body>
-    <a href="#main-content" class="skip-link">Перейти к содержимому</a>
-    <nav class="navbar" aria-label="Основная навигация">
-        <div class="nav-container">
-            <a href="{% url 'home' %}" class="logo"><span class="logo-mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><path d="M13 16.5h7m-3.5-3.5v7"/></svg></span>МойСайт</a>
-            <div class="nav-links">
-                {% if user.is_authenticated %}
-                    {% with url_name=request.resolver_match.url_name %}
-                        <a href="{% url 'home' %}"
-                           class="nav-item {% if url_name == 'home' %}active{% endif %}">Главная</a>
-
-                        <a href="{% url 'profile' %}"
-                           class="nav-item {% if url_name == 'profile' or url_name == 'profile_edit' %}active{% endif %}">Профиль</a>
-
-                        <a href="{% url 'app' %}" class="nav-item">Приложение ↗</a>
-                        {% if user.is_staff %}
-                            <a href="{% url 'dashboard' %}"
-                               class="nav-item admin-link {% if url_name == 'dashboard' %}active{% endif %}">Админ</a>
-                        {% endif %}
-                    {% endwith %}
-                    <span class="user-badge">{{ user.username }}</span>
-                    <a href="{% url 'logout' %}" class="btn-logout">Выйти</a>
-                {% else %}
-                    {% with url_name=request.resolver_match.url_name %}
-                        <a href="{% url 'login' %}"
-                           class="nav-item {% if url_name == 'login' %}active{% endif %}">Войти</a>
-                    {% endwith %}
-                    <a href="{% url 'register' %}" class="btn-register">Регистрация</a>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
-
-    <main class="container" id="main-content">
-        {% if messages %}
-            {% for message in messages %}
-                <div role="status" class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-
-        {% block content %}{% endblock %}
-    </main>
-
-    <footer class="footer">
-        <p>© {% now "Y" %} МойСайт</p><span>Ваши моменты. Ваше пространство.</span>
-    </footer>
-</body>
-</html>
+<body class="{% if user.is_authenticated %}signed-in{% else %}guest{% endif %}">
+{% include 'hi/icons.html' %}
+<a class="skip-link" href="#main-content">{% translate 'Перейти к содержимому' %}</a>
+{% if user.is_authenticated %}
+<aside class="sidebar" aria-label="{% translate 'Основная навигация' %}">
+    <a href="{% url 'home' %}" class="logo"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>МойСайт</a>
+    {% with name=request.resolver_match.url_name %}<nav class="side-links">
+        <a href="{% url 'home' %}" class="side-link {% if name == 'home' or name == 'post_detail' or name == 'add_comment' or name == 'rate_post' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-feed"/></svg><span>{% translate 'Лента' %}</span></a>
+        <a href="{% url 'profile' %}" class="side-link {% if name == 'profile' or name == 'profile_edit' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-profile"/></svg><span>{% translate 'Мой профиль' %}</span></a>
+        <a href="{% url 'app' %}" class="side-link"><svg class="icon" aria-hidden="true"><use href="#i-app"/></svg><span>{% translate 'Приложение' %}</span></a>
+        {% if user.is_staff %}<a href="{% url 'dashboard' %}" class="side-link {% if name == 'dashboard' or name == 'csv_import' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg><span>{% translate 'Управление' %}</span></a>{% endif %}
+    </nav>{% endwith %}
+    <div class="sidebar-note">{% translate 'Личное пространство' %}<span>{% translate 'Для ваших моментов и идей.' %}</span></div>
+    <div class="sidebar-account"><a href="{% url 'profile' %}" class="account-identity">{% if user.profile.avatar %}<img class="avatar-letter" src="{{ user.profile.avatar.url }}" alt="">{% else %}<span class="avatar-letter">{{ user.username|first|upper }}</span>{% endif %}<span>{{ user.first_name|default:user.username }}</span></a><a href="{% url 'logout' %}" class="quiet-link"><svg class="icon" aria-hidden="true"><use href="#i-exit"/></svg>{% translate 'Выйти' %}</a></div>
+</aside>
+{% endif %}
+<div class="site-shell">
+<header class="topbar">
+    <a href="{% url 'home' %}" class="logo mobile-brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>МойСайт</a>
+    <span class="desktop-context">{% translate 'Личное пространство' %}</span>
+    <div class="topbar-actions">{% include 'hi/language_switch.html' %}
+        {% if user.is_authenticated %}<details class="account-menu"><summary aria-label="{% translate 'Меню аккаунта' %}">{% if user.profile.avatar %}<img class="avatar-letter" src="{{ user.profile.avatar.url }}" alt="">{% else %}<span class="avatar-letter">{{ user.username|first|upper }}</span>{% endif %}</summary><div class="account-popover"><strong>{{ user.username }}</strong><a href="{% url 'profile' %}">{% translate 'Мой профиль' %}</a><a href="{% url 'logout' %}">{% translate 'Выйти' %}</a></div></details>{% else %}<a class="quiet-link guest-login" href="{% url 'login' %}">{% translate 'Войти' %}</a>{% endif %}
+    </div>
+</header>
+<main class="container" id="main-content">
+    {% if messages %}<div class="message-stack" aria-live="polite">{% for message in messages %}<div role="status" class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+</main>
+<footer class="footer"><span>© {% now 'Y' %} МойСайт</span><span>{% translate 'Ваши моменты. Ваше пространство.' %}</span></footer>
+</div>
+{% if user.is_authenticated %}{% with name=request.resolver_match.url_name %}<nav class="mobile-nav" aria-label="{% translate 'Мобильная навигация' %}">
+    <a href="{% url 'home' %}" class="{% if name == 'home' or name == 'post_detail' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-feed"/></svg><span>{% translate 'Лента' %}</span></a>
+    <a href="{% url 'profile' %}" class="{% if name == 'profile' or name == 'profile_edit' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-profile"/></svg><span>{% translate 'Профиль' %}</span></a>
+    <a href="{% url 'app' %}" class="{% if name == 'app' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-app"/></svg><span>{% translate 'Приложение' %}</span></a>
+    {% if user.is_staff %}<a href="{% url 'dashboard' %}" class="{% if name == 'dashboard' or name == 'csv_import' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg><span>{% translate 'Управление' %}</span></a>{% endif %}
+</nav>{% endwith %}{% endif %}
+{% block extra_scripts %}{% endblock %}
+</body></html>

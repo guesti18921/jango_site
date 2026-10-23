@@ -1,41 +1,15 @@
-{% extends 'hi/base.html' %}
-
-{% block title %}Главная{% endblock %}
-
+{% extends 'hi/base.html' %}{% load i18n %}
+{% block title %}{% translate 'Лента' %} {% translate "— МойСайт" %}{% endblock %}
 {% block content %}
-<section class="welcome-card">
-    <span class="eyebrow">ЛИЧНАЯ КОЛЛЕКЦИЯ</span>
-    <h1>Привет, {{ user.first_name|default:user.username }}.</h1>
-    <p class="hint">Место для ваших идей, вдохновения и любимых моментов. Посмотрите, что нового в коллекции.</p>
-    <div class="welcome-actions">
-        <a class="btn-primary" href="{% url 'app' %}">Открыть приложение <span aria-hidden="true">↗</span></a>
-        {% if user.is_staff %}<a class="btn-secondary" href="{% url 'dashboard' %}">Управление контентом</a>{% endif %}
+<header class="feed-header"><div><span class="eyebrow">{% translate 'ВАША КОЛЛЕКЦИЯ' %}</span><h1>{% translate 'Лента' %}</h1><p>{% translate 'Моменты, которыми хочется поделиться' %}</p></div><a href="{% url 'app' %}" class="btn-primary">{% translate 'Открыть приложение' %}<span aria-hidden="true">↗</span></a></header>
+<div class="section-heading"><h2 class="section-title">{% translate 'Последние публикации' %}</h2><span class="section-caption">{% now 'F Y' %}</span></div>
+{% if all_media %}<div class="media-grid">
+{% for item in all_media %}<article class="media-card" data-reveal>
+    <div class="media-author">{% if item.author.profile.avatar %}<img class="avatar-letter small" src="{{ item.author.profile.avatar.url }}" alt="">{% else %}<span class="avatar-letter small">{{ item.author.username|default:'М'|first|upper }}</span>{% endif %}<div><strong>{{ item.author.first_name|default:item.author.username|default:'МойСайт' }}</strong><time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'j M' }}</time></div>{% if not item.is_published %}<span class="draft-label">{% translate 'Черновик' %}</span>{% endif %}</div>
+    <a class="media-image-link" href="{% url 'post_detail' item.pk %}"><img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy" style="view-transition-name: post-{{ item.pk }}"></a>
+    <div class="media-body"><h3><a href="{% url 'post_detail' item.pk %}">{{ item.title }}</a></h3>{% if item.description %}<p class="media-description">{{ item.description|truncatechars:160 }}</p>{% endif %}
+        <div class="post-stats"><a href="{% url 'post_detail' item.pk %}#rating" class="rating-stat"><svg class="icon {% if item.rating_count %}filled-star{% endif %}" aria-hidden="true"><use href="#i-star"/></svg>{% if item.rating_count %}<strong>{{ item.average_rating|floatformat:1 }}</strong><span class="rating-count">({{ item.rating_count }})</span>{% else %}{% translate 'Оценить' %}{% endif %}</a><a href="{% url 'post_detail' item.pk %}#comments"><svg class="icon" aria-hidden="true"><use href="#i-comment"/></svg><span>{% translate 'Комментарии' %} · {{ item.comment_count }}</span></a></div>
     </div>
-</section>
-<div class="section-heading"><h2 class="section-title">Медиаколлекция</h2><span class="section-caption">Последние добавленные материалы</span></div>
-
-{% if all_media %}
-    <div class="media-grid">
-        {% for item in all_media %}
-            <article class="media-card">
-                <a class="media-image-link" href="{% url 'post_detail' item.pk %}"><img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy"></a>
-                <div class="media-body">
-                    <h3><a href="{% url 'post_detail' item.pk %}">{{ item.title }}</a></h3>
-                    {% if item.description %}<p class="media-description">{{ item.description|truncatechars:130 }}</p>{% endif %}
-                    <div class="post-stats"><span>★ {% if item.rating_count %}{{ item.average_rating|floatformat:1 }} · {{ item.rating_count }} оценок{% else %}Нет оценок{% endif %}</span><a href="{% url 'post_detail' item.pk %}#comments">Комментарии · {{ item.comment_count }}</a></div>
-                    <p class="media-date">{{ item.created_at|date:"d.m.Y H:i" }}</p>
-                </div>
-            </article>
-        {% endfor %}
-    </div>
-{% else %}
-    <div class="empty-state">
-        <h3>Здесь начинается ваша коллекция</h3><p>Новые материалы появятся здесь после добавления.</p>
-        {% if user.is_staff %}
-            <p>Добавьте первый через
-                <a href="/django-admin/hi/mediacontent/add/">админку</a>.
-            </p>
-        {% endif %}
-    </div>
-{% endif %}
+</article>{% endfor %}</div>
+{% else %}<div class="empty-state"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><h2>{% translate 'Здесь начинается ваша коллекция' %}</h2><p>{% translate 'Новые материалы появятся здесь после добавления.' %}</p>{% if user.is_staff %}<a href="/django-admin/hi/mediacontent/add/" class="btn-primary">{% translate 'Добавить первый пост' %}<span aria-hidden="true">↗</span></a>{% endif %}</div>{% endif %}
 {% endblock %}

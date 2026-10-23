@@ -1,134 +1,60 @@
-(function () {
+(() => {
     'use strict';
-
-    const API_URL = '/api/media/';
-
-    // DOM
+    const t = window.gettext || (value => value);
+    const locale = document.documentElement.lang;
+    const apiTest = !!document.getElementById('raw-json');
     const viewList = document.getElementById('view-list');
     const viewDetail = document.getElementById('view-detail');
     const grid = document.getElementById('grid');
     const loading = document.getElementById('loading');
     const errorEl = document.getElementById('error');
     const detailBody = document.getElementById('detail-body');
-    const refreshBtn = document.getElementById('refresh-btn');
-    const backBtn = document.getElementById('back-btn');
-
-    let cache = [];
-
-    // ---------- Утилиты ----------
-    function escapeHtml(s) {
-        if (!s) return '';
-        return String(s)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;');
+    const more = document.getElementById('load-more');
+    const status = document.getElementById('api-status');
+    let cache = [], nextUrl = null, busy = false;
+    function element(tag, className, value) {
+        const node = document.createElement(tag); node.className = className;
+        if (value !== undefined) node.textContent = value;
+        return node;
     }
-
-    function formatDate(iso) {
-        if (!iso) return '';
-        const d = new Date(iso);
-        return d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'short', year: 'numeric' });
+    function formatDate(value) { return new Date(value).toLocaleDateString(locale, {day:'numeric',month:'short',year:'numeric'}); }
+    function showList() { if (viewDetail) viewDetail.hidden = true; viewList.hidden = false; }
+    function openDetail(item) {
+        if (apiTest) { location.href = '/posts/' + Number(item.id) + '/'; return; }
+        detailBody.replaceChildren();
+        if (item.image) { const image=element('img','detail-image'); image.src=item.image; image.alt=item.title; detailBody.append(image); }
+        detailBody.append(element('h2','detail-title',item.title));
+        const meta=element('div','detail-meta'); meta.append(element('span','',item.author?.username || 'МойСайт'),element('span','',formatDate(item.created_at))); detailBody.append(meta);
+        detailBody.append(element('p','detail-description',item.description || ''));
+        const link=element('a','post-discussion-link',t('Комментарии и оценки') + ' →'); link.href='/posts/'+Number(item.id)+'/'; detailBody.append(link);
+        viewList.hidden=true; viewDetail.hidden=false; window.scrollTo({top:0,behavior:'instant'});
+        history.pushState({post:item.id},'', '#post-'+Number(item.id));
     }
-
-    function showList() {
-        viewDetail.hidden = true;
-        viewList.hidden = false;
-        window.scrollTo(0, 0);
+    function appendCard(item) {
+        const card=element('button','card'); card.type='button'; card.setAttribute('aria-label',item.title);
+        if(item.image){const image=element('img','card-image');image.src=item.image;image.alt='';image.loading='lazy';card.append(image);}
+        const body=element('span','card-body');body.append(element('span','card-title',item.title),element('span','card-date',formatDate(item.created_at)));
+        const summary=element('span','card-summary');summary.append(element('span','', '★ '+(item.rating_count ? Number(item.average_rating).toLocaleString(locale,{maximumFractionDigits:1}) : '—')),element('span','',t('Комментарии')+' · '+(item.comment_count || 0)));body.append(summary);card.append(body);card.addEventListener('click',()=>openDetail(item));grid.append(card);
     }
-
-    function showDetail() {
-        viewList.hidden = true;
-        viewDetail.hidden = false;
-        window.scrollTo(0, 0);
+    async function loadList(append=false) {
+        if(busy)return; busy=true; more.disabled=true; errorEl.hidden=true;
+        if(!append){cache=[];nextUrl=null;grid.replaceChildren();grid.hidden=true;loading.hidden=false;showList();}
+        try{
+            const url=append?nextUrl:'/api/media/'; if(!url)return;
+            const target=new URL(url,location.origin); if(target.origin!==location.origin)throw Error('Invalid origin');
+            const response=await fetch(target,{headers:{Accept:'application/json'}});if(!response.ok)throw Error('HTTP '+response.status);
+            const data=await response.json(); cache.push(...(data.results || []));nextUrl=data.next;
+            (data.results || []).forEach(appendCard);loading.hidden=true;grid.hidden=false;
+            if(!cache.length){const empty=element('div','state',t('Пока нет медиа.'));grid.append(empty);}
+            more.hidden=!nextUrl;
+            if(apiTest){document.getElementById('raw-json').textContent=JSON.stringify(data,null,2);status.textContent=t('Всего записей:')+' '+data.count+' · '+t('Показано:')+' '+cache.length;}
+        }catch(error){loading.hidden=true;errorEl.hidden=false;errorEl.textContent=t('Не удалось загрузить. Проверьте соединение.');}
+        finally{busy=false;more.disabled=false;}
     }
-
-    // ---------- Загрузка списка ----------
-    async function loadList() {
-        loading.hidden = false;
-        errorEl.hidden = true;
-        grid.hidden = true;
-        grid.innerHTML = '';
-
-        try {
-            const resp = await fetch(API_URL, { headers: { 'Accept': 'application/json' } });
-            if (!resp.ok) throw new Error('HTTP ' + resp.status);
-            const data = await resp.json();
-
-            cache = data.results || [];
-
-            loading.hidden = true;
-
-            if (cache.length === 0) {
-                grid.hidden = false;
-                grid.innerHTML = '<div class="state" style="grid-column: 1/-1;">Пока нет медиа.</div>';
-                return;
-            }
-
-            grid.hidden = false;
-            cache.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.dataset.id = item.id;
-                card.innerHTML =
-                    '<img class="card-image" src="' + item.image + '" alt="' + escapeHtml(item.title) + '" loading="lazy">' +
-                    '<div class="card-body">' +
-                        '<div class="card-title">' + escapeHtml(item.title) + '</div>' +
-                        '<div class="card-date">' + formatDate(item.created_at) + '</div>' +
-                    '</div>';
-                card.addEventListener('click', () => openDetail(item.id));
-                grid.appendChild(card);
-            });
-
-        } catch (err) {
-            loading.hidden = true;
-            errorEl.hidden = false;
-            errorEl.textContent = 'Не удалось загрузить. Проверьте соединение.';
-            console.error(err);
-        }
-    }
-
-    // ---------- Открытие детали ----------
-    function openDetail(id) {
-        const item = cache.find(x => String(x.id) === String(id));
-        if (!item) return;
-
-        const authorName = item.author ? item.author.username : '—';
-
-        detailBody.innerHTML =
-            '<img class="detail-image" src="' + item.image + '" alt="' + escapeHtml(item.title) + '">' +
-            '<h2 class="detail-title">' + escapeHtml(item.title) + '</h2>' +
-            '<div class="detail-meta">' +
-                '<span>' + escapeHtml(authorName) + '</span>' +
-                '<span>' + formatDate(item.created_at) + '</span>' +
-            '</div>' +
-            '<div class="detail-description">' + escapeHtml(item.description || '') + '</div>' +
-            '<p style="margin-top:24px"><a class="post-discussion-link" href="/posts/' + Number(item.id) + '/">Комментарии и оценки →</a></p>';
-
-        showDetail();
-    }
-
-    // ---------- Кнопки ----------
-    refreshBtn.addEventListener('click', loadList);
-    backBtn.addEventListener('click', showList);
-
-    // Кнопка «назад» в браузере / телефоне
-    window.addEventListener('popstate', () => {
-        if (!viewDetail.hidden) {
-            showList();
-            history.pushState({ view: 'list' }, '');
-        }
-    });
-
-    history.pushState({ view: 'list' }, '');
-
-    // ---------- Service Worker (офлайн-кэш) ----------
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/static/hi/sw.js').catch(() => {});
-        });
-    }
-
-    // ---------- Старт ----------
+    document.getElementById('refresh-btn').addEventListener('click',()=>loadList());
+    document.getElementById('back-btn')?.addEventListener('click',()=>{if(location.hash.startsWith('#post-'))history.back();else showList();});
+    more.addEventListener('click',()=>loadList(true));
+    window.addEventListener('popstate',showList);
+    if(!apiTest && 'serviceWorker' in navigator)navigator.serviceWorker.register('/static/hi/sw.js').catch(()=>{});
     loadList();
 })();

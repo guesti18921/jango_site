@@ -1,45 +1,45 @@
-{% extends 'hi/base.html' %}
+{% extends 'hi/base.html' %}{% load i18n %}
 
-{% block title %}Админ-панель{% endblock %}
+{% block title %}{% translate "Админ-панель" %}{% endblock %}
 
 {% block content %}
 <div class="dashboard-header">
-    <h1>Админ-панель</h1>
-    <p>Вы вошли как <b>{{ user.username }}</b>.</p>
+    <h1>{% translate "Админ-панель" %}</h1>
+    <p>{% translate "Вы вошли как" %} <b>{{ user.username }}</b>.</p>
 </div>
 
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-value">{{ total_media }}</div>
-        <div class="stat-label">Медиафайлов</div>
+        <div class="stat-label">{% translate "Медиафайлов" %}</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">{{ total_users }}</div>
-        <div class="stat-label">Пользователей</div>
+        <div class="stat-label">{% translate "Пользователей" %}</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">{{ total_staff }}</div>
-        <div class="stat-label">Администраторов</div>
+        <div class="stat-label">{% translate "Администраторов" %}</div>
     </div>
 </div>
 
 <div class="dashboard-actions">
-    <a href="/django-admin/hi/mediacontent/add/" class="btn-primary">Добавить медиа</a>
-    <a href="/django-admin/hi/mediacontent/" class="btn-secondary">Все медиа</a>
-    <a href="/django-admin/auth/user/" class="btn-secondary">Все пользователи</a>
-    <a href="/django-admin/" class="btn-secondary">Django-админка</a>
+    <a href="/django-admin/hi/mediacontent/add/" class="btn-primary">{% translate "Добавить медиа" %}</a>
+    <a href="/django-admin/hi/mediacontent/" class="btn-secondary">{% translate "Все медиа" %}</a>
+    <a href="/django-admin/auth/user/" class="btn-secondary">{% translate "Все пользователи" %}</a>
+    <a href="/django-admin/" class="btn-secondary">{% translate "Django-админка" %}</a>
 </div>
 
 <section class="csv-banner">
-    <div><span class="eyebrow">РАБОТА С ДАННЫМИ</span><h2>Медиаколлекция в CSV</h2><p>Скачайте данные или загрузите изменения из таблицы.</p></div>
+    <div><span class="eyebrow">{% translate "РАБОТА С ДАННЫМИ" %}</span><h2>{% translate "Медиаколлекция в CSV" %}</h2><p>{% translate "Скачайте данные или загрузите изменения из таблицы." %}</p></div>
     <div class="csv-actions">
-        {% if perms.hi.view_mediacontent %}<a class="btn-secondary" href="{% url 'csv_export' %}">↓ Экспорт CSV</a>{% endif %}
-        {% if perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<a class="btn-primary" href="{% url 'csv_import' %}">↑ Импорт CSV</a>{% endif %}
+        {% if perms.hi.view_mediacontent %}<a class="btn-secondary" href="{% url 'csv_export' %}">{% translate "↓ Экспорт CSV" %}</a>{% endif %}
+        {% if perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<a class="btn-primary" href="{% url 'csv_import' %}">{% translate "↑ Импорт CSV" %}</a>{% endif %}
     </div>
 </section>
 <div class="dashboard-columns">
     <div class="dashboard-block">
-        <h3>Последние медиа</h3>
+        <h3>{% translate "Последние медиа" %}</h3>
         {% if recent_media %}
             <ul class="dash-list">
                 {% for m in recent_media %}
@@ -50,12 +50,12 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p class="muted">Пока пусто.</p>
+            <p class="muted">{% translate "Пока пусто." %}</p>
         {% endif %}
     </div>
 
     <div class="dashboard-block">
-        <h3>Новые пользователи</h3>
+        <h3>{% translate "Новые пользователи" %}</h3>
         {% if recent_users %}
             <ul class="dash-list">
                 {% for u in recent_users %}
@@ -66,7 +66,7 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p class="muted">Пока пусто.</p>
+            <p class="muted">{% translate "Пока пусто." %}</p>
         {% endif %}
     </div>
 </div>

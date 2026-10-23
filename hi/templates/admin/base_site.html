@@ -1,0 +1,4 @@
+{% extends 'admin/base_site.html' %}{% load static i18n %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'hi/admin.css' %}?v=1"><script src="{% static 'hi/site.js' %}?v=1" defer></script>{% endblock %}
+{% block branding %}{% include 'hi/icons.html' %}<a class="admin-brand" href="{% url 'dashboard' %}"><span>▦</span> МойСайт <small>{% translate 'Управление' %}</small></a>{% endblock %}
+{% block userlinks %}{% include 'hi/language_switch.html' %}{{ block.super }}{% endblock %}

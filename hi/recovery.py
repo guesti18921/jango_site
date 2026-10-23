@@ -1,3 +1,4 @@
+from django.utils.translation import gettext_lazy
 """Console-only recovery for the local server. Codes never enter HTTP responses."""
 import secrets
 import uuid
@@ -104,7 +105,7 @@ def confirm_code(token, data, form_class):
     valid_form = form.is_valid()
     valid_code = check_password(str(data.get('code', '')).strip(), state.code_hash)
     if not valid_code or not valid_user:
-        form.add_error('code', 'Код неверен или больше не действует.')
+        form.add_error('code', gettext_lazy('Код неверен или больше не действует.'))
     if valid_form and valid_code and valid_user:
         form.save()
         RecoveryState.objects.filter(pk=state.pk, token=state.token).update(consumed=True)
