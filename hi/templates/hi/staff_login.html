@@ -1,0 +1,26 @@
+{% extends 'hi/base.html' %}
+
+{% block title %}Вход для администраторов{% endblock %}
+
+{% block content %}
+<div class="auth-card auth-card-staff">
+    <div class="staff-badge">Закрытый доступ</div>
+    <h2>Вход для администраторов</h2>
+    <p class="auth-warning">
+        Эта страница только для персонала. Обычные пользователи —
+        <a href="{% url 'login' %}">войдите здесь</a>.
+    </p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-error">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" class="auth-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary btn-staff">Войти</button>
+    </form>
+</div>
+{% endblock %}

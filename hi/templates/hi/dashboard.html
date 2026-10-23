@@ -1,0 +1,66 @@
+{% extends 'hi/base.html' %}
+
+{% block title %}Админ-панель{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Админ-панель</h1>
+    <p>Вы вошли как <b>{{ user.username }}</b>.</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ total_media }}</div>
+        <div class="stat-label">Медиафайлов</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ total_users }}</div>
+        <div class="stat-label">Пользователей</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ total_staff }}</div>
+        <div class="stat-label">Администраторов</div>
+    </div>
+</div>
+
+<div class="dashboard-actions">
+    <a href="/django-admin/hi/mediacontent/add/" class="btn-primary">Добавить медиа</a>
+    <a href="/django-admin/hi/mediacontent/" class="btn-secondary">Все медиа</a>
+    <a href="/django-admin/auth/user/" class="btn-secondary">Все пользователи</a>
+    <a href="/django-admin/" class="btn-secondary">Django-админка</a>
+</div>
+
+<div class="dashboard-columns">
+    <div class="dashboard-block">
+        <h3>Последние медиа</h3>
+        {% if recent_media %}
+            <ul class="dash-list">
+                {% for m in recent_media %}
+                    <li>
+                        <strong>{{ m.title }}</strong>
+                        <span class="muted">{{ m.created_at|date:"d.m.Y H:i" }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="muted">Пока пусто.</p>
+        {% endif %}
+    </div>
+
+    <div class="dashboard-block">
+        <h3>Новые пользователи</h3>
+        {% if recent_users %}
+            <ul class="dash-list">
+                {% for u in recent_users %}
+                    <li>
+                        <strong>{{ u.username }}</strong>
+                        <span class="muted">{{ u.date_joined|date:"d.m.Y" }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="muted">Пока пусто.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

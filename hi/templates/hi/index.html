@@ -1,0 +1,42 @@
+{% extends 'hi/base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="welcome-card">
+    <h1>{{ user.username }}</h1>
+    {% if user.is_staff %}
+        <p class="hint">
+            Вы администратор. Управление сайтом — в
+            <a href="{% url 'dashboard' %}">админ-панели</a>.
+        </p>
+    {% else %}
+        <p class="hint">Вы вошли как обычный пользователь.</p>
+    {% endif %}
+</div>
+
+<h2 class="section-title">Медиаконтент</h2>
+
+{% if all_media %}
+    <div class="media-grid">
+        {% for item in all_media %}
+            <article class="media-card">
+                <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
+                <div class="media-body">
+                    <h3>{{ item.title }}</h3>
+                    <p class="media-date">{{ item.created_at|date:"d.m.Y H:i" }}</p>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <p>Пока нет ни одного медиафайла.</p>
+        {% if user.is_staff %}
+            <p>Добавьте первый через
+                <a href="/django-admin/hi/mediacontent/add/">админку</a>.
+            </p>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}

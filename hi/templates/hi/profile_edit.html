@@ -1,0 +1,28 @@
+{% extends 'hi/base.html' %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block content %}
+<div class="auth-card">
+    <h2>Редактирование профиля</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="auth-form">
+        {% csrf_token %}
+
+        <h3 class="form-section">Основное</h3>
+        {{ u_form.as_p }}
+
+        <h3 class="form-section">Профиль</h3>
+        {{ p_form.as_p }}
+
+        <button type="submit" class="btn-primary">Сохранить</button>
+        <a href="{% url 'profile' %}" class="btn-secondary" style="margin-top:10px;display:block;text-align:center;">Отмена</a>
+    </form>
+</div>
+{% endblock %}
