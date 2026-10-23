@@ -60,6 +60,14 @@ class ProfileForm(forms.ModelForm):
         }
 
 
+    def clean_avatar(self):
+        from django.core.files.uploadedfile import UploadedFile
+        value = self.cleaned_data.get('avatar')
+        if isinstance(value, UploadedFile) and value.size > 10 * 1024 ** 2:
+            raise forms.ValidationError(gettext_lazy('Аватар не должен превышать 10 МБ.'))
+        return value
+
+
 class UserForm(forms.ModelForm):
     """Редактирование базовых полей юзера"""
     class Meta:
@@ -98,7 +106,8 @@ class MediaContentAdminForm(forms.ModelForm):
 
     def clean_poster(self):
         value = self.cleaned_data.get('poster')
-        if value and getattr(value, 'size', 0) > 10 * 1024 ** 2:
+        from django.core.files.uploadedfile import UploadedFile
+        if isinstance(value, UploadedFile) and value.size > 10 * 1024 ** 2:
             raise forms.ValidationError(gettext_lazy('Постер не должен превышать 10 МБ.'))
         return value
 
@@ -120,3 +129,8 @@ class UploadPublishForm(forms.Form):
         if value and value.size > 10 * 1024 ** 2:
             raise forms.ValidationError(gettext_lazy('Постер не должен превышать 10 МБ.'))
         return value
+
+
+class ProfileAdminForm(ProfileForm):
+    class Meta(ProfileForm.Meta):
+        fields = '__all__'

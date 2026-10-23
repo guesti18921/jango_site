@@ -5,7 +5,7 @@
 {% block content %}
 <div class="profile-card">
     {% if profile.avatar %}
-        <img src="{{ profile.avatar.url }}" alt="{% translate "Аватар" %}" class="profile-avatar-img">
+        <img src="{{ profile.avatar.url }}" alt="{% translate "Аватар" %}" class="profile-avatar-img" data-avatar-fallback="{{ user.username|first|upper }}">
     {% else %}
         <div class="profile-avatar">{{ user.username|first|upper }}</div>
     {% endif %}
@@ -34,7 +34,7 @@
 
     <div class="profile-actions">
         <a href="{% url 'profile_edit' %}" class="btn-primary">{% translate "Редактировать" %}</a>
-        <a href="{% url 'logout' %}" class="btn-danger">{% translate "Выйти" %}</a>
+        <form method="post" action="{% url 'logout' %}" class="logout-form">{% csrf_token %}<button type="submit" class="btn-danger">{% translate "Выйти" %}</button></form>
     </div>
 </div>
 {% endblock %}

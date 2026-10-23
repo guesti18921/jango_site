@@ -5,7 +5,7 @@
 <h2 id="auth-heading">{% translate "Рады вас видеть" %}</h2>
 <p class="auth-description">{% translate "Войдите, чтобы открыть свою коллекцию." %}</p>
 <form method="post" class="auth-form">
-    {% csrf_token %}
+    {% csrf_token %}<input type="hidden" name="next" value="{{ next_url }}">
     {{ form.as_p }}
     <div class="form-link-row"><a href="{% url 'recovery_request' %}">{% translate "Восстановить доступ" %} <span aria-hidden="true">↗</span></a></div>
     <button type="submit" class="btn-primary">{% translate "Войти в аккаунт" %} <span aria-hidden="true">→</span></button>

@@ -50,5 +50,10 @@ urlpatterns = [
     path('app/', views.app_view, name='app'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Media must go through the same visibility policy as posts, including in DEBUG.
+urlpatterns += [path('media/<path:path>', media_stream.registered_media, name='registered_media')]
+
+handler400 = 'hi.error_views.bad_request'
+handler403 = 'hi.error_views.permission_denied'
+handler404 = 'hi.error_views.not_found'
+handler500 = 'hi.error_views.server_error'

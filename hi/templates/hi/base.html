@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="{{ language_code|slice:':2' }}">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#171917">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#111412">
     <title>{% block title %}МойСайт{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'hi/style.css' %}?v=13">
+    <link rel="stylesheet" href="{% static 'hi/style.css' %}?v=20">
     {% block extra_styles %}{% endblock %}
-    <script src="{% static 'hi/site.js' %}?v=1" defer></script>
+    <script src="{% static 'hi/site.js' %}?v=20" defer></script>
 </head>
 <body class="{% if user.is_authenticated %}signed-in{% else %}guest{% endif %}">
 {% include 'hi/icons.html' %}
@@ -20,8 +20,8 @@
         <a href="{% url 'app' %}" class="side-link"><svg class="icon" aria-hidden="true"><use href="#i-app"/></svg><span>{% translate 'Приложение' %}</span></a>
         {% if user.is_staff %}<a href="{% url 'dashboard' %}" class="side-link {% if name == 'dashboard' or name == 'csv_import' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg><span>{% translate 'Управление' %}</span></a>{% endif %}
     </nav>{% endwith %}
-    <div class="sidebar-note">{% translate 'Личное пространство' %}<span>{% translate 'Для ваших моментов и идей.' %}</span></div>
-    <div class="sidebar-account"><a href="{% url 'profile' %}" class="account-identity">{% if user.profile.avatar %}<img class="avatar-letter" src="{{ user.profile.avatar.url }}" alt="">{% else %}<span class="avatar-letter">{{ user.username|first|upper }}</span>{% endif %}<span>{{ user.first_name|default:user.username }}</span></a><a href="{% url 'logout' %}" class="quiet-link"><svg class="icon" aria-hidden="true"><use href="#i-exit"/></svg>{% translate 'Выйти' %}</a></div>
+    <div class="sidebar-note">{% translate 'Личное пространство' %}<span>{% translate 'Для красивых моментов.' %}</span></div>
+    <div class="sidebar-account"><a href="{% url 'profile' %}" class="account-identity">{% include 'hi/avatar.html' with account=user avatar_class='avatar-letter' %}<span>{{ user.first_name|default:user.username }}</span></a><form method="post" action="{% url 'logout' %}" class="logout-form">{% csrf_token %}<button type="submit" class="quiet-link"><svg class="icon" aria-hidden="true"><use href="#i-exit"/></svg>{% translate 'Выйти' %}</button></form></div>
 </aside>{% endblock %}
 {% endif %}
 <div class="site-shell">
@@ -29,7 +29,7 @@
     <a href="{% url 'home' %}" class="logo mobile-brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>МойСайт</a>
     {% block topbar_context %}<span class="desktop-context">{% translate 'Личное пространство' %}</span>{% endblock %}
     <div class="topbar-actions">{% include 'hi/language_switch.html' %}
-        {% if user.is_authenticated %}<details class="account-menu"><summary aria-label="{% translate 'Меню аккаунта' %}">{% if user.profile.avatar %}<img class="avatar-letter" src="{{ user.profile.avatar.url }}" alt="">{% else %}<span class="avatar-letter">{{ user.username|first|upper }}</span>{% endif %}</summary><div class="account-popover"><strong>{{ user.username }}</strong><a href="{% url 'profile' %}">{% translate 'Мой профиль' %}</a><a href="{% url 'logout' %}">{% translate 'Выйти' %}</a></div></details>{% else %}<a class="quiet-link guest-login" href="{% url 'login' %}">{% translate 'Войти' %}</a>{% endif %}
+        {% if user.is_authenticated %}<details class="account-menu"><summary aria-label="{% translate 'Меню аккаунта' %}">{% include 'hi/avatar.html' with account=user avatar_class='avatar-letter' %}</summary><div class="account-popover"><strong>{{ user.username }}</strong><a href="{% url 'profile' %}">{% translate 'Мой профиль' %}</a><form method="post" action="{% url 'logout' %}" class="logout-form">{% csrf_token %}<button type="submit">{% translate 'Выйти' %}</button></form></div></details>{% else %}<a class="quiet-link guest-login" href="{% url 'login' %}">{% translate 'Войти' %}</a>{% endif %}
     </div>
 </header>
 <main class="container" id="main-content">

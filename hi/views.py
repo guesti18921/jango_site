@@ -1,33 +1,29 @@
 from django.utils.translation import gettext_lazy
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import MediaContent, Profile
-from django.db.models import Avg, Count
+from django.core.paginator import Paginator
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.http import require_POST
+from .media_queries import visible_media, with_engagement
 from .forms import (
     UserRegisterForm, UserLoginForm, StaffLoginForm,
     ProfileForm, UserForm,
 )
 
 
-def _is_staff(user):
-    return user.is_authenticated and user.is_staff
-
 
 # ============ ОБЫЧНЫЕ ПОЛЬЗОВАТЕЛИ ============
 
 @login_required(login_url='login')
 def index(request):
-    all_media = MediaContent.objects.all()
-    if not request.user.is_staff:
-        all_media = all_media.filter(is_published=True)
-    all_media = all_media.select_related('author__profile').annotate(
-        average_rating=Avg('ratings__value'), rating_count=Count('ratings', distinct=True),
-        comment_count=Count('comments', distinct=True),
-    ).order_by('-created_at', '-pk')
-    return render(request, 'hi/index.html', {'all_media': all_media})
+    media = with_engagement(visible_media(request.user).select_related('author__profile')).order_by('-created_at', '-pk')
+    page = Paginator(media, 18).get_page(request.GET.get('page'))
+    return render(request, 'hi/index.html', {'all_media': page.object_list, 'media_page': page})
+
 
 
 def register_view(request):
@@ -57,11 +53,14 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('home')
+            target = request.POST.get('next') or request.GET.get('next', '')
+            if not url_has_allowed_host_and_scheme(target, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
+                target = '/'
+            return redirect(target or 'home')
     else:
         form = UserLoginForm()
 
-    return render(request, 'hi/login.html', {'form': form})
+    return render(request, 'hi/login.html', {'form': form, 'next_url': request.POST.get('next', request.GET.get('next', ''))})
 
 
 def staff_login_view(request):
@@ -117,6 +116,7 @@ def profile_edit(request):
     })
 
 
+@require_POST
 def logout_view(request):
     logout(request)
     return redirect('login')

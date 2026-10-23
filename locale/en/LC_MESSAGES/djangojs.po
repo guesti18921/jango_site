@@ -251,3 +251,66 @@ msgstr "The file is still being saved. Try again."
 
 msgid "Не удалось завершить загрузку. Проверьте диск сервера."
 msgstr "Could not finish the upload. Check the server disk."
+
+msgid "Аватар не должен превышать 10 МБ."
+msgstr "Your avatar must not exceed 10 MB."
+
+msgid "База данных занята. Повторите запрос: сохранённые части не потеряны."
+msgstr "The database is busy. Retry: your saved chunks have been preserved."
+
+msgid "Войдите в нужный аккаунт или вернитесь в коллекцию."
+msgstr "Sign in with the right account or return to the collection."
+
+msgid "Далее"
+msgstr "Next"
+
+msgid "Для красивых моментов."
+msgstr "For moments worth keeping."
+
+msgid "Здесь пока ничего нет"
+msgstr "Nothing here just yet"
+
+msgid "Изображение недоступно."
+msgstr "Image unavailable."
+
+msgid "К коллекции"
+msgstr "Back to the collection"
+
+msgid "Коллекция"
+msgstr "Collection"
+
+msgid "Не удалось воспроизвести файл. Его можно скачать."
+msgstr "Unable to play this file. You can download it instead."
+
+msgid "Не удалось загрузить страницу"
+msgstr "Unable to load the page"
+
+msgid "Не удалось открыть страницу"
+msgstr "Unable to open the page"
+
+msgid "Нет доступа"
+msgstr "Access unavailable"
+
+msgid "Попробуйте обновить страницу чуть позже."
+msgstr "Try refreshing the page a little later."
+
+msgid "Проверьте адрес и повторите запрос."
+msgstr "Check the address and try again."
+
+msgid ""
+"Страница или файл недоступны. Возможно, публикацию переместили или скрыли."
+msgstr ""
+"This page or file is unavailable. The publication may have been moved or "
+"hidden."
+
+msgid "То, на что хочется смотреть дольше."
+msgstr "A little more time, a little closer look."
+
+msgid "ФОТО / ВИДЕО / МУЗЫКА"
+msgstr "PHOTOGRAPHY / VIDEO / MUSIC"
+
+msgid "Фото, видео и впечатления, которыми хочется поделиться."
+msgstr "Photos, videos and impressions worth sharing."
+
+msgid "Скачать файл"
+msgstr "Download file"

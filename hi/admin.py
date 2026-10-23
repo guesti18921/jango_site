@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy
 from django.contrib import admin
-from .forms import MediaContentAdminForm
+from .forms import MediaContentAdminForm, ProfileAdminForm
+from .media_queries import visible_media
 from .models import (
     Developer, Skill, Experience, Project, Education,
     Company, Stat, CompanyValue, TeamMember, HistoryItem,
@@ -137,11 +138,23 @@ class HistoryItemAdmin(admin.ModelAdmin):
 # ============================================
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
+    form = ProfileAdminForm
     list_display = ('user', 'city', 'birth_date')
     search_fields = ('user__username', 'city')
 
+class VisiblePostAdminMixin:
+    """Foreign-key selectors must enforce the same draft policy as list pages."""
+    def get_queryset(self, request):
+        return super().get_queryset(request).filter(post__in=visible_media(request.user))
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'post':
+            kwargs['queryset'] = visible_media(request.user)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 @admin.register(Comment)
-class CommentAdmin(admin.ModelAdmin):
+class CommentAdmin(VisiblePostAdminMixin, admin.ModelAdmin):
     list_display = ('user', 'post', 'text', 'created_at')
     list_filter = ('created_at',)
     search_fields = ('text', 'user__username', 'post__title')
@@ -150,7 +163,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 @admin.register(Rating)
-class RatingAdmin(admin.ModelAdmin):
+class RatingAdmin(VisiblePostAdminMixin, admin.ModelAdmin):
     list_display = ('user', 'post', 'value', 'updated_at')
     list_filter = ('value',)
     search_fields = ('user__username', 'post__title')

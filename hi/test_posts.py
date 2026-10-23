@@ -67,7 +67,7 @@ class PostInteractionTests(TestCase):
         Rating.objects.create(post=self.post, user=self.bob, value=5)
         for n in range(3):
             Comment.objects.create(post=self.post, user=self.bob, text=str(n))
-        card = self.client.get(reverse('home')).context['all_media'].get(pk=self.post.pk)
+        card = next(post for post in self.client.get(reverse('home')).context['all_media'] if post.pk == self.post.pk)
         self.assertEqual(card.average_rating, 3.5)
         self.assertEqual(card.rating_count, 2)
         self.assertEqual(card.comment_count, 3)

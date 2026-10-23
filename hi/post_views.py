@@ -10,11 +10,11 @@ from django.views.decorators.http import require_GET, require_POST
 
 from .forms import CommentForm, RatingForm
 from .models import Comment, MediaContent, Rating
+from .media_queries import visible_media
 
 
 def visible_posts(user):
-    query = MediaContent.objects.select_related('author')
-    return query if user.is_staff else query.filter(is_published=True)
+    return visible_media(user).select_related('author__profile')
 
 
 def render_post(request, post, comment_form=None, rating_form=None, status=200):

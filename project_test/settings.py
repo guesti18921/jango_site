@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'hi.upload_limits.UploadBodyLimitMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -85,6 +86,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'OPTIONS': {'timeout': 20},
     }
 }
 
@@ -168,3 +170,5 @@ MEDIA_CHUNK_BYTES = 8 * 1024 ** 2
 MEDIA_UPLOAD_RESERVE_BYTES = 256 * 1024 ** 2
 MEDIA_UPLOAD_ROOT = BASE_DIR / '.media-uploads'
 MEDIA_UPLOAD_TTL_DAYS = 7
+
+CSRF_FAILURE_VIEW = 'hi.error_views.csrf_failure'

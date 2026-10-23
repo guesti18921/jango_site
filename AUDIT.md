@@ -1,0 +1,43 @@
+# Interface and reliability audit — 2026-10-23
+
+Scope: improve the existing local photo/video/music gallery, its administration tools, uploads, translations, and permissions. No new product features were added. Existing comments, ratings, CSV, console recovery, profile editing, the API viewer, local-network startup, and large-media uploads remain supported.
+
+## Findings and corrections
+
+| Area | Finding | Correction and evidence |
+| --- | --- | --- |
+| Upload reliability | A remembered client manifest could become stale after cancellation, expiry, or a lost response. A completed finalization still validated retried metadata. Timestamp-based filesystem locks could remain stale after a crash. | The client refreshes the acknowledged state before resuming, restarts expired/cancelled sessions, and handles transient DB failures as retryable. Completed finalization is idempotent before metadata validation. OS locks release on process exit. Tests inject a finalization DB failure, verify exact preserved bytes, and kill a lock-owning process. Oversized form requests are rejected before body parsing. Managed upload files are released after committed deletion/replacement only when no post still references them; rollback and external-file preservation are tested. Upload ownership history survives account deletion so later file cleanup remains reliable. |
+| Performance | The feed rendered the complete collection. Joined ratings and comments multiplied database rows. Feed players requested metadata without user interaction. Hidden app players could continue playing/buffering. | The feed is bounded to 18 items per page. Indexed independent subqueries compute summaries. Feed players use `preload=none`; app navigation pauses/releases hidden players. Added indexes cover feed ordering, comments per post, upload expiry, and file/poster reference lookup. Tests verify stable query counts and correct means/counts with many comments. A local home request used 5 SQL queries. |
+| Usability | Upload validation errors did not identify fields. Missing media produced broken elements. Login did not return to the requested post. GET could log a user out. | Upload errors are associated with fields and focus the first invalid control. Images/players have readable fallback states. Login accepts a safe same-host return URL. Logout is a CSRF-protected POST. Oversized avatars produce a normal form error. |
+| Mobile layout | Compact controls, wide tables, fixed navigation during text entry, and narrow video detail views reduced usability. | Gallery captions and actions have larger touch targets. Tables scroll inside their own blocks. Focused inputs hide the bottom navigation on small screens. Video details use the full content width; image details retain an image-first layout. |
+| Design and language | The visual emphasis was on green panels and utility controls rather than media. There were missing translations and inconsistent player styles. | Neutral charcoal surfaces, restrained lime accents, edge-to-edge media, quieter captions, consistent error/focus states, async image decoding, and readable formatting of client assets. RU/EN strings and compiled catalogs were updated. Reduced-motion settings are respected. |
+| Permissions and code | Raw `/media/` URLs bypassed post visibility checks. Staff status alone granted draft viewing. Repeated engagement/visibility logic risked inconsistent behavior. | Registered media URLs, streaming routes, moderation lists, and native foreign-key selectors now use the same visibility policy. Upload manifests are explicitly non-cacheable. Stale saved upload IDs recover even when the server returns an HTML 404 instead of JSON. Draft viewing requires active staff plus view/change permission. A shared query module centralizes that policy and engagement summaries. Absolute server paths remain absent from API/CSV. Tests cover anonymous readers, ordinary users, staff without model permissions, and authorized administrators. |
+
+## Validation
+
+Final validation:
+
+- 116 automated tests pass; Django system checks and migration consistency checks pass.
+- Static assets collect successfully; changed JavaScript files pass syntax checks.
+- 120 browser route/language/viewport combinations pass: 15 authenticated routes × RU/EN × widths 320, 390, 768, and 1440. No horizontal document overflow was found.
+- Browser flows pass for CSV export → preview → import, bulk publish/draft, comments and escaped user text, ratings, deletion confirmation, avatar upload, protected logout, console password recovery, app back/forward, and release of hidden players.
+- Real upload browser test: 8 MiB acknowledged → pause → server process restart → browser reload → same file selected → resume → playable final media. A failed final metadata response is retried without retransferring acknowledged bytes. An additional browser probe verifies recovery from a stale saved ID and an actual HTML 404.
+- A fresh ordinary-user context cannot fetch the draft page, its original `/media/` path, or its streaming URL. Custom 403/404/500 pages render correctly with DEBUG disabled. JavaScript exception collection is empty.
+- A local authenticated home request uses 5 SQL queries. Separate regression tests verify that increasing card count does not introduce per-card SQL queries and that many comments do not inflate rating averages/counts.
+ Regression tests include the original flows plus direct draft-file access, shared image references, avatar serving, safe login redirects, CSRF logout, bounded feed/query counts, deferred media loading, readable error pages, failure recovery, and process-crash lock release.
+
+Browser checks use an isolated copy of the database and media. QA accounts, fixture movies, passwords, generated fixture images, browser binaries, and screenshots are not committed to the repository.
+
+## Operating boundaries
+
+- The target remains a local/household HTTP deployment using Django's development server. `check --deploy` reports five expected production configuration warnings: DEBUG, HTTPS redirect/HSTS, and secure session/CSRF cookies. Enabling secure cookies without HTTPS would break the authorized local workflow. These warnings are not suppressed, and this audit does not certify public production hosting.
+- A reverse proxy must not directly expose the original `media/uploads` or `media/posters` directories: requests must reach the registered media views to enforce draft visibility. Publicly published media remains accessible through the existing public read-only API behavior.
+- Upload logic is tested at the 30 GiB manifest boundary and at byte offsets above 32 bits using sparse files. Browser transfer tests use a small real multi-part file, rather than a 30 GiB movie.
+- Linux process-crash locking is exercised here. The Windows branch uses the standard `msvcrt` byte-range lock and needs an actual Windows machine for platform-specific verification. Cross-device Wi-Fi behavior also requires the user's own network.
+- Playback depends on the browser and file codec. The site does not transcode movies. Unsupported files retain a download link.
+- Files already downloaded by a client cannot be revoked. Visibility checks prevent new unauthorized requests; they cannot erase copies previously received while a post was public.
+- No existing user media was pruned or rewritten during the audit. Managed, no-longer-referenced uploaded files are now removed after committed post deletion/replacement; external originals and loose legacy files remain untouched. The existing expired-upload cleanup policy remains in place.
+
+## Updating the local project
+
+Stop the server, run `git pull origin main` and `python manage.py migrate`, then restart the server and refresh with Ctrl+F5. No new runtime dependency is required.

@@ -80,6 +80,11 @@ class MediaContent(models.Model):
         verbose_name = gettext_lazy("Медиа контент")
         verbose_name_plural = gettext_lazy("Медиа контент")
         ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['is_published', '-created_at', '-id'], name='media_feed_order_idx'),
+            models.Index(fields=['image'], name='media_file_path_idx'),
+            models.Index(fields=['poster'], name='media_poster_path_idx'),
+        ]
 
 
 class Comment(models.Model):
@@ -92,6 +97,7 @@ class Comment(models.Model):
         ordering = ['-created_at', '-pk']
         verbose_name = gettext_lazy('Комментарий')
         verbose_name_plural = gettext_lazy('Комментарии')
+        indexes = [models.Index(fields=['post', '-created_at', '-id'], name='comment_post_order_idx')]
 
     def __str__(self):
         return f'{self.user}: {self.text[:60]}'
@@ -273,7 +279,7 @@ def save_user_profile(sender, instance, **kwargs):
 class MediaUpload(models.Model):
     """Private, resumable upload manifest. Bytes are staged outside MEDIA_ROOT."""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=200)
     fingerprint = models.CharField(max_length=64)
     size = models.PositiveBigIntegerField()
@@ -284,4 +290,7 @@ class MediaUpload(models.Model):
     expires_at = models.DateTimeField()
 
     class Meta:
-        indexes = [models.Index(fields=['user', 'fingerprint', 'state'], name='media_upload_resume_idx')]
+        indexes = [
+            models.Index(fields=['user', 'fingerprint', 'state'], name='media_upload_resume_idx'),
+            models.Index(fields=['state', 'expires_at'], name='media_upload_expiry_idx'),
+        ]

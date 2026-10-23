@@ -8,13 +8,13 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.http import HttpResponseBadRequest
 from django.db import transaction
-from django.db.models import Avg, Count, Q
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_http_methods
-from .models import Comment, MediaContent, Rating
+from .models import Comment, MediaContent
+from .media_queries import with_engagement, visible_media
 
 
 def can_view(user, model):
@@ -71,15 +71,13 @@ def dashboard(request):
     q = request.GET.get('q', '').strip()[:200]
     status = request.GET.get('status', '')
     layout = 'grid' if request.GET.get('layout') == 'grid' else 'list'
-    posts = MediaContent.objects.select_related('author__profile').annotate(
-        average_rating=Avg('ratings__value'), comment_count=Count('comments', distinct=True),
-    ).order_by('-created_at', '-pk')
+    posts = with_engagement(MediaContent.objects.select_related('author__profile')).order_by('-created_at', '-pk')
     if q:
         posts = posts.filter(Q(title__icontains=q) | Q(description__icontains=q) | Q(author__username__icontains=q))
     counts = MediaContent.objects.aggregate(total=Count('pk'), published=Count('pk', filter=Q(is_published=True)), drafts=Count('pk', filter=Q(is_published=False))) if view_posts else {}
     if status in ('published', 'draft'):
         posts = posts.filter(is_published=status == 'published')
-    comments = Comment.objects.select_related('user__profile', 'post').order_by('-created_at', '-pk')
+    comments = Comment.objects.filter(post__in=visible_media(user)).select_related('user__profile', 'post').order_by('-created_at', '-pk')
     users = User.objects.select_related('profile').order_by('-date_joined', '-pk')
     if q and section == 'comments':
         comments = comments.filter(Q(text__icontains=q) | Q(user__username__icontains=q) | Q(post__title__icontains=q))
@@ -94,12 +92,10 @@ def dashboard(request):
     titles = {'overview': _('Обзор'), 'posts': _('Публикации'), 'comments': _('Комментарии'), 'users': _('Пользователи')}
     return render(request, 'hi/dashboard.html', {
         'total_media': counts.get('total', 0), 'published_media': counts.get('published', 0),
-        'total_staff': User.objects.filter(is_staff=True).count() if view_users else None,
-        'average_rating': Rating.objects.aggregate(value=Avg('value'))['value'] if view_posts else None,
-        'media_page': page, 'query': q, 'recent_users': users[:4] if view_users else [],
+        'media_page': page, 'query': q,
         'management': True, 'section': section, 'section_title': titles[section],
         'view_posts': view_posts, 'view_comments': view_comments, 'view_users': view_users,
-        'counts': counts, 'total_comments': Comment.objects.count() if view_comments else None,
+        'counts': counts, 'total_comments': comments.count() if view_comments else None,
         'total_users': User.objects.count() if view_users else None,
         'recent_comments': comments[:3] if view_comments else [], 'page': page,
         'q': q, 'status': status, 'layout': layout, 'page_query': params.urlencode(),

@@ -1,5 +1,5 @@
 {% extends 'admin/base_site.html' %}{% load static i18n %}
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'hi/management.css' %}?v=1"><link rel="stylesheet" href="{% static 'hi/admin.css' %}?v=2"><script src="{% static 'hi/site.js' %}?v=1" defer></script>{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'hi/management.css' %}?v=20"><link rel="stylesheet" href="{% static 'hi/admin.css' %}?v=20"><script src="{% static 'hi/site.js' %}?v=20" defer></script>{% endblock %}
 {% block nav-sidebar %}{% if user.is_staff %}<aside class="native-management-nav">{% include 'hi/management_nav.html' %}</aside>{% endif %}{% endblock %}
 {% block branding %}{% include 'hi/icons.html' %}<a class="admin-brand" href="{% url 'dashboard' %}"><span>▦</span> МойСайт <small>{% translate 'Управление' %}</small></a>{% endblock %}
 {% block userlinks %}{% include 'hi/language_switch.html' %}{{ block.super }}{% endblock %}

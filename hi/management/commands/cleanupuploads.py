@@ -1,8 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from hi.large_uploads import partial_path, upload_lock, UploadBusy
+from hi.large_uploads import partial_path, upload_lock, UploadBusy, final_path
 from hi.models import MediaUpload
-from hi.upload_views import final_path
 
 
 class Command(BaseCommand):

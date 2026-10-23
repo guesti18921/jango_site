@@ -13,7 +13,7 @@
     <div class="csv-table-wrap" tabindex="0" role="region" aria-label="{% translate "Предпросмотр CSV" %}">
         <table class="csv-table"><caption>{% translate "Первые 20 записей. При подтверждении импортируется весь файл." %}</caption>
             <thead><tr><th scope="col">{% translate "Действие" %}</th><th scope="col">{% translate "Название" %}</th><th scope="col">{% translate "Медиафайл" %}</th><th scope="col">{% translate "Автор" %}</th><th scope="col">{% translate "Публикация" %}</th></tr></thead>
-            <tbody>{% for item in preview.rows %}<tr><td>{% if item.pk %}{% translate "Обновить #" %}{{ item.pk }}{% else %}{% translate "Добавить" %}{% endif %}</td><td>{{ item.title }}</td><td>{{ item.image.name }}</td><td>{{ item.author.username|default:'—' }}</td><td>{{ item.is_published|yesno:_("Да,Нет") }}</td></tr>{% endfor %}</tbody>
+            <tbody>{% for item in preview.rows %}<tr><td>{% if item.pk %}{% translate "Обновить #" %}{{ item.pk }}{% else %}{% translate "Добавить" %}{% endif %}</td><td>{{ item.title }}</td><td>{{ item.media_name }}</td><td>{{ item.author.username|default:'—' }}</td><td>{{ item.is_published|yesno:_("Да,Нет") }}</td></tr>{% endfor %}</tbody>
         </table>
     </div>
     <form method="post" class="csv-actions">

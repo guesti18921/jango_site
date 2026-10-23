@@ -1,7 +1,6 @@
 """Bounded, retryable local-disk upload protocol with crash recovery."""
 import os
 import shutil
-import time
 from contextlib import contextmanager
 from pathlib import Path
 from django.conf import settings
@@ -24,22 +23,46 @@ def partial_path(upload):
     return root() / (str(upload.pk) + '.part')
 
 
+def final_path(upload):
+    from .media_files import extension
+    return Path(settings.MEDIA_ROOT) / f'uploads/{upload.pk}.{extension(upload.name)}'
+
+
 @contextmanager
 def upload_lock(key):
-    """O_EXCL works on Windows and Unix and across multiple server processes."""
+    """OS locks release on process exit; no stale-timeout or unlink races."""
+    import errno
     path = root() / (str(key) + '.lock')
+    file = path.open('a+b')
     try:
-        # Requests hold the lock briefly. An abandoned lock expires after a crash.
-        if path.exists() and time.time() - path.stat().st_mtime > 300:
-            path.unlink(missing_ok=True)
-        descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-    except FileExistsError as exc:
-        raise UploadBusy from exc
-    try:
-        os.close(descriptor)
-        yield
+        if os.name == 'nt':
+            import msvcrt
+            if os.fstat(file.fileno()).st_size == 0:
+                file.write(b'0')
+                file.flush()
+            file.seek(0)
+            try:
+                msvcrt.locking(file.fileno(), msvcrt.LK_NBLCK, 1)
+            except OSError as exc:
+                if exc.errno in (errno.EACCES, errno.EAGAIN, errno.EDEADLK):
+                    raise UploadBusy from exc
+                raise
+        else:
+            import fcntl
+            try:
+                fcntl.flock(file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+            except BlockingIOError as exc:
+                raise UploadBusy from exc
+        try:
+            yield
+        finally:
+            if os.name == 'nt':
+                file.seek(0)
+                msvcrt.locking(file.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                fcntl.flock(file.fileno(), fcntl.LOCK_UN)
     finally:
-        path.unlink(missing_ok=True)
+        file.close()
 
 
 def available_bytes():
@@ -63,14 +86,13 @@ def has_capacity(size):
 
 
 def discard_expired(limit=20):
-    from .media_files import extension
     for item in MediaUpload.objects.filter(state='uploading', expires_at__lte=timezone.now())[:limit]:
         try:
             with upload_lock(item.pk):
                 item.refresh_from_db()
                 if item.state != 'uploading' or item.expires_at > timezone.now(): continue
                 partial_path(item).unlink(missing_ok=True)
-                (Path(settings.MEDIA_ROOT) / f'uploads/{item.pk}.{extension(item.name)}').unlink(missing_ok=True)
+                final_path(item).unlink(missing_ok=True)
                 item.state = 'cancelled'; item.save(update_fields=['state'])
         except UploadBusy:
             continue

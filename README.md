@@ -283,3 +283,10 @@ python manage.py addfilm "D:\Films\movie.mp4" --author YOUR_ADMIN_LOGIN --title 
 Movies use `/files/<post id>/` with HTTP byte ranges (206), suffix ranges, HEAD, and 416 for invalid ranges. This allows seeking without reading the whole movie into memory. Draft files are available only to signed-in staff; published media retains the existing public API behavior. Video playback still depends on the browser/codec: MP4/H.264/AAC is recommended, and unsupported formats can be downloaded. There is no automatic transcoding.
 
 Settings: `MAX_MEDIA_UPLOAD_BYTES` (30 GiB), `MEDIA_CHUNK_BYTES` (8 MiB), `MEDIA_UPLOAD_RESERVE_BYTES` (256 MiB), `MEDIA_UPLOAD_ROOT`, and `MEDIA_UPLOAD_TTL_DAYS` (7). Reverse proxies must allow at least the chunk size plus small metadata/poster requests. This local prototype uses Django's development server; production hosting needs a properly configured web server. Tests exercise the 30 GiB declaration and >32-bit seeking using sparse files, rather than transferring an actual 30 GiB movie.
+
+
+### Gallery audit and maintenance improvements
+
+See [AUDIT.md](AUDIT.md) for findings, fixes, validation, and operating boundaries. The gallery is now bounded to 18 publications per page, defers feed media traffic until playback, uses indexed engagement summaries, and consistently protects drafts in both media routes and native moderation tools. Logout uses a CSRF-protected POST. Oversized form bodies are rejected before parsing; movies still use bounded chunk uploads. Managed resumable-upload files are freed after committed deletion/replacement only when no post references them; connected external originals are never deleted. Existing loose files remain available for later CSV attachment and are not automatically pruned.
+
+When hosting behind a proxy, route `/media/` requests through Django's permission-checking handler rather than serving upload/poster directories publicly. Local HTTP operation is retained; production HTTPS configuration is outside this local audit. Run migrations and refresh with Ctrl+F5 after updating.

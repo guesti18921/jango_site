@@ -2,14 +2,14 @@
 {% block title %}{{ post.title }} {% translate "— МойСайт" %}{% endblock %}
 {% block content %}
 <a href="{% url 'home' %}" class="post-back">{% translate "← К медиаколлекции" %}</a>
-<article class="post-detail">
+<article class="post-detail post-detail--{{ post.media_kind }}">
     <div class="post-picture">{% include 'hi/media_player.html' with media=post %}</div>
     <div class="post-copy">
-        <span class="eyebrow">{% if post.is_published %}{% translate "ИЗ КОЛЛЕКЦИИ" %}{% else %}{% translate "ЧЕРНОВИК · ВИДЕН ПЕРСОНАЛУ" %}{% endif %}</span>
+        <div class="post-heading"><span class="eyebrow">{% if post.is_published %}{% translate "ИЗ КОЛЛЕКЦИИ" %}{% else %}{% translate "ЧЕРНОВИК · ВИДЕН ПЕРСОНАЛУ" %}{% endif %}</span>
         <h1>{{ post.title }}</h1>
         <p class="media-date">{{ post.author.username|default:'МойСайт' }} · {{ post.created_at|date:'d.m.Y H:i' }}</p>
         {% if post.description %}<div class="post-description">{{ post.description|linebreaksbr }}</div>{% endif %}
-        <section id="rating" class="rating-section" aria-labelledby="rating-heading">
+        </div><section id="rating" class="rating-section" aria-labelledby="rating-heading">
             <h2 id="rating-heading">{% translate "Как вам этот пост?" %}</h2>
             <p class="rating-summary"><span aria-hidden="true">★</span> {% if summary.total %}<strong>{{ summary.average|floatformat:1 }} {% translate "из 5" %}</strong> {% translate "· Оценок:" %} {{ summary.total }}{% else %}{% translate "Пока нет оценок. Будьте первым." %}{% endif %}</p>
             <form method="post" action="{% url 'rate_post' post.pk %}" class="rating-form">
@@ -38,7 +38,7 @@
                 <article class="comment-card">
                     <div class="comment-heading">{% include 'hi/avatar.html' with account=comment.user avatar_class='comment-avatar' %}<div><h3>{{ comment.user.username }}</h3><time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:'d.m.Y H:i' }}</time></div></div>
                     <p class="comment-text">{{ comment.text|linebreaksbr }}</p>
-                    {% if comment.user_id == user.pk or can_moderate %}<form method="post" action="{% url 'delete_comment' comment.pk %}" class="comment-delete">{% csrf_token %}<button type="submit">{% translate "Удалить комментарий" %}</button></form>{% endif %}
+                    {% if comment.user_id == user.pk or can_moderate %}<form method="post" action="{% url 'delete_comment' comment.pk %}" class="comment-delete" data-confirm-delete="{% translate 'Удалить этот комментарий?' %}">{% csrf_token %}<button type="submit">{% translate "Удалить комментарий" %}</button></form>{% endif %}
                 </article>
             {% empty %}<div class="empty-state"><h3>{% translate "Начните разговор" %}</h3><p>{% translate "Здесь появятся комментарии к этому посту." %}</p></div>{% endfor %}
             {% if comments.has_other_pages %}<nav class="pagination" aria-label="{% translate "Страницы комментариев" %}">{% if comments.has_previous %}<a class="btn-secondary" href="?page={{ comments.previous_page_number }}#comments">{% translate "← Новее" %}</a>{% endif %}<span>{{ comments.number }} / {{ comments.paginator.num_pages }}</span>{% if comments.has_next %}<a class="btn-secondary" href="?page={{ comments.next_page_number }}#comments">{% translate "Раньше →" %}</a>{% endif %}</nav>{% endif %}

@@ -1,8 +1,8 @@
-from django.db.models import Avg, Count
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny
 
 from ..models import MediaContent
+from ..media_queries import with_engagement
 from .serializers import MediaContentSerializer
 
 
@@ -18,10 +18,4 @@ class MediaContentViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         # Только опубликованное, свежие — первыми, автор подгружается сразу
-        return (
-            MediaContent.objects
-            .filter(is_published=True)
-            .select_related('author')
-            .annotate(average_rating=Avg('ratings__value'), rating_count=Count('ratings', distinct=True), comment_count=Count('comments', distinct=True))
-            .order_by('-created_at', '-pk')
-        )
+        return with_engagement(MediaContent.objects.filter(is_published=True).select_related('author')).order_by('-created_at', '-pk')
