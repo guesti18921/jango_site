@@ -40,6 +40,19 @@
         image.decoding = "async";
         return image;
       }
+      if (kind === "video") {
+        const wrapper = element("span", "media-preview video-preview");
+        const video = element("video", "card-image");
+        video.src = item.image;
+        video.preload = "none";
+        video.muted = true;
+        video.playsInline = true;
+        video.dataset.videoPreview = "";
+        video.setAttribute("aria-hidden", "true");
+        video.tabIndex = -1;
+        wrapper.append(video, element("span", "video-preview-icon", "▶"));
+        return wrapper;
+      }
       return element("span", "media-preview", kind === "audio" ? "♫" : "▶");
     }
     const wrapper = element("div", "media-player");
@@ -51,6 +64,7 @@
       if (kind === "video") {
         player.playsInline = true;
         if (item.poster) player.poster = item.poster;
+        else player.dataset.videoPreview = "";
       }
       player.src = item.image;
       player.addEventListener("error", () => {

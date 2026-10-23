@@ -41,3 +41,10 @@ Browser checks use an isolated copy of the database and media. QA accounts, fixt
 ## Updating the local project
 
 Stop the server, run `git pull origin main` and `python manage.py migrate`, then restart the server and refresh with Ctrl+F5. No new runtime dependency is required.
+
+
+## Follow-up: automatic video covers
+
+The initial `preload=none` feed optimization left videos without a poster blank until playback. Such videos now decode a paused frame near the start of the clip when they approach the viewport. Explicit posters skip this work. The same behavior covers dynamically inserted application thumbnails and detail players. Preview handlers yield immediately to user interaction and are removed when the preview finishes or its element is removed. No automatic playback or sound is introduced.
+
+Validation: all 116 Django tests pass. Dedicated Chromium checks at widths 390 and 1440 verify an actual decoded, non-blank frame from the 2560×1440 H.264/AAC aurora clip, zero preview play events, unchanged unmuted playback, no video requests for explicit posters, and deferred offscreen requests. Further checks verify decoded AAC audio on manual playback, app thumbnails and back/forward release, download/error fallback for missing files, no horizontal overflow, and no JavaScript exceptions. Other browsers continue to depend on their own codec support. Existing files and schema remain unchanged.

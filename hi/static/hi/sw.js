@@ -1,5 +1,5 @@
 // Only cache versioned static assets. Never cache account pages, locale catalogs or API data.
-const CACHE_NAME='mysite-static-v20';
+const CACHE_NAME='mysite-static-v21';
 self.addEventListener('install',()=>self.skipWaiting());
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('media-app-')||key.startsWith('mysite-static-')&&key!==CACHE_NAME).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',event=>{

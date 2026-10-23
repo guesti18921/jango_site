@@ -287,6 +287,13 @@ Settings: `MAX_MEDIA_UPLOAD_BYTES` (30 GiB), `MEDIA_CHUNK_BYTES` (8 MiB), `MEDIA
 
 ### Gallery audit and maintenance improvements
 
-See [AUDIT.md](AUDIT.md) for findings, fixes, validation, and operating boundaries. The gallery is now bounded to 18 publications per page, defers feed media traffic until playback, uses indexed engagement summaries, and consistently protects drafts in both media routes and native moderation tools. Logout uses a CSRF-protected POST. Oversized form bodies are rejected before parsing; movies still use bounded chunk uploads. Managed resumable-upload files are freed after committed deletion/replacement only when no post references them; connected external originals are never deleted. Existing loose files remain available for later CSV attachment and are not automatically pruned.
+See [AUDIT.md](AUDIT.md) for findings, fixes, validation, and operating boundaries. The gallery is now bounded to 18 publications per page, defers offscreen video traffic and decodes a still frame for nearby videos without posters, uses indexed engagement summaries, and consistently protects drafts in both media routes and native moderation tools. Logout uses a CSRF-protected POST. Oversized form bodies are rejected before parsing; movies still use bounded chunk uploads. Managed resumable-upload files are freed after committed deletion/replacement only when no post references them; connected external originals are never deleted. Existing loose files remain available for later CSV attachment and are not automatically pruned.
 
 When hosting behind a proxy, route `/media/` requests through Django's permission-checking handler rather than serving upload/poster directories publicly. Local HTTP operation is retained; production HTTPS configuration is outside this local audit. Run migrations and refresh with Ctrl+F5 after updating.
+
+
+### Automatic video previews
+
+Videos without an uploaded poster show a paused frame from about 0.1 seconds into the clip in the feed, post detail, and application cards. Preview loading starts only near the viewport. It never calls `play()` and does not change the volume or mute setting of the actual player. An uploaded poster takes precedence and avoids fetching video data for its preview. Audio players retain their existing loading behavior.
+
+This uses the browser video decoder and the existing permission-checked range endpoint; no FFmpeg installation, background task, migration, or re-upload is required. Browser codec support still applies. For unsupported video formats or a deliberately selected cover image, upload a poster as before. Refresh the page with Ctrl+F5 after pulling the update.

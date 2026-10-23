@@ -6,7 +6,7 @@
     <title>{% block title %}МойСайт{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'hi/style.css' %}?v=20">
     {% block extra_styles %}{% endblock %}
-    <script src="{% static 'hi/site.js' %}?v=20" defer></script>
+    <script src="{% static 'hi/site.js' %}?v=21" defer></script>
 </head>
 <body class="{% if user.is_authenticated %}signed-in{% else %}guest{% endif %}">
 {% include 'hi/icons.html' %}

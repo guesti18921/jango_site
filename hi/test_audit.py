@@ -106,12 +106,15 @@ class AuditTests(TestCase):
         with CaptureQueriesContext(connection) as many:self.client.get('/')
         self.assertLessEqual(len(many),len(small)+1)
 
-    def test_feed_players_defer_network_until_play(self):
-        MediaContent.objects.create(title='Video',image='uploads/movie.mp4')
+    def test_feed_defers_media_and_marks_only_uncovered_videos_for_preview(self):
+        video=MediaContent.objects.create(title='Video',image='uploads/movie.mp4')
+        MediaContent.objects.create(title='Covered video',image='uploads/covered.mp4',poster='posters/cover.jpg')
         MediaContent.objects.create(title='Audio',image='uploads/sound.wav')
         self.client.force_login(self.reader)
         response=self.client.get('/')
-        self.assertContains(response,'preload="none"',count=2)
+        self.assertContains(response,'preload="none"',count=3)
+        self.assertContains(response,'data-video-preview',count=1)
+        self.assertContains(self.client.get(reverse('post_detail',args=[video.pk])),'data-video-preview',count=1)
         self.assertNotContains(response,'preload="metadata"')
         self.assertContains(self.client.get(reverse('post_detail',args=[self.post.pk])),'post-detail--image')
 

@@ -63,6 +63,97 @@
     },
     true,
   );
+  // Decode one still frame near the viewport; never call play() for a preview.
+  // Existing posters need no video request. Audio players remain preload=none.
+  const videoPreviews = new WeakMap();
+  const previewObserver =
+    "IntersectionObserver" in window
+      ? new IntersectionObserver(
+          (entries) => {
+            entries.forEach(({ target, isIntersecting }) => {
+              if (isIntersecting) videoPreviews.get(target)?.load();
+            });
+          },
+          { rootMargin: "240px 0px" },
+        )
+      : null;
+  function preparePreview(video) {
+    if (videoPreviews.has(video) || video.hasAttribute("poster")) return;
+    let started = false,
+      finished = false,
+      timer;
+    const events = [];
+    const listen = (name, handler) => {
+      video.addEventListener(name, handler);
+      events.push([name, handler]);
+    };
+    const finish = () => {
+      finished = true;
+      clearTimeout(timer);
+      previewObserver?.unobserve(video);
+      events.forEach(([name, handler]) =>
+        video.removeEventListener(name, handler),
+      );
+    };
+    const seek = () => {
+      // A user who has already started or sought the video takes precedence.
+      if (
+        finished ||
+        !video.paused ||
+        video.currentTime > 0 ||
+        !video.isConnected
+      ) {
+        finish();
+        return;
+      }
+      if (!Number.isFinite(video.duration) || video.duration <= 0) {
+        finish();
+        return;
+      }
+      try {
+        video.currentTime = Math.min(0.1, video.duration / 2);
+      } catch (_) {
+        finish();
+      }
+    };
+    const load = () => {
+      if (started || finished || !video.isConnected) return;
+      started = true;
+      timer = setTimeout(finish, 15000);
+      listen("loadedmetadata", seek);
+      listen("seeked", finish);
+      listen("error", finish);
+      if (video.readyState >= 1) seek();
+      else {
+        video.preload = "metadata";
+        video.load();
+      }
+    };
+    // Native controls must remain responsive, including a quick Play click.
+    ["pointerdown", "keydown", "play"].forEach((name) => listen(name, finish));
+    videoPreviews.set(video, { load, cancel: finish });
+    if (previewObserver) previewObserver.observe(video);
+    else load();
+  }
+  function eachPreview(root, callback) {
+    if (root.nodeType !== 1) return;
+    if (root.matches("video[data-video-preview]")) callback(root);
+    root.querySelectorAll("video[data-video-preview]").forEach(callback);
+  }
+  eachPreview(document.documentElement, preparePreview);
+  // The application inserts and removes its cards and detail player dynamically.
+  new MutationObserver((records) => {
+    records.forEach((record) => {
+      record.removedNodes.forEach((node) =>
+        eachPreview(node, (video) => {
+          if (video.isConnected) return;
+          videoPreviews.get(video)?.cancel();
+          videoPreviews.delete(video);
+        }),
+      );
+      record.addedNodes.forEach((node) => eachPreview(node, preparePreview));
+    });
+  }).observe(document.body, { childList: true, subtree: true });
   document.querySelectorAll("[data-media-image]").forEach((image) => {
     const fail = () => {
       if (image.parentElement.querySelector(".media-unavailable")) return;
