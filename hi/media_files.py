@@ -28,8 +28,8 @@ def validate_upload(upload):
     ext = extension(upload.name)
     if ext not in EXTENSIONS:
         raise ValidationError(_('Неподдерживаемый формат медиафайла.'))
-    if upload.size > getattr(settings, 'MAX_MEDIA_UPLOAD_BYTES', 100 * 1024 * 1024):
-        raise ValidationError(_('Размер медиафайла не должен превышать 100 МБ.'))
+    if upload.size > getattr(settings, 'MAX_MEDIA_UPLOAD_BYTES', 30 * 1024 ** 3):
+        raise ValidationError(_('Размер медиафайла не должен превышать 30 ГБ.'))
     position = upload.tell()
     try:
         upload.seek(0)

@@ -160,3 +160,11 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
 }
+
+
+# Large files are sent in bounded requests, never as a 30 GB form body.
+MAX_MEDIA_UPLOAD_BYTES = 30 * 1024 ** 3
+MEDIA_CHUNK_BYTES = 8 * 1024 ** 2
+MEDIA_UPLOAD_RESERVE_BYTES = 256 * 1024 ** 2
+MEDIA_UPLOAD_ROOT = BASE_DIR / '.media-uploads'
+MEDIA_UPLOAD_TTL_DAYS = 7

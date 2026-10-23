@@ -62,7 +62,7 @@ class MediaTests(TestCase):
         api = self.client.get('/api/media/').json()['results'][0]
         self.assertEqual(api['media_kind'], 'audio')
         self.assertEqual(api['media_mime'], 'audio/wav')
-        self.assertTrue(api['image'].endswith('.wav'))
+        self.assertIn(f'/files/{post.pk}/', api['image'])
         parsed = parse_csv(csv_response(MediaContent.objects.filter(pk=post.pk)).content.decode('utf-8-sig'))
         self.assertEqual(parsed[0].image.name, post.image.name)
         edit = MediaContentAdminForm({'title': 'Renamed', 'description': '', 'is_published': True}, instance=post)

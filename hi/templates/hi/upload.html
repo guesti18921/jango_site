@@ -1,0 +1,18 @@
+{% extends 'hi/management_base.html' %}{% load i18n static %}
+{% block extra_styles %}{{ block.super }}<link rel="stylesheet" href="{% static 'hi/upload.css' %}?v=1">{% endblock %}
+{% block content %}
+<header class="management-header"><div><h1>{% translate 'Загрузка файлов' %}</h1><p>{% translate 'Фильмы, музыка и фотографии — до 30 ГБ на файл.' %}</p></div></header>
+<div class="upload-layout"><section class="management-panel upload-main">
+<form id="movie-upload" class="auth-form" data-start-url="{% url 'upload_start' %}" data-session-base="{% url 'upload_page' %}session/" data-max-bytes="{{ max_bytes }}">
+{% csrf_token %}<label class="upload-drop" for="movie-file"><span aria-hidden="true">↑</span><strong>{% translate 'Выберите файл' %}</strong><small>{% translate 'Можно продолжить загрузку после обрыва или перезапуска браузера: выберите тот же файл.' %}</small></label>
+<input id="movie-file" type="file" accept="{{ accept }}" required><p class="upload-filename" id="upload-filename"></p>
+{{ form.as_p }}
+<div class="upload-status" role="status" aria-live="polite" id="upload-status">{% translate 'Готово к загрузке.' %}</div>
+<progress id="upload-progress" value="0" max="100" aria-label="{% translate 'Прогресс загрузки' %}"></progress><div class="upload-metrics"><span id="upload-percent">0%</span><span id="upload-speed">—</span><span id="upload-eta">—</span></div>
+<div class="upload-buttons"><button type="submit" class="btn-primary" id="upload-start">{% translate 'Загрузить и сохранить' %}</button><button type="button" class="btn-secondary" id="upload-pause" disabled>{% translate 'Пауза' %}</button><button type="button" class="btn-secondary" id="upload-cancel" disabled>{% translate 'Отменить загрузку' %}</button></div>
+<a id="upload-result" class="btn-primary" hidden>{% translate 'Открыть публикацию' %} →</a>
+</form><noscript><p>{% translate 'Для загрузки частями включите JavaScript.' %}</p></noscript></section>
+<aside class="upload-help"><section class="management-panel management-transfer"><h2>{% translate 'Как это работает' %}</h2><p>{% translate 'Файл передаётся частями. Если связь пропадёт, нажмите «Продолжить». После закрытия страницы выберите тот же исходный файл — передача продолжится с сохранённой позиции.' %}</p><p>{% translate 'Незавершённые загрузки хранятся 7 дней. Кнопка отмены освобождает занятое место.' %}</p><p>{% translate 'Постер необязателен, до 10 МБ. Рекомендуемый формат фильма: MP4, H.264 и AAC. Другие кодеки могут потребовать скачивания.' %}</p></section>
+<section class="management-panel management-transfer"><h2>{% translate 'Фильм уже на сервере?' %}</h2><p>{% translate 'На компьютере с сервером выполните команду, указав путь к фильму и логин администратора. Файл останется на месте, без копирования.' %}</p><code class="local-command">python manage.py addfilm "D:\Films\movie.mp4" --author admin --title "Мой фильм"</code><p>{% translate 'Для постера добавьте --poster "D:\Films\poster.jpg". Не перемещайте подключённый фильм: сайт читает его по этому пути.' %}</p></section></aside></div>
+{% endblock %}
+{% block extra_scripts %}{{ block.super }}<script src="{% url 'javascript-catalog' %}"></script><script src="{% static 'hi/upload.js' %}?v=1" defer></script>{% endblock %}

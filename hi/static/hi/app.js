@@ -21,9 +21,9 @@
         if (!item.image) return null;
         const kind=item.media_kind || 'image';
         if (kind==='image') {const image=element('img',preview?'card-image':'detail-image');image.src=item.image;image.alt=preview?'':item.title;image.loading='lazy';return image;}
-        if (preview) return element('span','media-preview',kind==='audio'?'♫':'▶');
+        if (preview) {if(item.poster){const image=element('img','card-image');image.src=item.poster;image.alt='';image.loading='lazy';return image;}return element('span','media-preview',kind==='audio'?'♫':'▶');}
         const wrapper=element('div','media-player');
-        if (kind==='audio'||kind==='video') {const player=element(kind,'');player.controls=true;player.preload='metadata';player.setAttribute('aria-label',item.title);if(kind==='video')player.playsInline=true;player.src=item.image;wrapper.append(player);}
+        if (kind==='audio'||kind==='video') {const player=element(kind,'');player.controls=true;player.preload='metadata';player.setAttribute('aria-label',item.title);if(kind==='video'){player.playsInline=true;if(item.poster)player.poster=item.poster;}player.src=item.image;wrapper.append(player);}
         const link=element('a','media-download',item.media_name || item.title);link.href=item.image;link.download='';wrapper.append(link);return wrapper;
     }
     function formatDate(value) { return new Date(value).toLocaleDateString(locale, {day:'numeric',month:'short',year:'numeric'}); }

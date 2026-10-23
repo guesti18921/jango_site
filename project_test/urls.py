@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.views.i18n import JavaScriptCatalog
 from django.views.decorators.cache import never_cache
-from hi import views, recovery_views, csv_views, post_views
+from hi import views, recovery_views, csv_views, post_views, upload_views, media_stream
 
 urlpatterns = [
     path('jsi18n/', never_cache(JavaScriptCatalog.as_view(packages=['hi'])), name='javascript-catalog'),
@@ -31,6 +31,11 @@ urlpatterns = [
 
     # Админ-панель
     path('staff-login/', views.staff_login_view, name='staff-login'),
+    path('files/<int:pk>/', media_stream.media_stream, name='media_stream'),
+    path('dashboard/uploads/', upload_views.upload_page, name='upload_page'),
+    path('dashboard/uploads/start/', upload_views.start_upload, name='upload_start'),
+    path('dashboard/uploads/session/<uuid:pk>/', upload_views.upload_part, name='upload_part'),
+    path('dashboard/uploads/session/<uuid:pk>/finish/', upload_views.finish_upload, name='upload_finish'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('dashboard/csv/export/', csv_views.export_media, name='csv_export'),
     path('dashboard/csv/import/', csv_views.import_media, name='csv_import'),

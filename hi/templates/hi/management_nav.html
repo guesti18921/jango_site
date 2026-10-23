@@ -4,7 +4,7 @@
 {% if perms.hi.view_mediacontent or perms.hi.change_mediacontent %}<a class="management-link {% if section == 'posts' %}active{% endif %}" href="{% url 'dashboard' %}?section=posts"><svg class="icon" aria-hidden="true"><use href="#i-feed"/></svg>{% translate 'Публикации' %}</a>{% endif %}
 {% if perms.hi.view_comment or perms.hi.change_comment %}<a class="management-link {% if section == 'comments' %}active{% endif %}" href="{% url 'dashboard' %}?section=comments"><svg class="icon" aria-hidden="true"><use href="#i-comment"/></svg>{% translate 'Комментарии' %}</a>{% endif %}
 {% if perms.auth.view_user or perms.auth.change_user %}<a class="management-link {% if section == 'users' %}active{% endif %}" href="{% url 'dashboard' %}?section=users"><svg class="icon" aria-hidden="true"><use href="#i-profile"/></svg>{% translate 'Пользователи' %}</a>{% endif %}
-<div class="management-divider"></div>
+{% if perms.hi.add_mediacontent %}<a class="management-link {% if section == 'uploads' %}active{% endif %}" href="{% url 'upload_page' %}"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>{% translate 'Загрузка файлов' %}</a>{% endif %}<div class="management-divider"></div>
 {% if perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<a class="management-link" href="{% url 'csv_import' %}"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>{% translate 'Импорт и экспорт' %}</a>{% endif %}
 <a class="management-link" href="{% url 'admin:app_list' 'hi' %}"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>{% translate 'Все разделы' %}</a>
 <a class="management-link" href="{% url 'home' %}"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>{% translate 'Открыть сайт' %}</a>

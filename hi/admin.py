@@ -22,7 +22,7 @@ class MediaContentAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at', 'author')
     fieldsets = (
         (gettext_lazy('Контент'), {
-            'fields': ('title', 'description', 'image')
+            'fields': ('title', 'description', 'image', 'poster')
         }),
         (gettext_lazy('Публикация'), {
             'fields': ('is_published',)
@@ -34,6 +34,8 @@ class MediaContentAdmin(admin.ModelAdmin):
     )
 
     def save_model(self, request, obj, form, change):
+        if 'image' in form.changed_data and obj.image:
+            obj.local_path = ''
         # Автоматически ставим автора — текущего залогиненного админа
         if not obj.author:
             obj.author = request.user

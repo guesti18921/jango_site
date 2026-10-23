@@ -253,6 +253,33 @@ python manage.py runlan --ip 192.168.1.10
 
 ### Media posts and avatars
 
-Posts accept photos and animated GIF/WebP, video (MP4, WebM, MOV, MKV, AVI, OGV, MPEG, 3GP) and audio (MP3, WAV, OGG/Opus, M4A, AAC, FLAC, WMA, AIFF), up to 100 MB per file. Actual playback depends on browser/codec support; video and audio include a download link. HEIC/HEIF and TIFF are available as downloads rather than broken inline images. Native Apple Live Photo pairs are not merged; upload the exported video or GIF to show motion. Files are preserved without transcoding.
+Posts accept photos and animated GIF/WebP, video (MP4, WebM, MOV, MKV, AVI, OGV, MPEG, 3GP) and audio (MP3, WAV, OGG/Opus, M4A, AAC, FLAC, WMA, AIFF), up to 30 GB per file through the resumable uploader. Actual playback depends on browser/codec support; video and audio include a download link. HEIC/HEIF and TIFF are available as downloads rather than broken inline images. Native Apple Live Photo pairs are not merged; upload the exported video or GIF to show motion. Files are preserved without transcoding.
 
 The existing `image` database column and CSV/API field remain for compatibility and now refer to any supported media file. The API adds `media_kind`, `media_mime`, and `media_name`. Run `python manage.py migrate` after updating. Profile GIF avatars remain animated, and the current avatar is displayed in discussions and the management workspace.
+
+
+### Movies up to 30 GB: upload, resume, and local files
+
+Open **Управление → Загрузка файлов**. Choose a file, title, description, and optionally a poster up to 10 MB. Use **Загрузить и сохранить**. The page displays percentage, transferred bytes, average speed, and estimated remaining time. Movies can also be saved as drafts by clearing **Опубликовано**.
+
+Transfers use 8 MiB requests. Pause stops the current request; Resume asks the server for its acknowledged offset, so an interrupted chunk can be resent safely. After closing the page or restarting the server/browser, select the same original file again. The file's name, size, last-modified time, and first/last 64 KiB identify the transfer. Do not modify the source file during a transfer. After a page reload, re-enter publication metadata and reselect the poster. A successful retry of finalization returns the existing post instead of duplicating it. Switching browsers is supported for the same signed-in account, because the server also looks up active manifests.
+
+The server checks disk space before starting, reserves space for other active transfers, and keeps a 256 MiB safety margin. Partial bytes live in `.media-uploads/`, outside the public media folder. Keep the SQLite database and that folder when restarting or moving the server. Staging and `MEDIA_ROOT` must be on the same disk: finalization renames the file instead of creating another full movie copy. The ordinary Django file form remains intended for files up to 100 MB; use the new page for movies.
+
+Resume is available for 7 days after the most recent confirmed chunk. Cancel removes the temporary file immediately. Expired partials are reclaimed when a new transfer starts (up to 20 per start); to reclaim them all manually, run:
+
+```console
+python manage.py cleanupuploads
+```
+
+To connect a movie **already on the server computer** without copying or uploading it:
+
+```console
+python manage.py addfilm "D:\Films\movie.mp4" --author YOUR_ADMIN_LOGIN --title "Movie title" --poster "D:\Films\poster.jpg"
+```
+
+`--poster` is optional. `--draft` keeps the movie unpublished. The author must be an active staff account with permission to add media. The command validates the source and records an admin history entry. The movie remains at its original path; moving, deleting, or disconnecting its disk makes it unavailable. The original movie is never deleted by the upload cleanup command. Absolute server paths are not exposed by the API or CSV. Existing-file posts use `local:<post id>` in the CSV `image` column; this token can update the same existing post but cannot attach an arbitrary server path to a new post. Posters remain outside CSV.
+
+Movies use `/files/<post id>/` with HTTP byte ranges (206), suffix ranges, HEAD, and 416 for invalid ranges. This allows seeking without reading the whole movie into memory. Draft files are available only to signed-in staff; published media retains the existing public API behavior. Video playback still depends on the browser/codec: MP4/H.264/AAC is recommended, and unsupported formats can be downloaded. There is no automatic transcoding.
+
+Settings: `MAX_MEDIA_UPLOAD_BYTES` (30 GiB), `MEDIA_CHUNK_BYTES` (8 MiB), `MEDIA_UPLOAD_RESERVE_BYTES` (256 MiB), `MEDIA_UPLOAD_ROOT`, and `MEDIA_UPLOAD_TTL_DAYS` (7). Reverse proxies must allow at least the chunk size plus small metadata/poster requests. This local prototype uses Django's development server; production hosting needs a properly configured web server. Tests exercise the 30 GiB declaration and >32-bit seeking using sparse files, rather than transferring an actual 30 GiB movie.

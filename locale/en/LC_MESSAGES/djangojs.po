@@ -30,3 +30,224 @@ msgstr "Showing:"
 
 msgid "Не удалось загрузить. Проверьте соединение."
 msgstr "Unable to load. Please check your connection."
+
+msgid "Постер"
+msgstr "Poster"
+
+msgid "Загрузка файлов"
+msgstr "File uploads"
+
+msgid "Название"
+msgstr "Title"
+
+msgid ""
+"Фото, GIF, видео или аудио. Большие файлы до 30 ГБ загружайте через "
+"«Загрузка файлов»."
+msgstr ""
+"Photos, GIFs, video or audio. Use File uploads for large files up to 30 GB."
+
+msgid "Размер медиафайла не должен превышать 30 ГБ."
+msgstr "Media files must not exceed 30 GB."
+
+msgid ""
+"Для файлов больше 100 МБ используйте «Загрузка файлов» в меню управления."
+msgstr ""
+"For files larger than 100 MB, use File uploads in the management menu."
+
+msgid "Постер не должен превышать 10 МБ."
+msgstr "The poster must not exceed 10 MB."
+
+msgid "Выберите медиафайл."
+msgstr "Select a media file."
+
+msgid "Фильмы, музыка и фотографии — до 30 ГБ на файл."
+msgstr "Movies, music and photos. Up to 30 GB per file."
+
+msgid "Выберите файл"
+msgstr "Choose a file"
+
+msgid ""
+"Можно продолжить загрузку после обрыва или перезапуска браузера: выберите "
+"тот же файл."
+msgstr ""
+"Resume after a disconnection or browser restart by choosing the same file."
+
+msgid "Готово к загрузке."
+msgstr "Ready to upload."
+
+msgid "Прогресс загрузки"
+msgstr "Upload progress"
+
+msgid "Загрузить и сохранить"
+msgstr "Upload and save"
+
+msgid "Пауза"
+msgstr "Pause"
+
+msgid "Отменить загрузку"
+msgstr "Cancel upload"
+
+msgid "Открыть публикацию"
+msgstr "Open publication"
+
+msgid "Для загрузки частями включите JavaScript."
+msgstr "Enable JavaScript to upload files in parts."
+
+msgid "Как это работает"
+msgstr "How it works"
+
+msgid ""
+"Файл передаётся частями. Если связь пропадёт, нажмите «Продолжить». После "
+"закрытия страницы выберите тот же исходный файл — передача продолжится с "
+"сохранённой позиции."
+msgstr ""
+"Files are sent in parts. If disconnected, click Resume. After reopening the "
+"page, select the same source file to continue from the saved position."
+
+msgid ""
+"Незавершённые загрузки хранятся 7 дней. Кнопка отмены освобождает занятое "
+"место."
+msgstr ""
+"Incomplete uploads can be resumed for 7 days. Cancel to free their disk "
+"space."
+
+msgid ""
+"Постер необязателен, до 10 МБ. Рекомендуемый формат фильма: MP4, H.264 и "
+"AAC. Другие кодеки могут потребовать скачивания."
+msgstr ""
+"An optional poster can be up to 10 MB. MP4 with H.264 and AAC is "
+"recommended. Other codecs may require downloading."
+
+msgid "Фильм уже на сервере?"
+msgstr "Already on the server?"
+
+msgid ""
+"На компьютере с сервером выполните команду, указав путь к фильму и логин "
+"администратора. Файл останется на месте, без копирования."
+msgstr ""
+"On the server computer, run this command with the movie path and "
+"administrator username. The file stays in place without copying."
+
+msgid ""
+"Для постера добавьте --poster \"D:\\Films\\poster.jpg\". Не перемещайте "
+"подключённый фильм: сайт читает его по этому пути."
+msgstr ""
+"Add --poster \"D:\\Films\\poster.jpg\" for a poster. Keep the connected "
+"movie in place: the website reads it from that path."
+
+msgid "Загрузить фильм или большой файл"
+msgstr "Upload a movie or large file"
+
+msgid "МБ"
+msgstr "MB"
+
+msgid "с"
+msgstr "s"
+
+msgid "Осталось:"
+msgstr "Remaining:"
+
+msgid "Сервер недоступен. Попробуйте продолжить позже."
+msgstr "Server unavailable. Try resuming later."
+
+msgid "Ошибка загрузки."
+msgstr "Upload failed."
+
+msgid "Связь прервалась. Нажмите «Продолжить»."
+msgstr "Connection lost. Click Resume."
+
+msgid "Загрузка приостановлена."
+msgstr "Upload paused."
+
+msgid "Проверяем файл и свободное место…"
+msgstr "Checking the file and available space…"
+
+msgid "Загружаем файл…"
+msgstr "Uploading…"
+
+msgid "Восстанавливаем соединение…"
+msgstr "Reconnecting…"
+
+msgid "Сохраняем публикацию…"
+msgstr "Saving publication…"
+
+msgid "Продолжить"
+msgstr "Resume"
+
+msgid "Готово! Файл сохранён."
+msgstr "Done! File saved."
+
+msgid "Файл превышает лимит 30 ГБ."
+msgstr "The file exceeds the 30 GB limit."
+
+msgid "Загрузка отменена. Временный файл удалён."
+msgstr "Upload cancelled. Temporary file deleted."
+
+msgid "Нет прав для загрузки."
+msgstr "You do not have permission to upload files."
+
+msgid "Некорректный запрос."
+msgstr "Invalid request."
+
+msgid "Проверьте имя и размер файла: максимум 30 ГБ."
+msgstr "Check the file name and size: maximum 30 GB."
+
+msgid "На сервере недостаточно свободного места для этого файла."
+msgstr "The server does not have enough free space for this file."
+
+msgid "Сначала завершите или отмените предыдущие загрузки."
+msgstr "Complete or cancel your previous uploads first."
+
+msgid "Сервер занят, повторите запрос."
+msgstr "Server busy. Try again."
+
+msgid ""
+"Не удалось подготовить файл. Проверьте место и доступ к папкам сервера."
+msgstr ""
+"Could not prepare the file. Check disk space and access to the server "
+"folders."
+
+msgid "Файл уже опубликован."
+msgstr "The file has already been published."
+
+msgid "Срок загрузки истёк. Выберите файл заново."
+msgstr "The upload has expired. Select the file again."
+
+msgid "Загрузка уже завершена или отменена."
+msgstr "The upload is already completed or cancelled."
+
+msgid "Продолжаем с сохранённой позиции."
+msgstr "Resuming from the saved position."
+
+msgid "Некорректный размер части файла."
+msgstr "Invalid chunk size."
+
+msgid "Часть файла получена не полностью."
+msgstr "The file chunk was not received completely."
+
+msgid "На сервере закончилось свободное место. Загрузка приостановлена."
+msgstr "The server is out of free space. Upload paused."
+
+msgid "Временный файл повреждён. Отмените загрузку и выберите файл заново."
+msgstr "The temporary file is damaged. Cancel and select the file again."
+
+msgid "Другая часть ещё сохраняется. Повторите запрос."
+msgstr "Another chunk is still being saved. Try again."
+
+msgid "Не удалось сохранить часть файла. Проверьте место на диске."
+msgstr "Could not save the chunk. Check disk space."
+
+msgid "Проверьте поля публикации."
+msgstr "Check the publication fields."
+
+msgid "Дождитесь завершения передачи файла."
+msgstr "Wait until the file transfer finishes."
+
+msgid "Временный файл повреждён."
+msgstr "The temporary file is damaged."
+
+msgid "Файл ещё сохраняется. Повторите запрос."
+msgstr "The file is still being saved. Try again."
+
+msgid "Не удалось завершить загрузку. Проверьте диск сервера."
+msgstr "Could not finish the upload. Check the server disk."

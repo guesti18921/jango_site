@@ -46,7 +46,7 @@ def csv_response(queryset=None, template=False):
     if not template:
         for item in queryset.select_related('author').order_by('pk').iterator():
             writer.writerow([item.pk, escape_cell(item.title), escape_cell(item.description),
-                             item.image.name, escape_cell(item.author.username if item.author else ''),
+                             (f'local:{item.pk}' if item.local_path else item.image.name), escape_cell(item.author.username if item.author else ''),
                              '1' if item.is_published else '0'])
     return response
 
@@ -132,7 +132,10 @@ def parse_csv(text, update_existing=True, lock=False):
                     raise ValidationError(gettext_lazy('is_published: допустимы 1, 0, true или false.'))
                 obj.title = title
                 obj.description = unescape_cell(row['description'])
-                obj.image = validate_image_path(row['image'].strip())
+                media_path = row['image'].strip()
+                if not (obj.pk and obj.local_path and media_path == f'local:{obj.pk}'):
+                    obj.image = validate_image_path(media_path)
+                    obj.local_path = ''
                 obj.author = author
                 obj.is_published = status in ('1', 'true')
                 obj.full_clean(exclude=['created_at', 'updated_at'])

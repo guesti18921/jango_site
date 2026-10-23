@@ -91,5 +91,32 @@ class MediaContentAdminForm(forms.ModelForm):
         from django.core.files.uploadedfile import UploadedFile
         value = self.cleaned_data.get('image')
         if isinstance(value, UploadedFile):
+            if value.size > 100 * 1024 ** 2:
+                raise forms.ValidationError(gettext_lazy('Для файлов больше 100 МБ используйте «Загрузка файлов» в меню управления.'))
             validate_upload(value)
+        return value
+
+    def clean_poster(self):
+        value = self.cleaned_data.get('poster')
+        if value and getattr(value, 'size', 0) > 10 * 1024 ** 2:
+            raise forms.ValidationError(gettext_lazy('Постер не должен превышать 10 МБ.'))
+        return value
+
+    def clean(self):
+        values = super().clean()
+        if not values.get('image') and not self.instance.local_path and 'image' not in self.errors:
+            self.add_error('image', gettext_lazy('Выберите медиафайл.'))
+        return values
+
+
+class UploadPublishForm(forms.Form):
+    title = forms.CharField(max_length=200, label=gettext_lazy('Название'))
+    description = forms.CharField(required=False, max_length=20000, label=gettext_lazy('Описание'), widget=forms.Textarea(attrs={'rows': 3}))
+    poster = forms.ImageField(required=False, label=gettext_lazy('Постер'), widget=forms.ClearableFileInput(attrs={'accept': 'image/jpeg,image/png,image/webp'}))
+    is_published = forms.BooleanField(required=False, initial=True, label=gettext_lazy('Опубликовано'))
+
+    def clean_poster(self):
+        value = self.cleaned_data.get('poster')
+        if value and value.size > 10 * 1024 ** 2:
+            raise forms.ValidationError(gettext_lazy('Постер не должен превышать 10 МБ.'))
         return value

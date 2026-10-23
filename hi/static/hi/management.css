@@ -3,3 +3,5 @@
 .management-links{display:flex;flex-direction:column;gap:5px}.management-link{display:flex;align-items:center;gap:11px;padding:12px;border-radius:7px;font-size:12px;color:var(--text-muted);transition:background .18s,color .18s}.management-link .icon{width:19px;height:19px;flex-shrink:0}.management-link:hover{background:#252d21;text-decoration:none;color:var(--text)}.management-link.active{color:var(--accent);background:#303d25}.management-divider{height:1px;background:var(--border);margin:18px 12px}.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}@media(prefers-reduced-motion:reduce){.management-link{transition:none}}
 .management-table-scroll{position:relative}.management-table .visually-hidden{left:0;top:0}
 .management-sidebar>.logo{margin-bottom:4px}.management-sidebar .management-caption{padding:5px 13px 28px}.management-header .btn-primary>span{font-family:Arial,sans-serif;font-size:18px;line-height:1}
+
+.large-upload-link{margin:-12px 0 26px}

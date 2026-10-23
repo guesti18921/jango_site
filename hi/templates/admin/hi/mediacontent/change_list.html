@@ -1,5 +1,6 @@
 {% extends 'admin/change_list.html' %}{% load i18n %}
 {% block object-tools-items %}
+{% if perms.hi.add_mediacontent %}<li><a href="{% url 'upload_page' %}">{% translate 'Загрузка файлов' %}</a></li>{% endif %}
 {% if perms.hi.view_mediacontent %}<li><a href="{% url 'csv_export' %}">{% translate "Экспорт CSV" %}</a></li>{% endif %}
 {% if perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<li><a href="{% url 'csv_import' %}">{% translate "Импорт CSV" %}</a></li>{% endif %}
 {{ block.super }}
