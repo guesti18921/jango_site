@@ -233,3 +233,52 @@
   font-size: 15px;
   pointer-events: none;
 }
+
+.card {
+  height: 100%;
+}
+.card-body {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+.card-image,
+.video-preview,
+.media-preview {
+  flex-shrink: 0;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+.media-preview {
+  height: auto;
+}
+.card-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.detail-image {
+  aspect-ratio: 4 / 3;
+  height: auto;
+}
+.video-preview video {
+  object-fit: contain;
+}
+@media (max-width: 760px) {
+  .card-body {
+    padding: 17px;
+  }
+  .detail-title {
+    overflow-wrap: anywhere;
+    font-size: 25px;
+  }
+  .detail-meta {
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .post-discussion-link,
+  #refresh-btn {
+    min-height: 44px;
+  }
+}

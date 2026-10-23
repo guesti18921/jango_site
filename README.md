@@ -294,13 +294,23 @@ When hosting behind a proxy, route `/media/` requests through Django's permissio
 
 ### Automatic video previews
 
-Videos without an uploaded poster show a paused frame from about 0.1 seconds into the clip in the feed, post detail, and application cards. Preview loading starts only near the viewport. It never calls `play()` and does not change the volume or mute setting of the actual player. An uploaded poster takes precedence and avoids fetching video data for its preview. Audio players retain their existing loading behavior.
+Videos without an uploaded poster show a paused frame from 12% into the clip (capped at 3 seconds) in the feed, post detail, and application cards. Preview loading starts only near the viewport. It never calls `play()` and does not change the volume or mute setting of the actual player. An uploaded poster takes precedence and avoids fetching video data for its preview. Audio players retain their existing loading behavior.
 
 This uses the browser video decoder and the existing permission-checked range endpoint; no FFmpeg installation, background task, migration, or re-upload is required. Browser codec support still applies. For unsupported video formats or a deliberately selected cover image, upload a poster as before. Refresh the page with Ctrl+F5 after pulling the update.
 
 
 ### Silent hover playback
 
-With a mouse, hovering a video in the feed or an application card for 180 ms starts a muted looping preview. Moving away pauses it and restores the previous position, mute setting, and loop setting. Feed previews temporarily hide native controls; clicking the picture switches to normal playback with those controls and the previous sound settings. Manually started playback continues when the pointer leaves. Detail pages retain normal explicit playback.
+With a mouse, hovering a video in the feed or an application card for 180 ms starts a muted preview lasting at most four seconds. Moving away pauses it and restores the previous position, mute setting, and loop setting. Feed previews temporarily hide native controls; clicking the picture switches to normal playback with those controls and the previous sound settings. Manually started playback continues when the pointer leaves. Detail pages retain normal explicit playback.
 
 Hover playback yields to any already playing music or manually started movie. Starting another player stops the hover preview. Application navigation, element removal, and a hidden browser tab also release previews. Touch devices retain normal tap playback. Explicit posters support hover playback too; the application uses the same video-card presentation whether or not a poster exists.
+
+
+### Media presentation and loading polish
+
+- Feed media stages share a 4:3 shape and aligned grid rows. Portrait photos are cropped only in cards; opening a post shows the whole image. Application cards use the same proportions. Titles wrap safely and are limited to two lines in cards.
+- An automatic video cover starts at 12% of the duration, capped at 3 seconds. If a tiny local pixel sample is almost black, one more frame is tried at 30%, capped at 6 seconds. This is a bounded heuristic, not scene recognition; a manual poster always takes precedence. Data-saver connections use only the initial sample.
+- Images and videos have fixed-size loading stages with a restrained fade. Broken images show a readable fallback, including dynamically inserted application images. Reduced-motion preferences suppress loading animations and hover playback.
+- Hover previews stop after four seconds and restore the earlier frame and player settings. Manual playback retains its controls and priority. Touch devices use explicit playback.
+- Initial video-frame work is queued with at most two active decoders, reduced to one with data saver or a 2G connection. Offscreen videos and audio retain deferred loading. Data saver/2G suppress automatic hover playback. Browser buffering remains controlled by the browser; this does not transcode or recompress the original files.
+- Mobile layouts keep long headings and metadata within the screen, maintain fixed media geometry, and retain larger download/navigation targets. No database migration or additional dependency is required.

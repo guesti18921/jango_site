@@ -1,10 +1,10 @@
 {% extends 'hi/base.html' %}{% load static i18n %}
 {% block title %}{% translate 'Проверка API' %} {% translate "— МойСайт" %}{% endblock %}
-{% block extra_styles %}<link rel="stylesheet" href="{% static 'hi/app.css' %}?v=21">{% endblock %}
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'hi/app.css' %}?v=23">{% endblock %}
 {% block content %}
 <header class="dashboard-header"><h1>{% translate 'Проверка API' %}</h1><p>{% translate 'Данные медиаколлекции из API приложения.' %} <code>/api/media/</code></p></header>
 <div class="dashboard-actions"><button class="btn-primary" type="button" id="refresh-btn">{% translate 'Обновить' %} ↻</button><span class="muted" id="api-status" role="status"></span></div>
 <section id="view-list"><div id="loading" class="state">{% translate 'Загрузка...' %}</div><div id="error" class="state state-error" role="alert" hidden></div><div id="grid" class="grid" hidden></div><button id="load-more" type="button" class="btn-secondary" hidden>{% translate 'Загрузить ещё' %}</button></section>
 <details class="api-raw"><summary>{% translate 'Сырой JSON от API' %}</summary><pre id="raw-json">{% translate 'Загрузка...' %}</pre></details>
 {% endblock %}
-{% block extra_scripts %}<script src="{% url 'javascript-catalog' %}"></script><script src="{% static 'hi/app.js' %}?v=22"></script>{% endblock %}
+{% block extra_scripts %}<script src="{% url 'javascript-catalog' %}"></script><script src="{% static 'hi/app.js' %}?v=23"></script>{% endblock %}

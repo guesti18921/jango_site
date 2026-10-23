@@ -68,6 +68,9 @@
   );
   const hoverVideos = new WeakMap();
   const canHover = matchMedia("(hover: hover) and (pointer: fine)");
+  const connection = navigator.connection;
+  const restrainedNetwork = () =>
+    connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType || "");
   function prepareHover(video) {
     if (hoverVideos.has(video)) return;
     const surface =
@@ -75,9 +78,11 @@
       (video.closest(".media-card") ? video : null);
     if (!surface) return;
     let timer,
+      limit,
       saved = null;
     const stop = (keepPosition = false) => {
       clearTimeout(timer);
+      clearTimeout(limit);
       if (!saved) return;
       const previous = saved;
       saved = null;
@@ -85,15 +90,30 @@
       video.muted = previous.muted;
       video.loop = previous.loop;
       video.controls = previous.controls;
+      video.classList.remove("is-hover-preview");
       if (!keepPosition && video.readyState >= 1) {
+        video.classList.add("is-preview-restoring");
+        const reveal = () => video.classList.remove("is-preview-restoring");
+        video.addEventListener("seeked", reveal, { once: true });
+        setTimeout(reveal, 250);
         try {
-          video.currentTime = previous.time;
+          if (previous.time === 0 && video.hasAttribute("poster")) {
+            // Reset the native poster flag without preloading the movie again.
+            video.preload = "none";
+            video.load();
+          } else video.currentTime = previous.time;
         } catch (_) {}
       }
       if (activeHover?.video === video) activeHover = null;
     };
     const enter = (event) => {
-      if (event.pointerType !== "mouse" || !canHover.matches) return;
+      if (
+        event.pointerType !== "mouse" ||
+        !canHover.matches ||
+        reduced ||
+        restrainedNetwork()
+      )
+        return;
       clearTimeout(timer);
       timer = setTimeout(() => {
         if (
@@ -124,11 +144,14 @@
         const attempt = saved;
         activeHover = { video, stop };
         video.muted = true;
-        video.loop = true;
+        video.loop = false;
+        video.classList.remove("is-preview-restoring");
+        video.classList.add("is-hover-preview");
         // A frame click starts normal playback; native controls return then.
         // Otherwise a click on the temporary preview's Pause control can get
         // swallowed inside the browser's media-control shadow tree.
         video.controls = false;
+        limit = setTimeout(() => stop(), 4000);
         try {
           const playback = video.play();
           playback?.catch(() => {
@@ -156,6 +179,7 @@
     surface.addEventListener("keydown", key, true);
     surface.addEventListener("click", activate, true);
     video.addEventListener("error", leave);
+    video.addEventListener("ended", leave);
     hoverVideos.set(video, {
       destroy: () => {
         stop();
@@ -165,6 +189,7 @@
         surface.removeEventListener("keydown", key, true);
         surface.removeEventListener("click", activate, true);
         video.removeEventListener("error", leave);
+        video.removeEventListener("ended", leave);
       },
     });
   }
@@ -178,6 +203,20 @@
   // Decode one still frame near the viewport; never call play() for a preview.
   // Existing posters need no video request. Audio players remain preload=none.
   const videoPreviews = new WeakMap();
+  const previewQueue = [];
+  let previewJobs = 0;
+  function pumpPreviews() {
+    const capacity = restrainedNetwork() ? 1 : 2;
+    while (previewJobs < capacity && previewQueue.length) {
+      const job = previewQueue.shift();
+      if (job.cancelled) continue;
+      previewJobs++;
+      job.run(() => {
+        previewJobs--;
+        pumpPreviews();
+      });
+    }
+  }
   const previewObserver =
     "IntersectionObserver" in window
       ? new IntersectionObserver(
@@ -199,15 +238,27 @@
       return;
     let started = false,
       finished = false,
-      timer;
+      timer,
+      release,
+      job,
+      sampled = false;
     const events = [];
     const listen = (name, handler) => {
       video.addEventListener(name, handler);
       events.push([name, handler]);
     };
     const finish = () => {
+      if (finished) return;
       finished = true;
       clearTimeout(timer);
+      if (video.paused && video.closest(".media-card,.video-preview"))
+        video.preload = "none";
+      if (job) job.cancelled = true;
+      if (release) {
+        const done = release;
+        release = null;
+        done();
+      }
       previewObserver?.unobserve(video);
       events.forEach(([name, handler]) =>
         video.removeEventListener(name, handler),
@@ -229,23 +280,80 @@
         return;
       }
       try {
-        video.currentTime = Math.min(0.1, video.duration / 2);
+        video.currentTime = Math.min(3, video.duration * 0.12);
       } catch (_) {
         finish();
       }
     };
+    const frameReady = () => {
+      // Avoid an opening black frame, with only one additional bounded seek.
+      if (
+        !sampled &&
+        !restrainedNetwork() &&
+        video.paused &&
+        video.videoWidth
+      ) {
+        sampled = true;
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = 16;
+          canvas.height = 9;
+          const ctx = canvas.getContext("2d", { willReadFrequently: true });
+          ctx.drawImage(video, 0, 0, 16, 9);
+          const pixels = ctx.getImageData(0, 0, 16, 9).data;
+          let brightness = 0;
+          for (let i = 0; i < pixels.length; i += 4)
+            brightness += Math.max(pixels[i], pixels[i + 1], pixels[i + 2]);
+          if (brightness / 144 < 10) {
+            video.currentTime = Math.min(6, video.duration * 0.3);
+            return;
+          }
+        } catch (_) {
+          /* A cross-origin decoder still provides its first frame. */
+        }
+      }
+      finish();
+    };
     const load = () => {
       if (started || finished || !video.isConnected) return;
       started = true;
-      timer = setTimeout(finish, 15000);
-      listen("loadedmetadata", seek);
-      listen("seeked", finish);
-      listen("error", finish);
-      if (video.readyState >= 1) seek();
-      else {
-        video.preload = "metadata";
-        video.load();
-      }
+      job = {
+        cancelled: false,
+        run: (done) => {
+          release = done;
+          if (finished || !video.isConnected || !video.paused) {
+            finish();
+            return;
+          }
+          const box = video.getBoundingClientRect();
+          if (
+            previewObserver &&
+            (video.closest("[hidden]") ||
+              !box.width ||
+              !box.height ||
+              box.bottom < -240 ||
+              box.top > innerHeight + 240)
+          ) {
+            // A queued card may have scrolled away while another was decoding.
+            // Keep observing it so returning to the card can try again.
+            job.cancelled = true;
+            release = null;
+            started = false;
+            done();
+            return;
+          }
+          timer = setTimeout(finish, 20000);
+          listen("loadedmetadata", seek);
+          listen("seeked", frameReady);
+          listen("error", finish);
+          if (video.readyState >= 1) seek();
+          else {
+            video.preload = "metadata";
+          }
+        },
+      };
+      previewQueue.push(job);
+      pumpPreviews();
     };
     // Native controls must remain responsive, including a quick Play click.
     ["pointerdown", "keydown", "play"].forEach((name) => listen(name, finish));
@@ -258,6 +366,52 @@
     if (root.matches("video")) callback(root);
     root.querySelectorAll("video").forEach(callback);
   }
+  const visualMedia = new WeakSet();
+  function prepareVisual(media) {
+    if (
+      visualMedia.has(media) ||
+      !media.matches(".post-media-image,.card-image,.detail-image,video")
+    )
+      return;
+    visualMedia.add(media);
+    const isImage = media.tagName === "IMG";
+    if (!isImage && media.hasAttribute("poster")) return;
+    const ready = () => media.classList.remove("media-is-loading");
+    const fail = () => {
+      ready();
+      media.classList.add("media-is-failed");
+      if (
+        isImage &&
+        media.isConnected &&
+        !media.parentElement.querySelector(".media-unavailable")
+      ) {
+        const notice = document.createElement("span");
+        notice.className = "media-unavailable";
+        notice.textContent =
+          media.dataset.errorMessage ||
+          (window.gettext || ((v) => v))("Изображение недоступно.");
+        media.hidden = true;
+        media.after(notice);
+      }
+    };
+    if (isImage ? media.complete : media.readyState >= 2) {
+      if (isImage && !media.naturalWidth) fail();
+      return;
+    }
+    media.classList.add("media-is-loading");
+    media.addEventListener(isImage ? "load" : "loadeddata", ready, {
+      once: true,
+    });
+    media.addEventListener("error", fail, { once: true });
+    // Keep native controls usable even on a stalled connection.
+    if (!isImage) setTimeout(ready, 20000);
+  }
+  function eachVisual(root) {
+    if (root.nodeType !== 1) return;
+    if (root.matches("img,video")) prepareVisual(root);
+    root.querySelectorAll("img,video").forEach(prepareVisual);
+  }
+  eachVisual(document.documentElement);
   eachPreview(document.documentElement, preparePreview);
   // The application inserts and removes its cards and detail player dynamically.
   new MutationObserver((records) => {
@@ -275,25 +429,16 @@
           hoverVideos.delete(video);
         }),
       );
-      record.addedNodes.forEach((node) => eachPreview(node, preparePreview));
+      record.addedNodes.forEach((node) => {
+        eachPreview(node, preparePreview);
+        eachVisual(node);
+      });
     });
   }).observe(document.body, {
     childList: true,
     subtree: true,
     attributes: true,
     attributeFilter: ["hidden"],
-  });
-  document.querySelectorAll("[data-media-image]").forEach((image) => {
-    const fail = () => {
-      if (image.parentElement.querySelector(".media-unavailable")) return;
-      const text = document.createElement("span");
-      text.className = "media-unavailable";
-      text.textContent = image.dataset.errorMessage;
-      image.hidden = true;
-      image.after(text);
-    };
-    image.addEventListener("error", fail);
-    if (image.complete && !image.naturalWidth) fail();
   });
   document.addEventListener(
     "error",
