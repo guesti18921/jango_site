@@ -297,3 +297,10 @@ When hosting behind a proxy, route `/media/` requests through Django's permissio
 Videos without an uploaded poster show a paused frame from about 0.1 seconds into the clip in the feed, post detail, and application cards. Preview loading starts only near the viewport. It never calls `play()` and does not change the volume or mute setting of the actual player. An uploaded poster takes precedence and avoids fetching video data for its preview. Audio players retain their existing loading behavior.
 
 This uses the browser video decoder and the existing permission-checked range endpoint; no FFmpeg installation, background task, migration, or re-upload is required. Browser codec support still applies. For unsupported video formats or a deliberately selected cover image, upload a poster as before. Refresh the page with Ctrl+F5 after pulling the update.
+
+
+### Silent hover playback
+
+With a mouse, hovering a video in the feed or an application card for 180 ms starts a muted looping preview. Moving away pauses it and restores the previous position, mute setting, and loop setting. Feed previews temporarily hide native controls; clicking the picture switches to normal playback with those controls and the previous sound settings. Manually started playback continues when the pointer leaves. Detail pages retain normal explicit playback.
+
+Hover playback yields to any already playing music or manually started movie. Starting another player stops the hover preview. Application navigation, element removal, and a hidden browser tab also release previews. Touch devices retain normal tap playback. Explicit posters support hover playback too; the application uses the same video-card presentation whether or not a poster exists.

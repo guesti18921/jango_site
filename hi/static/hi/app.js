@@ -32,7 +32,7 @@
       return image;
     }
     if (preview) {
-      if (item.poster) {
+      if (item.poster && kind !== "video") {
         const image = element("img", "card-image");
         image.src = item.poster;
         image.alt = "";
@@ -47,7 +47,8 @@
         video.preload = "none";
         video.muted = true;
         video.playsInline = true;
-        video.dataset.videoPreview = "";
+        if (item.poster) video.poster = item.poster;
+        else video.dataset.videoPreview = "";
         video.setAttribute("aria-hidden", "true");
         video.tabIndex = -1;
         wrapper.append(video, element("span", "video-preview-icon", "▶"));
