@@ -19,7 +19,10 @@ SECRET_KEY = 'django-insecure--qqnmf%i=7c$iu=ekzeqerepe#gd^&es3=vd(86xrm=poxmmfj
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.31.116']
+# runlan adds this computer's private IPv4 addresses at runtime.
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get(
+    'DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,[::1]'
+).split(',') if host.strip()]
 
 
 INSTALLED_APPS = [

@@ -207,3 +207,42 @@ code { font: .9em ui-monospace, monospace; background: #eaf0e8; padding: 2px 6px
 .csv-table th { background: #f5f7f2; font-weight: 600; }
 .auth-form input[type=checkbox] { accent-color: var(--accent); width: 18px; height: 18px; }
 @media (max-width: 700px) { .csv-banner { flex-direction: column; align-items: stretch; padding: 24px; } .csv-banner .csv-actions { margin: 0; } .csv-actions > * { flex: 1 1 140px; } }
+/* Posts, ratings and conversation */
+.media-image-link { display: block; }
+.media-body h3 a { color: var(--text); }
+.post-stats { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; font-size: 11px; color: var(--accent); margin: 16px 0 12px; }
+.post-back { display: inline-block; font-size: 13px; margin-bottom: 24px; }
+.post-detail { display: grid; grid-template-columns: 1.05fr 1fr; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; overflow: hidden; margin-bottom: 44px; }
+.post-picture { display: flex; align-items: center; background: #e7eddf; min-width: 0; }
+.post-picture img { width: 100%; max-height: 700px; object-fit: contain; display: block; }
+.post-copy { padding: 36px; min-width: 0; }
+.post-copy h1 { font-size: clamp(26px, 3vw, 38px); letter-spacing: -1px; margin-bottom: 14px; }
+.post-description { margin-top: 24px; font-size: 14px; line-height: 1.8; overflow-wrap: anywhere; }
+.rating-section { margin-top: 30px; border-top: 1px solid var(--border); padding-top: 26px; scroll-margin-top: 24px; }
+.rating-section h2 { font-size: 20px; margin-bottom: 12px; }
+.rating-summary { color: var(--text-muted); font-size: 13px; margin-bottom: 22px; }
+.rating-summary > span { color: #a46f16; }
+.rating-summary strong { color: var(--text); }
+.rating-form fieldset { border: 0; margin-bottom: 18px; min-width: 0; }
+.rating-form legend { font-size: 12px; font-weight: 600; margin-bottom: 10px; }
+.rating-options { display: flex; flex-wrap: wrap; gap: 7px; }
+.rating-option { display: flex; align-items: center; gap: 5px; border: 1px solid var(--border); border-radius: 10px; padding: 10px 11px; cursor: pointer; font-size: 13px; }
+.rating-option:has(input:checked) { border-color: var(--accent); background: #eaf1e4; color: var(--accent); }
+.rating-option input { width: 16px; height: 16px; accent-color: var(--accent); }
+.rating-form .muted { margin-top: 12px; }
+.comments-section { scroll-margin-top: 24px; }
+.comment-total { display: inline-block; font-size: 12px; vertical-align: middle; border-radius: 20px; padding: 4px 10px; color: var(--accent); background: #e4ecdd; margin-left: 6px; letter-spacing: 0; }
+.comment-layout { display: grid; grid-template-columns: 350px minmax(0, 1fr); gap: 24px; align-items: start; }
+.comment-compose, .comment-card { padding: 24px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; min-width: 0; }
+.comment-card { margin-bottom: 16px; }
+.comment-heading { display: flex; gap: 12px; align-items: center; }
+.comment-heading h3 { font-size: 13px; font-weight: 650; }
+.comment-heading time { font-size: 11px; color: var(--text-muted); }
+.comment-avatar { display: grid; place-items: center; width: 38px; height: 38px; flex-shrink: 0; border-radius: 12px; background: #e7eddf; color: var(--accent); font-size: 15px; font-weight: 650; }
+.comment-text { margin-top: 18px; font-size: 14px; overflow-wrap: anywhere; }
+.comment-delete { margin-top: 18px; }
+.comment-delete button { background: transparent; border: 0; cursor: pointer; font-size: 11px; color: var(--danger); padding: 3px 0; }
+.comment-delete button:hover { text-decoration: underline; }
+.pagination { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; align-items: center; font-size: 12px; margin-top: 24px; }
+@media (max-width: 900px) { .comment-layout { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .post-detail { grid-template-columns: 1fr; } .post-copy { padding: 26px 22px; } .post-picture img { max-height: 450px; } .comment-compose, .comment-card { padding: 22px; } }

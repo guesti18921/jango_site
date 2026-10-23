@@ -102,7 +102,8 @@
                 '<span>' + escapeHtml(authorName) + '</span>' +
                 '<span>' + formatDate(item.created_at) + '</span>' +
             '</div>' +
-            '<div class="detail-description">' + escapeHtml(item.description || '') + '</div>';
+            '<div class="detail-description">' + escapeHtml(item.description || '') + '</div>' +
+            '<p style="margin-top:24px"><a class="post-discussion-link" href="/posts/' + Number(item.id) + '/">Комментарии и оценки →</a></p>';
 
         showDetail();
     }

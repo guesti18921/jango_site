@@ -57,6 +57,39 @@ class MediaContent(models.Model):
         ordering = ['-created_at']
 
 
+class Comment(models.Model):
+    post = models.ForeignKey(MediaContent, on_delete=models.CASCADE, related_name='comments', verbose_name='Пост')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_comments', verbose_name='Автор')
+    text = models.TextField(max_length=2000, verbose_name='Комментарий')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
+
+    class Meta:
+        ordering = ['-created_at', '-pk']
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return f'{self.user}: {self.text[:60]}'
+
+
+class Rating(models.Model):
+    post = models.ForeignKey(MediaContent, on_delete=models.CASCADE, related_name='ratings', verbose_name='Пост')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='post_ratings', verbose_name='Пользователь')
+    value = models.PositiveSmallIntegerField(choices=[(n, str(n)) for n in range(1, 6)], verbose_name='Оценка')
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['post', 'user'], name='one_rating_per_user_post'),
+            models.CheckConstraint(condition=models.Q(value__gte=1, value__lte=5), name='rating_between_one_and_five'),
+        ]
+        verbose_name = 'Оценка'
+        verbose_name_plural = 'Оценки'
+
+    def __str__(self):
+        return f'{self.user}: {self.value}/5'
+
+
 # --- Модели для портфолио / резюме ---
 class Developer(models.Model):
     name = models.CharField(max_length=100, verbose_name="Имя разработчика")

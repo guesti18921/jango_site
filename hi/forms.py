@@ -63,3 +63,17 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+
+
+class CommentForm(forms.Form):
+    text = forms.CharField(
+        label='Ваш комментарий', max_length=2000,
+        widget=forms.Textarea(attrs={'rows': 4, 'placeholder': 'Поделитесь впечатлением о посте…', 'maxlength': 2000}),
+    )
+
+
+class RatingForm(forms.Form):
+    value = forms.TypedChoiceField(
+        label='Ваша оценка', choices=[(n, f'{n} ★') for n in range(1, 6)], coerce=int,
+        widget=forms.RadioSelect,
+    )

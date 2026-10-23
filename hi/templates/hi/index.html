@@ -18,10 +18,11 @@
     <div class="media-grid">
         {% for item in all_media %}
             <article class="media-card">
-                <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
+                <a class="media-image-link" href="{% url 'post_detail' item.pk %}"><img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy"></a>
                 <div class="media-body">
-                    <h3>{{ item.title }}</h3>
+                    <h3><a href="{% url 'post_detail' item.pk %}">{{ item.title }}</a></h3>
                     {% if item.description %}<p class="media-description">{{ item.description|truncatechars:130 }}</p>{% endif %}
+                    <div class="post-stats"><span>★ {% if item.rating_count %}{{ item.average_rating|floatformat:1 }} · {{ item.rating_count }} оценок{% else %}Нет оценок{% endif %}</span><a href="{% url 'post_detail' item.pk %}#comments">Комментарии · {{ item.comment_count }}</a></div>
                     <p class="media-date">{{ item.created_at|date:"d.m.Y H:i" }}</p>
                 </div>
             </article>

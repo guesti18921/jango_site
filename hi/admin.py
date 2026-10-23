@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import (
     Developer, Skill, Experience, Project, Education,
     Company, Stat, CompanyValue, TeamMember, HistoryItem,
-    MediaContent, Profile,
+    MediaContent, Profile, Comment, Rating,
 )
 
 
@@ -134,3 +134,20 @@ class HistoryItemAdmin(admin.ModelAdmin):
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('user', 'city', 'birth_date')
     search_fields = ('user__username', 'city')
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'post', 'text', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('text', 'user__username', 'post__title')
+    list_select_related = ('user', 'post')
+    readonly_fields = ('created_at',)
+
+
+@admin.register(Rating)
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ('user', 'post', 'value', 'updated_at')
+    list_filter = ('value',)
+    search_fields = ('user__username', 'post__title')
+    list_select_related = ('user', 'post')
+    readonly_fields = ('updated_at',)

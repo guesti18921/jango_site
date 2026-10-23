@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from hi import views, recovery_views, csv_views
+from hi import views, recovery_views, csv_views, post_views
 
 urlpatterns = [
     # Django-админка (можно оставить на отдельный URL, например /django-admin/)
@@ -10,6 +10,10 @@ urlpatterns = [
 
     # Основные страницы
     path('', views.index, name='home'),
+    path('posts/<int:pk>/', post_views.post_detail, name='post_detail'),
+    path('posts/<int:pk>/comment/', post_views.add_comment, name='add_comment'),
+    path('posts/<int:pk>/rate/', post_views.rate_post, name='rate_post'),
+    path('comments/<int:pk>/delete/', post_views.delete_comment, name='delete_comment'),
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
     # Восстановление через одноразовый код в консоли сервера

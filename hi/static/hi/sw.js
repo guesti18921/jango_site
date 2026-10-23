@@ -1,4 +1,4 @@
-const CACHE_NAME = 'media-app-v1';
+const CACHE_NAME = 'media-app-v2';
 const URLS = [
     '/app/',
     '/static/hi/app.css',

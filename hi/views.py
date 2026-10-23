@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import MediaContent, Profile
+from django.db.models import Avg, Count
 from .forms import (
     UserRegisterForm, UserLoginForm, StaffLoginForm,
     ProfileForm, UserForm,
@@ -18,7 +19,13 @@ def _is_staff(user):
 
 @login_required(login_url='login')
 def index(request):
-    all_media = MediaContent.objects.all().order_by('-created_at')
+    all_media = MediaContent.objects.all()
+    if not request.user.is_staff:
+        all_media = all_media.filter(is_published=True)
+    all_media = all_media.annotate(
+        average_rating=Avg('ratings__value'), rating_count=Count('ratings', distinct=True),
+        comment_count=Count('comments', distinct=True),
+    ).order_by('-created_at', '-pk')
     return render(request, 'hi/index.html', {'all_media': all_media})
 
 
