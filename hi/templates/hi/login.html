@@ -1,29 +1,16 @@
-{% extends 'hi/base.html' %}
-
-{% block title %}Вход{% endblock %}
-
-{% block content %}
-<div class="auth-card">
-    <h2>Вход в аккаунт</h2>
-
-    <form method="post" class="auth-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn-primary">Войти</button>
-    </form>
-
-    <p class="auth-footer">
-        Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a>
-    </p>
-
-    <p class="auth-footer" style="margin-top: 8px;">
-    <a href="{% url 'password_reset' %}">Забыли пароль?</a>
-</p>
-
-    <hr>
-
-    <p class="auth-footer" style="font-size: 13px;">
-        Вы администратор? <a href="{% url 'staff-login' %}">Войти здесь</a>
-    </p>
-</div>
+{% extends 'hi/auth_base.html' %}
+{% block title %}Вход — МойСайт{% endblock %}
+{% block auth_content %}
+<span class="eyebrow">С ВОЗВРАЩЕНИЕМ</span>
+<h2 id="auth-heading">Рады вас видеть</h2>
+<p class="auth-description">Войдите, чтобы открыть свою коллекцию.</p>
+<form method="post" class="auth-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="form-link-row"><a href="{% url 'recovery_request' %}">Восстановить доступ <span aria-hidden="true">↗</span></a></div>
+    <button type="submit" class="btn-primary">Войти в аккаунт <span aria-hidden="true">→</span></button>
+</form>
+<p class="auth-footer">Впервые здесь? <a href="{% url 'register' %}">Создать аккаунт</a></p>
+<div class="auth-divider"></div>
+<a class="quiet-link" href="{% url 'staff-login' %}">Вход для администратора <span aria-hidden="true">↗</span></a>
 {% endblock %}

@@ -1,7 +1,25 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import Profile
+
+
+class RecoveryRequestForm(forms.Form):
+    identifier = forms.CharField(
+        label='Логин или email', max_length=254,
+        widget=forms.TextInput(attrs={'autocomplete': 'username', 'autofocus': True,
+                                     'placeholder': 'Введите логин или email'}),
+    )
+
+
+class RecoveryConfirmForm(SetPasswordForm):
+    code = forms.RegexField(
+        regex=r'^[0-9]{6}$', label='Код подтверждения',
+        error_messages={'invalid': 'Введите код из шести цифр.'},
+        widget=forms.PasswordInput(attrs={'type': 'text', 'inputmode': 'numeric', 'autocomplete': 'one-time-code',
+                                     'maxlength': 6, 'placeholder': '000000', 'autofocus': True}),
+    )
+    field_order = ['code', 'new_password1', 'new_password2']
 
 
 class UserRegisterForm(UserCreationForm):

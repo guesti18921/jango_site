@@ -1,19 +1,13 @@
-{% extends 'hi/base.html' %}
-
-{% block title %}Регистрация{% endblock %}
-
-{% block content %}
-<div class="auth-card">
-    <h2>Регистрация</h2>
-
-    <form method="post" class="auth-form">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn-primary">Создать аккаунт</button>
-    </form>
-
-    <p class="auth-footer">
-        Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
-    </p>
-</div>
+{% extends 'hi/auth_base.html' %}
+{% block title %}Регистрация — МойСайт{% endblock %}
+{% block auth_content %}
+<span class="eyebrow">НАЧНИТЕ СВОЮ ИСТОРИЮ</span>
+<h2 id="auth-heading">Создать аккаунт</h2>
+<p class="auth-description">Всего несколько деталей — и вы с нами.</p>
+<form method="post" class="auth-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn-primary">Зарегистрироваться <span aria-hidden="true">→</span></button>
+</form>
+<p class="auth-footer">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
 {% endblock %}

@@ -3,19 +3,16 @@
 {% block title %}Главная{% endblock %}
 
 {% block content %}
-<div class="welcome-card">
-    <h1>{{ user.username }}</h1>
-    {% if user.is_staff %}
-        <p class="hint">
-            Вы администратор. Управление сайтом — в
-            <a href="{% url 'dashboard' %}">админ-панели</a>.
-        </p>
-    {% else %}
-        <p class="hint">Вы вошли как обычный пользователь.</p>
-    {% endif %}
-</div>
-
-<h2 class="section-title">Медиаконтент</h2>
+<section class="welcome-card">
+    <span class="eyebrow">ЛИЧНАЯ КОЛЛЕКЦИЯ</span>
+    <h1>Привет, {{ user.first_name|default:user.username }}.</h1>
+    <p class="hint">Место для ваших идей, вдохновения и любимых моментов. Посмотрите, что нового в коллекции.</p>
+    <div class="welcome-actions">
+        <a class="btn-primary" href="{% url 'app' %}">Открыть приложение <span aria-hidden="true">↗</span></a>
+        {% if user.is_staff %}<a class="btn-secondary" href="{% url 'dashboard' %}">Управление контентом</a>{% endif %}
+    </div>
+</section>
+<div class="section-heading"><h2 class="section-title">Медиаколлекция</h2><span class="section-caption">Последние добавленные материалы</span></div>
 
 {% if all_media %}
     <div class="media-grid">
@@ -24,6 +21,7 @@
                 <img src="{{ item.image.url }}" alt="{{ item.title }}" loading="lazy">
                 <div class="media-body">
                     <h3>{{ item.title }}</h3>
+                    {% if item.description %}<p class="media-description">{{ item.description|truncatechars:130 }}</p>{% endif %}
                     <p class="media-date">{{ item.created_at|date:"d.m.Y H:i" }}</p>
                 </div>
             </article>
@@ -31,7 +29,7 @@
     </div>
 {% else %}
     <div class="empty-state">
-        <p>Пока нет ни одного медиафайла.</p>
+        <h3>Здесь начинается ваша коллекция</h3><p>Новые материалы появятся здесь после добавления.</p>
         {% if user.is_staff %}
             <p>Добавьте первый через
                 <a href="/django-admin/hi/mediacontent/add/">админку</a>.

@@ -1,7 +1,24 @@
+import uuid
+
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
+
+
+class RecoveryState(models.Model):
+    """One current challenge and persistent rate limits per account/unknown identity."""
+    identity_key = models.CharField(max_length=64, primary_key=True)
+    token = models.UUIDField(default=uuid.uuid4, unique=True)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    code_hash = models.CharField(max_length=128, blank=True)
+    password_fingerprint = models.CharField(max_length=64, blank=True)
+    expires_at = models.DateTimeField(null=True)
+    last_sent = models.DateTimeField(null=True)
+    window_start = models.DateTimeField(null=True)
+    request_count = models.PositiveSmallIntegerField(default=0)
+    attempts = models.PositiveSmallIntegerField(default=0)
+    consumed = models.BooleanField(default=True)
 
 
 # --- Модель для медиаконтента ---
