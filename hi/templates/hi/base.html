@@ -12,7 +12,7 @@
 {% include 'hi/icons.html' %}
 <a class="skip-link" href="#main-content">{% translate 'Перейти к содержимому' %}</a>
 {% if user.is_authenticated %}
-<aside class="sidebar" aria-label="{% translate 'Основная навигация' %}">
+{% block sidebar %}<aside class="sidebar" aria-label="{% translate 'Основная навигация' %}">
     <a href="{% url 'home' %}" class="logo"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>МойСайт</a>
     {% with name=request.resolver_match.url_name %}<nav class="side-links">
         <a href="{% url 'home' %}" class="side-link {% if name == 'home' or name == 'post_detail' or name == 'add_comment' or name == 'rate_post' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-feed"/></svg><span>{% translate 'Лента' %}</span></a>
@@ -22,12 +22,12 @@
     </nav>{% endwith %}
     <div class="sidebar-note">{% translate 'Личное пространство' %}<span>{% translate 'Для ваших моментов и идей.' %}</span></div>
     <div class="sidebar-account"><a href="{% url 'profile' %}" class="account-identity">{% if user.profile.avatar %}<img class="avatar-letter" src="{{ user.profile.avatar.url }}" alt="">{% else %}<span class="avatar-letter">{{ user.username|first|upper }}</span>{% endif %}<span>{{ user.first_name|default:user.username }}</span></a><a href="{% url 'logout' %}" class="quiet-link"><svg class="icon" aria-hidden="true"><use href="#i-exit"/></svg>{% translate 'Выйти' %}</a></div>
-</aside>
+</aside>{% endblock %}
 {% endif %}
 <div class="site-shell">
 <header class="topbar">
     <a href="{% url 'home' %}" class="logo mobile-brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>МойСайт</a>
-    <span class="desktop-context">{% translate 'Личное пространство' %}</span>
+    {% block topbar_context %}<span class="desktop-context">{% translate 'Личное пространство' %}</span>{% endblock %}
     <div class="topbar-actions">{% include 'hi/language_switch.html' %}
         {% if user.is_authenticated %}<details class="account-menu"><summary aria-label="{% translate 'Меню аккаунта' %}">{% if user.profile.avatar %}<img class="avatar-letter" src="{{ user.profile.avatar.url }}" alt="">{% else %}<span class="avatar-letter">{{ user.username|first|upper }}</span>{% endif %}</summary><div class="account-popover"><strong>{{ user.username }}</strong><a href="{% url 'profile' %}">{% translate 'Мой профиль' %}</a><a href="{% url 'logout' %}">{% translate 'Выйти' %}</a></div></details>{% else %}<a class="quiet-link guest-login" href="{% url 'login' %}">{% translate 'Войти' %}</a>{% endif %}
     </div>
@@ -38,11 +38,12 @@
 </main>
 <footer class="footer"><span>© {% now 'Y' %} МойСайт</span><span>{% translate 'Ваши моменты. Ваше пространство.' %}</span></footer>
 </div>
-{% if user.is_authenticated %}{% with name=request.resolver_match.url_name %}<nav class="mobile-nav" aria-label="{% translate 'Мобильная навигация' %}">
+{% block mobile_navigation %}{% if user.is_authenticated %}{% with name=request.resolver_match.url_name %}<nav class="mobile-nav" aria-label="{% translate 'Мобильная навигация' %}">
     <a href="{% url 'home' %}" class="{% if name == 'home' or name == 'post_detail' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-feed"/></svg><span>{% translate 'Лента' %}</span></a>
     <a href="{% url 'profile' %}" class="{% if name == 'profile' or name == 'profile_edit' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-profile"/></svg><span>{% translate 'Профиль' %}</span></a>
     <a href="{% url 'app' %}" class="{% if name == 'app' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-app"/></svg><span>{% translate 'Приложение' %}</span></a>
     {% if user.is_staff %}<a href="{% url 'dashboard' %}" class="{% if name == 'dashboard' or name == 'csv_import' %}active{% endif %}"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg><span>{% translate 'Управление' %}</span></a>{% endif %}
 </nav>{% endwith %}{% endif %}
+{% endblock %}
 {% block extra_scripts %}{% endblock %}
 </body></html>

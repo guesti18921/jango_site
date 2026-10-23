@@ -1,73 +1,31 @@
-{% extends 'hi/base.html' %}{% load i18n %}
-
-{% block title %}{% translate "Админ-панель" %}{% endblock %}
-
+{% extends 'hi/management_base.html' %}{% load i18n %}
+{% block title %}{{ section_title }} — МойСайт{% endblock %}
 {% block content %}
-<div class="dashboard-header">
-    <h1>{% translate "Админ-панель" %}</h1>
-    <p>{% translate "Вы вошли как" %} <b>{{ user.username }}</b>.</p>
-</div>
-
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-value">{{ total_media }}</div>
-        <div class="stat-label">{% translate "Медиафайлов" %}</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-value">{{ total_users }}</div>
-        <div class="stat-label">{% translate "Пользователей" %}</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-value">{{ total_staff }}</div>
-        <div class="stat-label">{% translate "Администраторов" %}</div>
-    </div>
-</div>
-
-<div class="dashboard-actions">
-    <a href="/django-admin/hi/mediacontent/add/" class="btn-primary">{% translate "Добавить медиа" %}</a>
-    <a href="/django-admin/hi/mediacontent/" class="btn-secondary">{% translate "Все медиа" %}</a>
-    <a href="/django-admin/auth/user/" class="btn-secondary">{% translate "Все пользователи" %}</a>
-    <a href="/django-admin/" class="btn-secondary">{% translate "Django-админка" %}</a>
-</div>
-
-<section class="csv-banner">
-    <div><span class="eyebrow">{% translate "РАБОТА С ДАННЫМИ" %}</span><h2>{% translate "Медиаколлекция в CSV" %}</h2><p>{% translate "Скачайте данные или загрузите изменения из таблицы." %}</p></div>
-    <div class="csv-actions">
-        {% if perms.hi.view_mediacontent %}<a class="btn-secondary" href="{% url 'csv_export' %}">{% translate "↓ Экспорт CSV" %}</a>{% endif %}
-        {% if perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<a class="btn-primary" href="{% url 'csv_import' %}">{% translate "↑ Импорт CSV" %}</a>{% endif %}
-    </div>
-</section>
-<div class="dashboard-columns">
-    <div class="dashboard-block">
-        <h3>{% translate "Последние медиа" %}</h3>
-        {% if recent_media %}
-            <ul class="dash-list">
-                {% for m in recent_media %}
-                    <li>
-                        <strong>{{ m.title }}</strong>
-                        <span class="muted">{{ m.created_at|date:"d.m.Y H:i" }}</span>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="muted">{% translate "Пока пусто." %}</p>
-        {% endif %}
-    </div>
-
-    <div class="dashboard-block">
-        <h3>{% translate "Новые пользователи" %}</h3>
-        {% if recent_users %}
-            <ul class="dash-list">
-                {% for u in recent_users %}
-                    <li>
-                        <strong>{{ u.username }}</strong>
-                        <span class="muted">{{ u.date_joined|date:"d.m.Y" }}</span>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="muted">{% translate "Пока пусто." %}</p>
-        {% endif %}
-    </div>
-</div>
+<div class="management-header"><div><h1>{{ section_title }}</h1><p>{% translate 'Всё важное о вашей коллекции.' %}</p></div>{% if perms.hi.add_mediacontent %}<a class="btn-primary" href="{% url 'admin:hi_mediacontent_add' %}"><span aria-hidden="true">+</span> {% translate 'Добавить пост' %}</a>{% endif %}</div>
+<div class="management-layout"><div class="management-primary">
+{% if section == 'overview' %}<div class="management-stats">
+{% if view_posts %}<a href="?section=posts" class="management-stat"><svg class="icon" aria-hidden="true"><use href="#i-feed"/></svg><div><span>{% translate 'Публикации' %}</span><strong>{{ counts.total }}</strong></div></a>{% endif %}
+{% if view_comments %}<a href="?section=comments" class="management-stat"><svg class="icon" aria-hidden="true"><use href="#i-comment"/></svg><div><span>{% translate 'Комментарии' %}</span><strong>{{ total_comments }}</strong></div></a>{% endif %}
+{% if view_users %}<a href="?section=users" class="management-stat"><svg class="icon" aria-hidden="true"><use href="#i-profile"/></svg><div><span>{% translate 'Пользователи' %}</span><strong>{{ total_users }}</strong></div></a>{% endif %}
+</div>{% endif %}
+<section class="management-panel">
+<div class="panel-heading"><h2>{% if section == 'overview' %}{% translate 'Последние публикации' %}{% else %}{{ section_title }}{% endif %}</h2>{% if section == 'users' and perms.auth.add_user %}<a class="text-action" href="{% url 'admin:auth_user_add' %}">{% translate 'Добавить пользователя' %} +</a>{% endif %}</div>
+{% if view_posts or section == 'comments' or section == 'users' %}
+{% if section == 'overview' or section == 'posts' %}<nav class="management-tabs" aria-label="{% translate 'Статус публикации' %}"><a href="?{{ tab_query }}" class="{% if not status %}active{% endif %}">{% translate 'Все' %} <span>{{ counts.total }}</span></a><a href="?{{ tab_query }}&amp;status=published" class="{% if status == 'published' %}active{% endif %}">{% translate 'Опубликовано' %} <span>{{ counts.published }}</span></a><a href="?{{ tab_query }}&amp;status=draft" class="{% if status == 'draft' %}active{% endif %}">{% translate 'Черновики' %} <span>{{ counts.drafts }}</span></a></nav>{% endif %}
+<form method="get" class="management-toolbar" role="search"><input type="hidden" name="section" value="{{ section }}"><input type="hidden" name="layout" value="{{ layout }}"><label class="management-search"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input name="q" value="{{ q }}" placeholder="{% translate 'Поиск…' %}" aria-label="{% translate 'Поиск' %}"></label>{% if section == 'overview' or section == 'posts' %}<select name="status" aria-label="{% translate 'Статус публикации' %}"><option value="">{% translate 'Все статусы' %}</option><option value="published" {% if status == 'published' %}selected{% endif %}>{% translate 'Опубликовано' %}</option><option value="draft" {% if status == 'draft' %}selected{% endif %}>{% translate 'Черновики' %}</option></select>{% endif %}<button class="btn-secondary" type="submit">{% translate 'Найти' %}</button>{% if q or status %}<a class="text-action" href="?section={{ section }}">{% translate 'Сбросить' %}</a>{% endif %}</form>
+{% if section == 'comments' %}<div class="management-comment-list">{% for comment in page %}{% include 'hi/management_comment.html' %}{% empty %}<p class="management-empty">{% translate 'Ничего не найдено.' %}</p>{% endfor %}</div>
+{% elif section == 'users' %}<div class="management-table-scroll"><table class="management-table"><thead><tr><th>{% translate 'Пользователь' %}</th><th>Email</th><th>{% translate 'Статус' %}</th><th>{% translate 'Дата регистрации' %}</th></tr></thead><tbody>{% for account in page %}<tr><td><a class="table-title" href="{% url 'admin:auth_user_change' account.pk %}"><span class="avatar-letter small">{{ account.username|first|upper }}</span>{{ account.username }}</a></td><td>{{ account.email|default:'—' }}</td><td><span class="status-pill {% if not account.is_active %}draft{% endif %}">{% if not account.is_active %}{% translate 'Неактивен' %}{% elif account.is_staff %}{% translate 'Персонал' %}{% else %}{% translate 'Активен' %}{% endif %}</span></td><td>{{ account.date_joined|date:'d.m.Y' }}</td></tr>{% empty %}<tr><td colspan="4" class="management-empty">{% translate 'Ничего не найдено.' %}</td></tr>{% endfor %}</tbody></table></div>
+{% else %}
+<div class="management-view-toggle"><span>{{ page.paginator.count }} {% translate 'найдено' %}</span><div><a class="{% if layout == 'list' %}active{% endif %}" href="?{{ page_query }}&amp;layout=list" aria-label="{% translate 'Список' %}" {% if layout == 'list' %}aria-current="true"{% endif %}><svg class="icon" aria-hidden="true"><use href="#i-feed"/></svg></a><a class="{% if layout == 'grid' %}active{% endif %}" href="?{{ page_query }}&amp;layout=grid" aria-label="{% translate 'Карточки' %}" {% if layout == 'grid' %}aria-current="true"{% endif %}><svg class="icon" aria-hidden="true"><use href="#i-app"/></svg></a></div></div>
+<form method="post" id="bulk-form">{% csrf_token %}<div class="management-table-scroll"><table class="management-table {% if layout == 'grid' %}management-grid{% endif %}"><thead><tr><th class="selection-cell">{% if perms.hi.change_mediacontent %}<input type="checkbox" data-select-all aria-label="{% translate 'Выбрать все на странице' %}">{% endif %}</th><th>{% translate 'Материал' %}</th><th>{% translate 'Автор' %}</th><th>{% translate 'Статус' %}</th><th>{% translate 'Дата' %}</th><th><span class="visually-hidden">{% translate 'Действия' %}</span></th></tr></thead><tbody>{% for item in page %}<tr><td class="selection-cell">{% if perms.hi.change_mediacontent %}<input type="checkbox" name="selected" value="{{ item.pk }}" aria-label="{% translate 'Выбрать' %}: {{ item.title }}">{% endif %}</td><td><a class="table-title" href="{% url 'admin:hi_mediacontent_change' item.pk %}">{% if item.image %}<img class="management-thumb" src="{{ item.image.url }}" alt="" loading="lazy">{% else %}<span class="management-thumb no-image">▧</span>{% endif %}<span><strong>{{ item.title }}</strong><small>{{ item.comment_count }} <svg class="inline-icon" aria-hidden="true"><use href="#i-comment"/></svg> · ★ {{ item.average_rating|floatformat:1|default:'—' }}</small></span></a></td><td>{% if item.author %}{{ item.author.first_name|default:item.author.username }}{% else %}МойСайт{% endif %}</td><td><span class="status-pill {% if not item.is_published %}draft{% endif %}">{% if item.is_published %}{% translate 'Опубликовано' %}{% else %}{% translate 'Черновик' %}{% endif %}</span></td><td><time datetime="{{ item.created_at|date:'c' }}">{{ item.created_at|date:'d.m.Y' }}<small>{{ item.created_at|date:'H:i' }}</small></time></td><td><a class="row-action" href="{% url 'admin:hi_mediacontent_change' item.pk %}" aria-label="{% translate 'Открыть' %}: {{ item.title }}">↗</a></td></tr>{% empty %}<tr><td colspan="6" class="management-empty">{% translate 'Ничего не найдено.' %}</td></tr>{% endfor %}</tbody></table></div>
+{% if perms.hi.change_mediacontent and page %}<div class="management-bulk"><select name="action" aria-label="{% translate 'Действие с выбранными' %}" required><option value="">{% translate 'Изменить выбранные' %}</option><option value="publish">{% translate 'Опубликовать' %}</option><option value="draft">{% translate 'В черновики' %}</option></select><button class="btn-secondary" type="submit">{% translate 'Применить' %}</button><output data-selected-count aria-live="polite">0</output></div>{% endif %}</form>
+{% endif %}
+{% if page.has_other_pages %}<nav class="management-pagination" aria-label="{% translate 'Страницы' %}">{% if page.has_previous %}<a href="?{{ page_query }}&amp;page={{ page.previous_page_number }}" aria-label="{% translate 'Предыдущая страница' %}">←</a>{% endif %}<span>{{ page.number }} / {{ page.paginator.num_pages }}</span>{% if page.has_next %}<a href="?{{ page_query }}&amp;page={{ page.next_page_number }}" aria-label="{% translate 'Следующая страница' %}">→</a>{% endif %}</nav>{% endif %}
+{% else %}<p class="management-empty">{% translate 'У вас пока нет прав на просмотр публикаций. Обратитесь к администратору.' %}</p>{% endif %}
+</section></div>
+<aside class="management-secondary">
+{% if view_comments %}<section class="management-panel"><div class="panel-heading"><h2>{% translate 'Новые комментарии' %}</h2><a class="text-action" href="?section=comments">{% translate 'Все' %} →</a></div>{% for comment in recent_comments %}{% include 'hi/management_comment.html' %}{% empty %}<p class="management-empty">{% translate 'Пока нет комментариев.' %}</p>{% endfor %}</section>{% endif %}
+{% if perms.hi.view_mediacontent or perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<section class="management-panel management-transfer"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><h2>{% translate 'Перенос коллекции' %}</h2><p>{% translate 'Импортируйте или экспортируйте данные публикаций в формате CSV.' %}</p><div>{% if perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<a class="btn-secondary" href="{% url 'csv_import' %}">{% translate '↑ Импорт CSV' %}</a>{% endif %}{% if perms.hi.view_mediacontent %}<a class="btn-secondary" href="{% url 'csv_export' %}">{% translate '↓ Экспорт CSV' %}</a>{% endif %}</div></section>{% endif %}
+<section class="management-panel management-transfer"><h2>{% translate 'Дополнительно' %}</h2><p>{% translate 'Все модели, оценки, группы и права доступа.' %}</p><a class="text-action" href="{% url 'admin:app_list' 'hi' %}">{% translate 'Все разделы' %} →</a>{% if perms.auth.view_group or perms.auth.change_group %}<a class="text-action" href="{% url 'admin:auth_group_changelist' %}">{% translate 'Группы и права' %} →</a>{% endif %}</section>
+</aside></div>
 {% endblock %}

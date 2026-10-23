@@ -124,23 +124,7 @@ def logout_view(request):
 
 # ============ АДМИН-ПАНЕЛЬ ============
 
-@user_passes_test(_is_staff, login_url='staff-login')
-def dashboard(request):
-    """Кастомная админ-панель — доступна только is_staff"""
-    total_media = MediaContent.objects.count()
-    total_users = User.objects.count()
-    total_staff = User.objects.filter(is_staff=True).count()
-    recent_media = MediaContent.objects.order_by('-created_at')[:5]
-    recent_users = User.objects.order_by('-date_joined')[:5]
-
-    context = {
-        'total_media': total_media,
-        'total_users': total_users,
-        'total_staff': total_staff,
-        'recent_media': recent_media,
-        'recent_users': recent_users,
-    }
-    return render(request, 'hi/dashboard.html', context)
+from .dashboard_views import dashboard
 
 
 # ============ СТРАНИЦА-ТЕСТ API ============

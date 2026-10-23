@@ -152,3 +152,8 @@ class RatingAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'post__title')
     list_select_related = ('user', 'post')
     readonly_fields = ('updated_at',)
+
+
+# Use the editorial workspace as the admin home; native model URLs stay available.
+from .dashboard_views import dashboard
+admin.site.index = dashboard
