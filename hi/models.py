@@ -1,5 +1,8 @@
 from django.utils.translation import gettext_lazy
 import uuid
+from pathlib import PurePosixPath
+from django.core.validators import FileExtensionValidator
+from .media_files import EXTENSIONS, MIME_TYPES, extension, media_kind
 
 from django.db import models
 from django.db.models.signals import post_save
@@ -35,7 +38,7 @@ class CSVImportJob(models.Model):
 # --- Модель для медиаконтента ---
 class MediaContent(models.Model):
     title = models.CharField(max_length=200, verbose_name=gettext_lazy("Название контента"))
-    image = models.ImageField(upload_to='uploads/', verbose_name=gettext_lazy("Изображение"))
+    image = models.FileField(upload_to='uploads/', validators=[FileExtensionValidator(allowed_extensions=EXTENSIONS)], verbose_name=gettext_lazy("Медиафайл"), help_text=gettext_lazy("Фото, GIF, видео или аудио. До 100 МБ. Воспроизведение зависит от браузера и кодека."))
     description = models.TextField(blank=True, default='', verbose_name=gettext_lazy("Описание"))
     is_published = models.BooleanField(default=True, verbose_name=gettext_lazy("Опубликовано"))
     author = models.ForeignKey(
@@ -48,6 +51,18 @@ class MediaContent(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=gettext_lazy("Дата добавления"))
     updated_at = models.DateTimeField(auto_now=True, verbose_name=gettext_lazy("Дата обновления"))
+
+    @property
+    def media_kind(self):
+        return media_kind(self.image.name)
+
+    @property
+    def media_mime(self):
+        return MIME_TYPES.get(extension(self.image.name), '')
+
+    @property
+    def media_name(self):
+        return PurePosixPath(self.image.name).name
 
     def __str__(self):
         return self.title

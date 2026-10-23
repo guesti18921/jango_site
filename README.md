@@ -249,3 +249,10 @@ python manage.py runlan --ip 192.168.1.10
 — для модерации. У суперпользователя все права есть автоматически. Изменения статуса
 и удаления из нового рабочего стола записываются в журнал Django-админки. Формы
 защищены CSRF. Рабочий стол и редакторы поддерживают RU / EN и узкие экраны.
+
+
+### Media posts and avatars
+
+Posts accept photos and animated GIF/WebP, video (MP4, WebM, MOV, MKV, AVI, OGV, MPEG, 3GP) and audio (MP3, WAV, OGG/Opus, M4A, AAC, FLAC, WMA, AIFF), up to 100 MB per file. Actual playback depends on browser/codec support; video and audio include a download link. HEIC/HEIF and TIFF are available as downloads rather than broken inline images. Native Apple Live Photo pairs are not merged; upload the exported video or GIF to show motion. Files are preserved without transcoding.
+
+The existing `image` database column and CSV/API field remain for compatibility and now refer to any supported media file. The API adds `media_kind`, `media_mime`, and `media_name`. Run `python manage.py migrate` after updating. Profile GIF avatars remain animated, and the current avatar is displayed in discussions and the management workspace.

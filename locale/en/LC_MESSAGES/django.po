@@ -1359,6 +1359,37 @@ msgstr "Access denied. This sign-in page is for administrators."
 msgid "Профиль обновлён!"
 msgstr "Profile updated!"
 
+msgid "Медиафайл"
+msgstr "Media file"
+
+msgid ""
+"Фото, GIF, видео или аудио. До 100 МБ. Воспроизведение зависит от браузера и"
+" кодека."
+msgstr ""
+"Photo, GIF, video or audio. Up to 100 MB. Playback depends on your browser "
+"and codec."
+
+msgid "Неподдерживаемый формат медиафайла."
+msgstr "Unsupported media format."
+
+msgid "Размер медиафайла не должен превышать 100 МБ."
+msgstr "Media files must not exceed 100 MB."
+
+msgid "Файл не является корректным изображением."
+msgstr "The file is not a valid image."
+
+msgid "Содержимое файла не соответствует выбранному формату."
+msgstr "File contents do not match the selected format."
+
+msgid "Скачать видео"
+msgstr "Download video"
+
+msgid "Скачать аудио"
+msgstr "Download audio"
+
+msgid "Этот формат можно скачать и открыть на устройстве."
+msgstr "Download this format to open it on your device."
+
 #~ msgid "Админ-панель"
 #~ msgstr "Management"
 

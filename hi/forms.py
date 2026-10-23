@@ -2,7 +2,8 @@ from django.utils.translation import gettext_lazy
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, SetPasswordForm
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, MediaContent
+from .media_files import EXTENSIONS, validate_upload
 
 
 class RecoveryRequestForm(forms.Form):
@@ -78,3 +79,17 @@ class RatingForm(forms.Form):
         label=gettext_lazy('Ваша оценка'), choices=[(n, f'{n} ★') for n in range(1, 6)], coerce=int,
         widget=forms.RadioSelect,
     )
+
+
+class MediaContentAdminForm(forms.ModelForm):
+    class Meta:
+        model = MediaContent
+        fields = '__all__'
+        widgets = {'image': forms.ClearableFileInput(attrs={'accept': ','.join('.'+ext for ext in EXTENSIONS)})}
+
+    def clean_image(self):
+        from django.core.files.uploadedfile import UploadedFile
+        value = self.cleaned_data.get('image')
+        if isinstance(value, UploadedFile):
+            validate_upload(value)
+        return value

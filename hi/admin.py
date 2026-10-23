@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy
 from django.contrib import admin
+from .forms import MediaContentAdminForm
 from .models import (
     Developer, Skill, Experience, Project, Education,
     Company, Stat, CompanyValue, TeamMember, HistoryItem,
@@ -12,6 +13,7 @@ from .models import (
 # ============================================
 @admin.register(MediaContent)
 class MediaContentAdmin(admin.ModelAdmin):
+    form = MediaContentAdminForm
     change_list_template = 'admin/hi/mediacontent/change_list.html'
     list_display = ('title', 'author', 'is_published', 'created_at', 'updated_at')
     list_editable = ('is_published',)

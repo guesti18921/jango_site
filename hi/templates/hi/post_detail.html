@@ -3,7 +3,7 @@
 {% block content %}
 <a href="{% url 'home' %}" class="post-back">{% translate "← К медиаколлекции" %}</a>
 <article class="post-detail">
-    <div class="post-picture"><img src="{{ post.image.url }}" alt="{{ post.title }}" style="view-transition-name: post-{{ post.pk }}"></div>
+    <div class="post-picture">{% include 'hi/media_player.html' with media=post %}</div>
     <div class="post-copy">
         <span class="eyebrow">{% if post.is_published %}{% translate "ИЗ КОЛЛЕКЦИИ" %}{% else %}{% translate "ЧЕРНОВИК · ВИДЕН ПЕРСОНАЛУ" %}{% endif %}</span>
         <h1>{{ post.title }}</h1>
@@ -36,7 +36,7 @@
         <div class="comment-list">
             {% for comment in comments %}
                 <article class="comment-card">
-                    <div class="comment-heading"><div class="comment-avatar" aria-hidden="true">{{ comment.user.username|first|upper }}</div><div><h3>{{ comment.user.username }}</h3><time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:'d.m.Y H:i' }}</time></div></div>
+                    <div class="comment-heading">{% include 'hi/avatar.html' with account=comment.user avatar_class='comment-avatar' %}<div><h3>{{ comment.user.username }}</h3><time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:'d.m.Y H:i' }}</time></div></div>
                     <p class="comment-text">{{ comment.text|linebreaksbr }}</p>
                     {% if comment.user_id == user.pk or can_moderate %}<form method="post" action="{% url 'delete_comment' comment.pk %}" class="comment-delete">{% csrf_token %}<button type="submit">{% translate "Удалить комментарий" %}</button></form>{% endif %}
                 </article>

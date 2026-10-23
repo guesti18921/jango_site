@@ -17,12 +17,21 @@
         if (value !== undefined) node.textContent = value;
         return node;
     }
+    function mediaElement(item, preview=false) {
+        if (!item.image) return null;
+        const kind=item.media_kind || 'image';
+        if (kind==='image') {const image=element('img',preview?'card-image':'detail-image');image.src=item.image;image.alt=preview?'':item.title;image.loading='lazy';return image;}
+        if (preview) return element('span','media-preview',kind==='audio'?'♫':'▶');
+        const wrapper=element('div','media-player');
+        if (kind==='audio'||kind==='video') {const player=element(kind,'');player.controls=true;player.preload='metadata';player.setAttribute('aria-label',item.title);if(kind==='video')player.playsInline=true;player.src=item.image;wrapper.append(player);}
+        const link=element('a','media-download',item.media_name || item.title);link.href=item.image;link.download='';wrapper.append(link);return wrapper;
+    }
     function formatDate(value) { return new Date(value).toLocaleDateString(locale, {day:'numeric',month:'short',year:'numeric'}); }
     function showList() { if (viewDetail) viewDetail.hidden = true; viewList.hidden = false; }
     function openDetail(item) {
         if (apiTest) { location.href = '/posts/' + Number(item.id) + '/'; return; }
         detailBody.replaceChildren();
-        if (item.image) { const image=element('img','detail-image'); image.src=item.image; image.alt=item.title; detailBody.append(image); }
+        const media=mediaElement(item);if(media)detailBody.append(media);
         detailBody.append(element('h2','detail-title',item.title));
         const meta=element('div','detail-meta'); meta.append(element('span','',item.author?.username || 'МойСайт'),element('span','',formatDate(item.created_at))); detailBody.append(meta);
         detailBody.append(element('p','detail-description',item.description || ''));
@@ -32,7 +41,7 @@
     }
     function appendCard(item) {
         const card=element('button','card'); card.type='button'; card.setAttribute('aria-label',item.title);
-        if(item.image){const image=element('img','card-image');image.src=item.image;image.alt='';image.loading='lazy';card.append(image);}
+        const media=mediaElement(item,true);if(media)card.append(media);
         const body=element('span','card-body');body.append(element('span','card-title',item.title),element('span','card-date',formatDate(item.created_at)));
         const summary=element('span','card-summary');summary.append(element('span','', '★ '+(item.rating_count ? Number(item.average_rating).toLocaleString(locale,{maximumFractionDigits:1}) : '—')),element('span','',t('Комментарии')+' · '+(item.comment_count || 0)));body.append(summary);card.append(body);card.addEventListener('click',()=>openDetail(item));grid.append(card);
     }

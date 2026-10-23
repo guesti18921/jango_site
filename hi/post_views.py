@@ -20,7 +20,7 @@ def visible_posts(user):
 def render_post(request, post, comment_form=None, rating_form=None, status=200):
     summary = post.ratings.aggregate(average=Avg('value'), total=Count('pk'))
     own_rating = post.ratings.filter(user=request.user).first()
-    comments = Paginator(post.comments.select_related('user'), 20).get_page(request.GET.get('page'))
+    comments = Paginator(post.comments.select_related('user__profile'), 20).get_page(request.GET.get('page'))
     return render(request, 'hi/post_detail.html', {
         'post': post, 'summary': summary, 'own_rating': own_rating, 'comments': comments,
         'comment_form': comment_form if comment_form is not None else CommentForm(),

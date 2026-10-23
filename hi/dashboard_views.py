@@ -79,8 +79,8 @@ def dashboard(request):
     counts = MediaContent.objects.aggregate(total=Count('pk'), published=Count('pk', filter=Q(is_published=True)), drafts=Count('pk', filter=Q(is_published=False))) if view_posts else {}
     if status in ('published', 'draft'):
         posts = posts.filter(is_published=status == 'published')
-    comments = Comment.objects.select_related('user', 'post').order_by('-created_at', '-pk')
-    users = User.objects.order_by('-date_joined', '-pk')
+    comments = Comment.objects.select_related('user__profile', 'post').order_by('-created_at', '-pk')
+    users = User.objects.select_related('profile').order_by('-date_joined', '-pk')
     if q and section == 'comments':
         comments = comments.filter(Q(text__icontains=q) | Q(user__username__icontains=q) | Q(post__title__icontains=q))
     if q and section == 'users':

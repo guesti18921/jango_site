@@ -7,7 +7,7 @@ class MediaContentSerializer(serializers.ModelSerializer):
     rating_count = serializers.IntegerField(read_only=True)
     comment_count = serializers.IntegerField(read_only=True)
     # Абсолютный URL картинки: http://127.0.0.1:8000/media/uploads/foo.jpg
-    image = serializers.ImageField(use_url=True)
+    image = serializers.FileField(use_url=True)
 
     # Имя автора строкой (а не id), удобно для мобильного приложения
     author = serializers.SerializerMethodField()
@@ -15,7 +15,7 @@ class MediaContentSerializer(serializers.ModelSerializer):
     class Meta:
         model = MediaContent
         fields = [
-            'id', 'average_rating', 'rating_count', 'comment_count',
+            'id', 'media_kind', 'media_mime', 'media_name', 'average_rating', 'rating_count', 'comment_count',
             'title',
             'description',
             'image',
