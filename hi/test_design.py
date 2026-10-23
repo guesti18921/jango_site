@@ -106,3 +106,21 @@ class BilingualDesignTests(TestCase):
         self.assertContains(response, 'action="/i18n/setlang/"')
         self.assertContains(response, 'csrfmiddlewaretoken')
         self.assertContains(response, 'class="mobile-nav"')
+
+    def test_posts_without_author_render_for_staff_and_regular_users(self):
+        post = MediaContent.objects.create(
+            title='Материал без автора', image='uploads/legacy.jpg',
+            author=None, is_published=True,
+        )
+        reader = User.objects.create_user('reader', password='Reader!Local872')
+        for account in [self.user, reader]:
+            self.client.force_login(account)
+            for language in ['ru', 'en']:
+                self.client.cookies['django_language'] = language
+                with self.subTest(account=account.username, language=language):
+                    self.assertContains(self.client.get('/'), post.title)
+                    self.assertContains(self.client.get('/'), 'МойСайт')
+                    self.assertContains(
+                        self.client.get(reverse('post_detail', args=[post.pk])),
+                        post.title,
+                    )
