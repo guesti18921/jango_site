@@ -1,0 +1,19 @@
+{% extends 'hi/base.html' %}
+{% block content %}
+<div class="auth-layout">
+    <aside class="auth-story">
+        <span class="eyebrow">ВАШЕ ЛИЧНОЕ ПРОСТРАНСТВО</span>
+        <h1>Всё важное.<br>В одном месте.</h1>
+        <p>Сохраняйте моменты, находите вдохновение и делитесь тем, что вам близко.</p>
+        <div class="story-art" aria-hidden="true">
+            <div class="art-orbit"></div><div class="art-tile art-tile-back"></div>
+            <div class="art-tile art-tile-front"><span class="art-sun"></span><span class="art-mountain"></span></div>
+            <span class="art-caption">Маленькая коллекция больших идей</span>
+        </div>
+        <span class="story-footnote"><span class="status-dot"></span> Контент, который объединяет</span>
+    </aside>
+    <section class="auth-panel" aria-labelledby="auth-heading">
+        {% block auth_content %}{% endblock %}
+    </section>
+</div>
+{% endblock %}

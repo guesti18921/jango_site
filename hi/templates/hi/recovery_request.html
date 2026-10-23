@@ -1,0 +1,14 @@
+{% extends 'hi/auth_base.html' %}
+{% block title %}Восстановление доступа — МойСайт{% endblock %}
+{% block auth_content %}
+<ol class="recovery-steps" aria-label="Этапы восстановления"><li class="current" aria-current="step">01 · Аккаунт</li><li>02 · Новый пароль</li></ol>
+<h2 id="auth-heading">Вернём вам доступ</h2>
+<p class="auth-description">Укажите логин или email вашего аккаунта.</p>
+<form method="post" class="auth-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn-primary">Получить код <span aria-hidden="true">→</span></button>
+</form>
+<div class="recovery-note"><strong>Без писем и ссылок</strong><p>Код появится в консоли, где запущен сайт. Если сервер у администратора, попросите его передать вам код.</p></div>
+<p class="auth-footer"><a href="{% url 'login' %}">← Вернуться ко входу</a></p>
+{% endblock %}
