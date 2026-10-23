@@ -30,6 +30,13 @@
     <a href="/django-admin/" class="btn-secondary">Django-админка</a>
 </div>
 
+<section class="csv-banner">
+    <div><span class="eyebrow">РАБОТА С ДАННЫМИ</span><h2>Медиаколлекция в CSV</h2><p>Скачайте данные или загрузите изменения из таблицы.</p></div>
+    <div class="csv-actions">
+        {% if perms.hi.view_mediacontent %}<a class="btn-secondary" href="{% url 'csv_export' %}">↓ Экспорт CSV</a>{% endif %}
+        {% if perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<a class="btn-primary" href="{% url 'csv_import' %}">↑ Импорт CSV</a>{% endif %}
+    </div>
+</section>
 <div class="dashboard-columns">
     <div class="dashboard-block">
         <h3>Последние медиа</h3>

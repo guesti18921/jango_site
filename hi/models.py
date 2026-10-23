@@ -21,6 +21,16 @@ class RecoveryState(models.Model):
     consumed = models.BooleanField(default=True)
 
 
+class CSVImportJob(models.Model):
+    """Short-lived, one-use staging area for an administrator's CSV preview."""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    csv_text = models.TextField()
+    update_existing = models.BooleanField(default=True)
+    expires_at = models.DateTimeField()
+    consumed = models.BooleanField(default=False)
+
+
 # --- Модель для медиаконтента ---
 class MediaContent(models.Model):
     title = models.CharField(max_length=200, verbose_name="Название контента")

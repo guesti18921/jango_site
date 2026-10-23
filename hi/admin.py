@@ -11,6 +11,7 @@ from .models import (
 # ============================================
 @admin.register(MediaContent)
 class MediaContentAdmin(admin.ModelAdmin):
+    change_list_template = 'admin/hi/mediacontent/change_list.html'
     list_display = ('title', 'author', 'is_published', 'created_at', 'updated_at')
     list_editable = ('is_published',)
     list_filter = ('is_published', 'created_at', 'author')

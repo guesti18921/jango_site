@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from hi import views, recovery_views
+from hi import views, recovery_views, csv_views
 
 urlpatterns = [
     # Django-админка (можно оставить на отдельный URL, например /django-admin/)
@@ -24,6 +24,8 @@ urlpatterns = [
     # Админ-панель
     path('staff-login/', views.staff_login_view, name='staff-login'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/csv/export/', csv_views.export_media, name='csv_export'),
+    path('dashboard/csv/import/', csv_views.import_media, name='csv_import'),
 
     # API для мобильного приложения
     path('api/', include('hi.api.urls')),
