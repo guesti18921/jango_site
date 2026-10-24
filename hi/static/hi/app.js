@@ -117,7 +117,7 @@
     detailBody.append(element("h2", "detail-title", item.title));
     const meta = element("div", "detail-meta");
     meta.append(
-      element("span", "", item.author?.username || "МойСайт"),
+      element("span", "", item.author?.username || "VEYRA"),
       element("span", "", formatDate(item.created_at)),
     );
     detailBody.append(meta);

@@ -137,7 +137,7 @@ LOGOUT_REDIRECT_URL = 'login'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-DEFAULT_FROM_EMAIL = 'noreply@mysite.local'
+DEFAULT_FROM_EMAIL = 'VEYRA <noreply@veyra.local>'
 
 
 

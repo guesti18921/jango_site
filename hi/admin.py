@@ -9,6 +9,10 @@ from .models import (
 )
 
 
+admin.site.site_header = 'VEYRA'
+admin.site.site_title = 'VEYRA'
+admin.site.index_title = gettext_lazy('Управление')
+
 # ============================================
 # Медиа-контент (для API мобильного приложения)
 # ============================================

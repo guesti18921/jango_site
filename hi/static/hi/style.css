@@ -153,18 +153,6 @@ button:disabled {
 .logo:hover {
   text-decoration: none;
 }
-.brand-mark {
-  width: 25px;
-  height: 25px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3px;
-  flex-shrink: 0;
-}
-.brand-mark i {
-  background: var(--accent);
-  border-radius: 2px;
-}
 .sidebar > .logo {
   margin: 4px 13px 50px;
 }

@@ -1,25 +1,25 @@
 {
-  "name": "МойСайт",
-  "short_name": "МойСайт",
-  "description": "Медиа-контент сайта",
+  "name": "VEYRA",
+  "short_name": "VEYRA",
+  "description": "Photo, film & sound — VEYRA",
   "start_url": "/app/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#171917",
-  "theme_color": "#171917",
+  "background_color": "#101511",
+  "theme_color": "#101511",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%23111827'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-size='90' font-weight='700' fill='white'%3EM%3C/text%3E%3C/svg%3E",
+      "src": "brand/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%23111827'/%3E%3Ctext x='50%25' y='54%25' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-size='240' font-weight='700' fill='white'%3EM%3C/text%3E%3C/svg%3E",
+      "src": "brand/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }

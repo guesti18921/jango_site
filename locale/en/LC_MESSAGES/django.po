@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-10-23 19:05+0300\n"
 "PO-Revision-Date: 2026-10-23 18:00+0300\n"
-"Last-Translator: MySite\n"
+"Last-Translator: VEYRA\n"
 "Language-Team: English\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
@@ -522,8 +522,8 @@ msgstr "API preview"
 
 #: hi/templates/hi/api-test.html:2 hi/templates/hi/app.html:2
 #: hi/templates/hi/index.html:2 hi/templates/hi/post_detail.html:2
-msgid "— МойСайт"
-msgstr "— МойСайт"
+msgid "— VEYRA"
+msgstr "— VEYRA"
 
 #: hi/templates/hi/api-test.html:5
 msgid "Данные медиаколлекции из API приложения."
@@ -552,8 +552,8 @@ msgid "Приложение"
 msgstr "App"
 
 #: hi/templates/hi/app.html:5
-msgid "МойСайт / APP"
-msgstr "МойСайт / APP"
+msgid "VEYRA / APP"
+msgstr "VEYRA / APP"
 
 #: hi/templates/hi/app.html:5
 msgid "Ваша коллекция в компактном формате."
@@ -634,8 +634,8 @@ msgid "Мобильная навигация"
 msgstr "Mobile navigation"
 
 #: hi/templates/hi/csv_import.html:2
-msgid "Импорт CSV — МойСайт"
-msgstr "Import CSV — МойСайт"
+msgid "Импорт CSV — VEYRA"
+msgstr "Import CSV — VEYRA"
 
 #: hi/templates/hi/csv_import.html:5
 msgid "РАБОТА С ДАННЫМИ"
@@ -1026,8 +1026,8 @@ msgid "Язык интерфейса"
 msgstr "Interface language"
 
 #: hi/templates/hi/login.html:2
-msgid "Вход — МойСайт"
-msgstr "Sign in — МойСайт"
+msgid "Вход — VEYRA"
+msgstr "Sign in — VEYRA"
 
 #: hi/templates/hi/login.html:4
 msgid "С ВОЗВРАЩЕНИЕМ"
@@ -1216,8 +1216,8 @@ msgid "Отмена"
 msgstr "Cancel"
 
 #: hi/templates/hi/recovery_confirm.html:2
-msgid "Новый пароль — МойСайт"
-msgstr "New password — МойСайт"
+msgid "Новый пароль — VEYRA"
+msgstr "New password — VEYRA"
 
 #: hi/templates/hi/recovery_confirm.html:4
 #: hi/templates/hi/recovery_request.html:4
@@ -1267,8 +1267,8 @@ msgid "Ко входу"
 msgstr "Sign in"
 
 #: hi/templates/hi/recovery_request.html:2
-msgid "Восстановление доступа — МойСайт"
-msgstr "Recover access — МойСайт"
+msgid "Восстановление доступа — VEYRA"
+msgstr "Recover access — VEYRA"
 
 #: hi/templates/hi/recovery_request.html:5
 msgid "Вернём вам доступ"
@@ -1299,8 +1299,8 @@ msgid "← Вернуться ко входу"
 msgstr "← Back to sign in"
 
 #: hi/templates/hi/register.html:2
-msgid "Регистрация — МойСайт"
-msgstr "Create an account — МойСайт"
+msgid "Регистрация — VEYRA"
+msgstr "Create an account — VEYRA"
 
 #: hi/templates/hi/register.html:4
 msgid "НАЧНИТЕ СВОЮ ИСТОРИЮ"
@@ -1319,8 +1319,8 @@ msgid "Уже есть аккаунт?"
 msgstr "Already have an account?"
 
 #: hi/templates/hi/staff_login.html:2
-msgid "Вход для администратора — МойСайт"
-msgstr "Administrator sign in — МойСайт"
+msgid "Вход для администратора — VEYRA"
+msgstr "Administrator sign in — VEYRA"
 
 #: hi/templates/hi/staff_login.html:4
 msgid "УПРАВЛЕНИЕ САЙТОМ"
@@ -1732,6 +1732,3 @@ msgstr ""
 
 #~ msgid "Последние комментарии"
 #~ msgstr "Recent comments"
-
-#~ msgid "Далее"
-#~ msgstr "Next"

@@ -1,5 +1,5 @@
 {% extends 'hi/base.html' %}{% load i18n %}
-{% block title %}{{ post.title }} {% translate "— МойСайт" %}{% endblock %}
+{% block title %}{{ post.title }} {% translate "— VEYRA" %}{% endblock %}
 {% block content %}
 <a href="{% url 'home' %}" class="post-back">{% translate "← К медиаколлекции" %}</a>
 <article class="post-detail post-detail--{{ post.media_kind }}">
@@ -7,7 +7,7 @@
     <div class="post-copy">
         <div class="post-heading"><span class="eyebrow">{% if post.is_published %}{% translate "ИЗ КОЛЛЕКЦИИ" %}{% else %}{% translate "ЧЕРНОВИК · ВИДЕН ПЕРСОНАЛУ" %}{% endif %}</span>
         <h1>{{ post.title }}</h1>
-        <p class="media-date">{{ post.author.username|default:'МойСайт' }} · {{ post.created_at|date:'d.m.Y H:i' }}</p>
+        <p class="media-date">{{ post.author.username|default:'VEYRA' }} · {{ post.created_at|date:'d.m.Y H:i' }}</p>
         {% if post.description %}<div class="post-description">{{ post.description|linebreaksbr }}</div>{% endif %}
         </div><section id="rating" class="rating-section" aria-labelledby="rating-heading">
             <h2 id="rating-heading">{% translate "Как вам этот пост?" %}</h2>

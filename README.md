@@ -1,4 +1,4 @@
-# МойСайт — локальный Django-проект
+# VEYRA — локальный Django-проект
 
 Медиаколлекция, личный профиль, панель администратора и API для мобильного приложения.
 Общее оформление адаптируется к телефону; внешние шрифты и CDN не требуются.
@@ -314,3 +314,9 @@ Hover playback yields to any already playing music or manually started movie. St
 - Hover previews stop after four seconds and restore the earlier frame and player settings. Manual playback retains its controls and priority. Touch devices use explicit playback.
 - Initial video-frame work is queued with at most two active decoders, reduced to one with data saver or a 2G connection. Offscreen videos and audio retain deferred loading. Data saver/2G suppress automatic hover playback. Browser buffering remains controlled by the browser; this does not transcode or recompress the original files.
 - Mobile layouts keep long headings and metadata within the screen, maintain fixed media geometry, and retain larger download/navigation targets. No database migration or additional dependency is required.
+
+### VEYRA visual identity
+
+The site uses the VEYRA name in both languages, a folded V mark, and a shared wordmark in the site navigation, management navigation, guest pages, native Django admin, error pages, and footer. Browser titles, anonymous-author fallbacks, local sender display name, and the installed application use the same identity. The login illustration uses the same mark.
+
+Editable SVG sources and exported favicon/application icons are in `hi/static/hi/brand/`. `hi/templates/hi/brand.html` is the shared navigation lockup; `brand_meta.html` supplies browser and home-screen metadata. `hi/static/hi/brand.css` controls its spacing and responsive sizes. Icons are prebuilt; no image-processing runtime dependency is required. Pull the update, restart Django, and refresh with Ctrl+F5. An already installed app may need to be reopened or reinstalled if the operating system keeps its old name/icon cached.

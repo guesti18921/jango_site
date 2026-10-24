@@ -1,5 +1,5 @@
-{% extends 'hi/base.html' %}{% load i18n %}
+{% extends 'hi/base.html' %}{% load static i18n %}
 {% block content %}<div class="auth-layout">
-<aside class="auth-story"><span class="eyebrow">{% translate 'ЛИЧНОЕ ПРОСТРАНСТВО' %}</span><h1>{% translate 'Меньше шума.' %}<br><span>{% translate 'Больше вашего.' %}</span></h1><p>{% translate 'Фото, видео и впечатления, которыми хочется поделиться.' %}</p><div class="auth-editorial" aria-hidden="true"><div class="editorial-lines"><i></i><i></i><i></i></div><p>МойСайт<span>— {% translate 'сохраните главное' %}</span></p></div><span class="story-footnote"><span class="status-dot"></span>{% translate 'Ваша коллекция начинается здесь.' %}</span></aside>
+<aside class="auth-story"><span class="eyebrow">{% translate 'ЛИЧНОЕ ПРОСТРАНСТВО' %}</span><h1>{% translate 'Меньше шума.' %}<br><span>{% translate 'Больше вашего.' %}</span></h1><p>{% translate 'Фото, видео и впечатления, которыми хочется поделиться.' %}</p><div class="auth-editorial" aria-hidden="true"><img class="auth-brand-art" src="{% static 'hi/brand/mark.svg' %}" width="128" height="128" alt=""><p>VEYRA<span>— {% translate 'сохраните главное' %}</span></p></div><span class="story-footnote"><span class="status-dot"></span>{% translate 'Ваша коллекция начинается здесь.' %}</span></aside>
 <section class="auth-panel" aria-labelledby="auth-heading">{% block auth_content %}{% endblock %}</section>
 </div>{% endblock %}

@@ -1,9 +1,9 @@
 {% extends 'hi/base.html' %}{% load static i18n %}
-{% block title %}{% translate 'Приложение' %} {% translate "— МойСайт" %}{% endblock %}
+{% block title %}{% translate 'Приложение' %} {% translate "— VEYRA" %}{% endblock %}
 {% block extra_styles %}<link rel="manifest" href="{% static 'hi/manifest.json' %}"><link rel="stylesheet" href="{% static 'hi/app.css' %}?v=23">{% endblock %}
 {% block content %}
-<header class="feed-header"><div><span class="eyebrow">{% translate "МойСайт / APP" %}</span><h1>{% translate 'Приложение' %}</h1><p>{% translate 'Ваша коллекция в компактном формате.' %}</p></div><button id="refresh-btn" class="btn-secondary" type="button">{% translate 'Обновить' %} ↻</button></header>
+<header class="feed-header"><div><span class="eyebrow">{% translate "VEYRA / APP" %}</span><h1>{% translate 'Приложение' %}</h1><p>{% translate 'Ваша коллекция в компактном формате.' %}</p></div><button id="refresh-btn" class="btn-secondary" type="button">{% translate 'Обновить' %} ↻</button></header>
 <section id="view-list" class="view"><div id="loading" class="state" role="status">{% translate 'Загрузка...' %}</div><div id="error" class="state state-error" role="alert" hidden></div><div id="grid" class="grid" hidden></div><button id="load-more" type="button" class="btn-secondary" hidden>{% translate 'Загрузить ещё' %}</button></section>
 <section id="view-detail" class="view" hidden><button type="button" class="back-btn" id="back-btn">← {% translate 'Назад' %}</button><div id="detail-body"></div></section>
 {% endblock %}
-{% block extra_scripts %}<script src="{% url 'javascript-catalog' %}"></script><script src="{% static 'hi/app.js' %}?v=23"></script>{% endblock %}
+{% block extra_scripts %}<script src="{% url 'javascript-catalog' %}"></script><script src="{% static 'hi/app.js' %}?v=24"></script>{% endblock %}

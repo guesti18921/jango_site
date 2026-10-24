@@ -119,7 +119,7 @@ class BilingualDesignTests(TestCase):
                 self.client.cookies['django_language'] = language
                 with self.subTest(account=account.username, language=language):
                     self.assertContains(self.client.get('/'), post.title)
-                    self.assertContains(self.client.get('/'), 'МойСайт')
+                    self.assertContains(self.client.get('/'), 'VEYRA')
                     self.assertContains(
                         self.client.get(reverse('post_detail', args=[post.pk])),
                         post.title,

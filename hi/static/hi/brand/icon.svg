@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><rect width="128" height="128" rx="26" fill="#101511"/><g transform="translate(24 24) scale(.833333)">
+  <defs>
+    <linearGradient id="ivory" x1="12" y1="14" x2="52" y2="82" gradientUnits="userSpaceOnUse"><stop stop-color="#F3EDD7"/><stop offset=".58" stop-color="#D9D8BA"/><stop offset="1" stop-color="#6B7451"/></linearGradient>
+    <linearGradient id="lime" x1="79" y1="12" x2="40" y2="82" gradientUnits="userSpaceOnUse"><stop stop-color="#D9FA85"/><stop offset=".5" stop-color="#C6F36B"/><stop offset="1" stop-color="#899F49"/></linearGradient>
+    <linearGradient id="fold" x1="29" y1="37" x2="65" y2="60" gradientUnits="userSpaceOnUse"><stop stop-color="#F3EDD7"/><stop offset=".55" stop-color="#B9CD75"/><stop offset="1" stop-color="#6E843C"/></linearGradient>
+  </defs>
+  <path d="M10 16C8 10 13 10 20 10H29C39 10 48 18 55 29L66 47L51 72C46 81 38 87 31 75L10 16Z" fill="url(#ivory)"/>
+  <path d="M29 28C37 28 46 33 55 41L66 47L55 61C46 50 39 42 31 37C25 33 23 29 29 28Z" fill="url(#fold)"/>
+  <path d="M76 12C78 9 81 9 85 9H90C94 9 94 12 92 16L57 77C52 86 42 89 34 79C40 83 46 73 50 66L76 12Z" fill="url(#lime)"/>
+</g></svg>
