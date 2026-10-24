@@ -1748,6 +1748,45 @@ msgstr "Year"
 msgid "Событие"
 msgstr "Event"
 
+msgid "Управление галереей"
+msgstr "Manage your gallery"
+
+msgid "Фото, видео и аудио вашей коллекции."
+msgstr "Photos, video and audio in your collection."
+
+msgid "Обсуждения под публикациями."
+msgstr "Conversations on your publications."
+
+msgid "Аккаунты и доступ к сайту."
+msgstr "Accounts and access to your site."
+
+msgid "Публикации, обсуждения и пользователи — всё под рукой."
+msgstr "Publications, conversations and people, all in one place."
+
+msgid "Добавить фото или видео"
+msgstr "Add photos or video"
+
+msgid "Основные разделы"
+msgstr "Main sections"
+
+msgid "Модерация и доступ"
+msgstr "Moderation and access"
+
+msgid "Дополнительные разделы"
+msgstr "Additional sections"
+
+msgid "Портфолио, компания и команда"
+msgstr "Portfolio, company and team"
+
+msgid "Нет доступных разделов. Обратитесь к администратору за правами."
+msgstr "No sections available. Ask an administrator for access."
+
+msgid "Открыть форму публикации"
+msgstr "Open the publication form"
+
+msgid "Название публикации"
+msgstr "Publication title"
+
 #~ msgid "Админ-панель"
 #~ msgstr "Management"
 

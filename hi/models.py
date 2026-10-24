@@ -37,7 +37,7 @@ class CSVImportJob(models.Model):
 
 # --- Модель для медиаконтента ---
 class MediaContent(models.Model):
-    title = models.CharField(max_length=200, verbose_name=gettext_lazy("Название контента"))
+    title = models.CharField(max_length=200, verbose_name=gettext_lazy("Название публикации"))
     image = models.FileField(blank=True, upload_to='uploads/', validators=[FileExtensionValidator(allowed_extensions=EXTENSIONS)], verbose_name=gettext_lazy("Медиафайл"), help_text=gettext_lazy("Фото, GIF, видео или аудио. Большие файлы до 30 ГБ загружайте через «Загрузка файлов»."))
     poster = models.ImageField(upload_to='posters/', blank=True, verbose_name=gettext_lazy('Постер'))
     local_path = models.TextField(blank=True, editable=False)
@@ -77,8 +77,8 @@ class MediaContent(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = gettext_lazy("Медиа контент")
-        verbose_name_plural = gettext_lazy("Медиа контент")
+        verbose_name = gettext_lazy("Публикация")
+        verbose_name_plural = gettext_lazy("Публикации")
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['is_published', '-created_at', '-id'], name='media_feed_order_idx'),

@@ -38,6 +38,10 @@ class MediaContentAdmin(admin.ModelAdmin):
         }),
     )
 
+    def changelist_view(self, request, extra_context=None):
+        context = {'title': gettext_lazy('Публикации'), **(extra_context or {})}
+        return super().changelist_view(request, extra_context=context)
+
     def save_model(self, request, obj, form, change):
         if 'image' in form.changed_data and obj.image:
             obj.local_path = ''
@@ -60,7 +64,7 @@ class DeveloperAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         # Ограничение: можно создать только одного разработчика в базе
-        return not Developer.objects.exists()
+        return super().has_add_permission(request) and not Developer.objects.exists()
 
 
 # ============================================
@@ -106,7 +110,7 @@ class CompanyAdmin(admin.ModelAdmin):
     )
 
     def has_add_permission(self, request):
-        return not Company.objects.exists()
+        return super().has_add_permission(request) and not Company.objects.exists()
 
 
 @admin.register(Stat)
@@ -174,7 +178,3 @@ class RatingAdmin(VisiblePostAdminMixin, admin.ModelAdmin):
     list_select_related = ('user', 'post')
     readonly_fields = ('updated_at',)
 
-
-# Use the editorial workspace as the admin home; native model URLs stay available.
-from .dashboard_views import dashboard
-admin.site.index = dashboard

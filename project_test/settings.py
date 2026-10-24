@@ -39,7 +39,7 @@ ALLOWED_HOSTS = [host.strip() for host in os.environ.get(
 
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'hi.admin_config.VeyraAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',

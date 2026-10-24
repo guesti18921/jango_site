@@ -6,6 +6,6 @@
 {% if perms.auth.view_user or perms.auth.change_user %}<a class="management-link {% if section == 'users' %}active{% endif %}" href="{% url 'dashboard' %}?section=users"><svg class="icon" aria-hidden="true"><use href="#i-profile"/></svg>{% translate 'Пользователи' %}</a>{% endif %}
 {% if perms.hi.add_mediacontent %}<a class="management-link {% if section == 'uploads' %}active{% endif %}" href="{% url 'upload_page' %}"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>{% translate 'Загрузка файлов' %}</a>{% endif %}<div class="management-divider"></div>
 {% if perms.hi.add_mediacontent and perms.hi.change_mediacontent %}<a class="management-link" href="{% url 'csv_import' %}"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>{% translate 'Импорт и экспорт' %}</a>{% endif %}
-<a class="management-link" href="{% url 'admin:app_list' 'hi' %}"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>{% translate 'Все разделы' %}</a>
+<a class="management-link" href="{% url 'admin:index' %}"><svg class="icon" aria-hidden="true"><use href="#i-settings"/></svg>{% translate 'Все разделы' %}</a>
 <a class="management-link" href="{% url 'home' %}"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>{% translate 'Открыть сайт' %}</a>
 </nav>

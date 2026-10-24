@@ -227,7 +227,7 @@ python manage.py runlan --ip 192.168.1.10
 
 ## Современная панель управления
 
-`/dashboard/` и главная страница `/django-admin/` открывают общий рабочий стол:
+`/dashboard/` открывает рабочий стол коллекции:
 реальные счётчики публикаций, комментариев и пользователей, последние комментарии,
 быстрые переходы к CSV и остальным моделям. Никаких демонстрационных записей в базу
 не добавляется.
@@ -242,7 +242,7 @@ python manage.py runlan --ip 192.168.1.10
 В списке пользователей доступны поиск и переход к карточке аккаунта. Добавление,
 редактирование, удаление материалов и управление аккаунтами используют формы Django
 с прежней проверкой данных. Остальные модели доступны через «Все разделы», группы —
-через «Группы и права».
+в блоке «Модерация и доступ» на странице разделов.
 
 Нужен статус персонала и права соответствующей модели: просмотр или изменение —
 для списков, изменение медиаконтента — для массовой публикации, удаление комментария
@@ -320,3 +320,12 @@ Hover playback yields to any already playing music or manually started movie. St
 The site uses the VEYRA name in both languages, a folded V mark, and a shared wordmark in the site navigation, management navigation, guest pages, native Django admin, error pages, and footer. Browser titles, anonymous-author fallbacks, local sender display name, and the installed application use the same identity. The login illustration uses the same mark.
 
 Editable SVG sources and exported favicon/application icons are in `hi/static/hi/brand/`. `hi/templates/hi/brand.html` is the shared navigation lockup; `brand_meta.html` supplies browser and home-screen metadata. `hi/static/hi/brand.css` controls its spacing and responsive sizes. Icons are prebuilt; no image-processing runtime dependency is required. Pull the update, restart Django, and refresh with Ctrl+F5. An already installed app may need to be reopened or reinstalled if the operating system keeps its old name/icon cached.
+
+
+### Focused administration start page
+
+`/django-admin/` now opens a gallery-focused start page. Publications, comments, and users appear first in a fixed order in RU and EN. Ratings, profiles, and permission groups appear under Moderation and access. Portfolio/company/team models remain registered at their original URLs and are grouped in a closed Additional sections disclosure. `/django-admin/hi/` uses the same focused layout. Every group is built from Django's permission-filtered app list.
+
+The prominent Add photos or video action opens the existing resumable upload page (including support for audio and large files). The dashboard uses the same main action and retains a secondary link to the original publication form. MediaContent is displayed as Publication/Publications without changing its model identity, table, API or permission codenames. Company/Developer add checks now enforce both model permission and their existing single-record limit.
+
+Migration 0014 records presentation metadata only. Pull, run migrations, restart Django and refresh with Ctrl+F5. No content is removed by grouping the navigation.

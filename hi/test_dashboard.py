@@ -136,3 +136,60 @@ class DashboardTests(TestCase):
             self.assertEqual(post.description, 'Updated description')
             self.assertFalse(post.is_published)
             self.assertEqual(post.author, self.admin)
+
+class NativeAdminNavigationTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.owner = User.objects.create_superuser('nav-owner', password='AdminNav!823')
+        cls.reader = User.objects.create_user('nav-reader', password='AdminNav!823', is_staff=True)
+        cls.reader.user_permissions.add(Permission.objects.get(codename='view_mediacontent'))
+        cls.uploader = User.objects.create_user('nav-uploader', password='AdminNav!823', is_staff=True)
+        cls.uploader.user_permissions.add(Permission.objects.get(codename='add_mediacontent'))
+
+    def test_primary_order_and_existing_additional_sections_in_both_languages(self):
+        self.client.force_login(self.owner)
+        for language in ('ru', 'en'):
+            self.client.cookies['django_language'] = language
+            for url in (reverse('admin:index'), reverse('admin:app_list', args=['hi'])):
+                response = self.client.get(url)
+                self.assertEqual([m['key'] for m in response.context['gallery_primary']],
+                                 ['hi.mediacontent', 'hi.comment', 'auth.user'])
+                self.assertEqual(len(response.context['gallery_additional']), 10)
+                self.assertContains(response, 'class="gallery-admin-panel gallery-admin-additional"')
+                self.assertContains(response, reverse('upload_page'))
+                self.assertNotContains(response, 'Медиа контент')
+                self.assertNotContains(response, 'Media content')
+        # Grouping navigation does not remove or redirect original model screens.
+        for name in ('company', 'developer', 'skill', 'historyitem'):
+            self.assertEqual(self.client.get(reverse(f'admin:hi_{name}_changelist')).status_code, 200)
+
+    def test_readonly_staff_has_no_upload_or_unrelated_models(self):
+        self.client.force_login(self.reader)
+        for url in (reverse('admin:index'), reverse('admin:app_list', args=['hi'])):
+            response = self.client.get(url)
+            self.assertEqual([m['key'] for m in response.context['gallery_primary']], ['hi.mediacontent'])
+            self.assertFalse(response.context['gallery_can_upload'])
+            self.assertEqual(response.context['gallery_additional'], [])
+            self.assertNotContains(response, reverse('upload_page'))
+            self.assertNotContains(response, reverse('admin:auth_user_changelist'))
+        self.assertEqual(self.client.get(reverse('admin:hi_company_changelist')).status_code, 403)
+        for model in ('company', 'developer'):
+            self.assertEqual(self.client.get(reverse(f'admin:hi_{model}_add')).status_code, 403)
+        self.assertEqual(self.client.get(reverse('upload_page')).status_code, 302)
+        # Staff managing accounts alone can still use the global start page.
+        self.reader.user_permissions.set([Permission.objects.get(codename='view_user')])
+        response = self.client.get(reverse('admin:index'))
+        self.assertEqual([m['key'] for m in response.context['gallery_primary']], ['auth.user'])
+        self.assertFalse(response.context['gallery_can_upload'])
+        self.assertEqual(self.client.get(reverse('dashboard')).status_code, 200)
+
+    def test_add_only_staff_gets_existing_upload_and_form_without_list_access(self):
+        self.client.force_login(self.uploader)
+        response = self.client.get(reverse('admin:index'))
+        self.assertContains(response, reverse('upload_page'))
+        primary = response.context['gallery_primary']
+        self.assertEqual([m['key'] for m in primary], ['hi.mediacontent'])
+        self.assertIsNone(primary[0]['admin_url'])
+        self.assertEqual(primary[0]['add_url'], reverse('admin:hi_mediacontent_add'))
+        self.assertEqual(self.client.get(reverse('admin:hi_mediacontent_add')).status_code, 200)
+        self.assertEqual(self.client.get(reverse('admin:hi_mediacontent_changelist')).status_code, 403)

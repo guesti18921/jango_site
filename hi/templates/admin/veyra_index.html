@@ -1,0 +1,14 @@
+{% extends 'admin/base_site.html' %}{% load i18n %}
+{% block bodyclass %}{{ block.super }} dashboard veyra-admin-index{% endblock %}
+{% block coltype %}colM{% endblock %}
+{% block content_title %}{% endblock %}
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="{% url 'admin:index' %}">{% translate 'Home' %}</a> › {% if app_label %}{{ app_list.0.name }}{% else %}{% translate 'Управление галереей' %}{% endif %}</div>{% endblock %}
+{% block content %}<div id="content-main">
+<header class="gallery-admin-header"><div><span class="gallery-admin-eyebrow">VEYRA / {% translate 'Управление' %}</span><h1>{{ title }}</h1><p>{% translate 'Публикации, обсуждения и пользователи — всё под рукой.' %}</p></div>{% if gallery_can_upload %}<a class="gallery-admin-cta" href="{% url 'upload_page' %}"><span aria-hidden="true">+</span>{% translate 'Добавить фото или видео' %}</a>{% endif %}</header>
+{% if gallery_primary %}<section class="gallery-admin-primary" aria-label="{% translate 'Основные разделы' %}">
+{% for model in gallery_primary %}<article class="gallery-admin-card" data-admin-model="{{ model.key }}"><svg class="icon" aria-hidden="true"><use href="#{{ model.icon }}"/></svg><h2>{% if model.admin_url %}<a href="{{ model.admin_url }}">{{ model.name }}<span aria-hidden="true">↗</span></a>{% elif model.add_url %}<a href="{{ model.add_url }}">{{ model.name }}<span aria-hidden="true">+</span></a>{% else %}{{ model.name }}{% endif %}</h2><p>{{ model.description }}</p></article>{% endfor %}</section>{% endif %}
+{% if gallery_secondary %}<section class="gallery-admin-panel" aria-labelledby="community-heading"><div class="gallery-admin-panel-heading"><h2 id="community-heading">{% translate 'Модерация и доступ' %}</h2></div>{% include 'admin/veyra_model_links.html' with models=gallery_secondary %}</section>{% endif %}
+{% if gallery_additional %}<details class="gallery-admin-panel gallery-admin-additional"><summary><span><strong>{% translate 'Дополнительные разделы' %}</strong><small>{% translate 'Портфолио, компания и команда' %}</small></span><span class="gallery-admin-disclosure" aria-hidden="true">+</span></summary>{% include 'admin/veyra_model_links.html' with models=gallery_additional %}</details>{% endif %}
+{% if not gallery_primary and not gallery_secondary and not gallery_additional %}<p class="gallery-admin-empty">{% translate 'Нет доступных разделов. Обратитесь к администратору за правами.' %}</p>{% endif %}
+</div>{% endblock %}
+{% block sidebar %}{% endblock %}
