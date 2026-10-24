@@ -207,44 +207,63 @@ class Education(models.Model):
 
 # --- Модели компании / команды ---
 class Company(models.Model):
-    name = models.CharField(max_length=100)
-    tagline = models.CharField(max_length=200)
-    description = models.TextField()
-    founded_year = models.PositiveIntegerField()
-    team_size = models.PositiveIntegerField()
-    mission = models.TextField()
-    email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    address = models.CharField(max_length=200)
-    telegram = models.CharField(max_length=50)
+    name = models.CharField(max_length=100, verbose_name=gettext_lazy('Название компании'))
+    tagline = models.CharField(max_length=200, verbose_name=gettext_lazy('Слоган'))
+    description = models.TextField(verbose_name=gettext_lazy('Описание'))
+    founded_year = models.PositiveIntegerField(verbose_name=gettext_lazy('Год основания'))
+    team_size = models.PositiveIntegerField(verbose_name=gettext_lazy('Размер команды'))
+    mission = models.TextField(verbose_name=gettext_lazy('Миссия'))
+    email = models.EmailField(verbose_name=gettext_lazy('Электронная почта'))
+    phone = models.CharField(max_length=20, verbose_name=gettext_lazy('Телефон'))
+    address = models.CharField(max_length=200, verbose_name=gettext_lazy('Адрес'))
+    telegram = models.CharField(max_length=50, verbose_name=gettext_lazy('Telegram'))
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = gettext_lazy('Компания')
+        verbose_name_plural = gettext_lazy('Компании')
+
 
 class Stat(models.Model):
-    label = models.CharField(max_length=100)
-    value = models.CharField(max_length=50)
-    order = models.PositiveIntegerField(default=0)
+    label = models.CharField(max_length=100, verbose_name=gettext_lazy('Подпись'))
+    value = models.CharField(max_length=50, verbose_name=gettext_lazy('Значение'))
+    order = models.PositiveIntegerField(default=0, verbose_name=gettext_lazy('Порядок сортировки'))
+
+    class Meta:
+        verbose_name = gettext_lazy('Показатель')
+        verbose_name_plural = gettext_lazy('Показатели')
 
 
 class CompanyValue(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    order = models.PositiveIntegerField(default=0)
+    title = models.CharField(max_length=100, verbose_name=gettext_lazy('Заголовок'))
+    description = models.TextField(verbose_name=gettext_lazy('Описание'))
+    order = models.PositiveIntegerField(default=0, verbose_name=gettext_lazy('Порядок сортировки'))
+
+    class Meta:
+        verbose_name = gettext_lazy('Ценность компании')
+        verbose_name_plural = gettext_lazy('Ценности компании')
 
 
 class TeamMember(models.Model):
-    name = models.CharField(max_length=100)
-    role = models.CharField(max_length=100)
-    order = models.PositiveIntegerField(default=0)
+    name = models.CharField(max_length=100, verbose_name=gettext_lazy('Имя'))
+    role = models.CharField(max_length=100, verbose_name=gettext_lazy('Роль'))
+    order = models.PositiveIntegerField(default=0, verbose_name=gettext_lazy('Порядок сортировки'))
+
+    class Meta:
+        verbose_name = gettext_lazy('Участник команды')
+        verbose_name_plural = gettext_lazy('Участники команды')
 
 
 class HistoryItem(models.Model):
-    year = models.CharField(max_length=10)
-    event = models.TextField()
-    order = models.PositiveIntegerField(default=0)
+    year = models.CharField(max_length=10, verbose_name=gettext_lazy('Год'))
+    event = models.TextField(verbose_name=gettext_lazy('Событие'))
+    order = models.PositiveIntegerField(default=0, verbose_name=gettext_lazy('Порядок сортировки'))
 
+    class Meta:
+        verbose_name = gettext_lazy('Событие истории')
+        verbose_name_plural = gettext_lazy('История')
 
 # --- Профиль пользователя (расширение стандартного User) ---
 class Profile(models.Model):

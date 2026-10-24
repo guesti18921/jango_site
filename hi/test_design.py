@@ -124,3 +124,36 @@ class BilingualDesignTests(TestCase):
                         self.client.get(reverse('post_detail', args=[post.pk])),
                         post.title,
                     )
+
+    def test_company_admin_sections_and_forms_follow_selected_language(self):
+        self.client.force_login(self.user)
+        cases = {
+            'ru': ('Медиаколлекция', {
+                'company': ('Компании', 'Год основания'),
+                'stat': ('Показатели', 'Подпись'),
+                'companyvalue': ('Ценности компании', 'Заголовок'),
+                'teammember': ('Участники команды', 'Роль'),
+                'historyitem': ('История', 'Событие'),
+            }),
+            'en': ('Media collection', {
+                'company': ('Companies', 'Year founded'),
+                'stat': ('Statistics', 'Label'),
+                'companyvalue': ('Company values', 'Title'),
+                'teammember': ('Team members', 'Role'),
+                'historyitem': ('History', 'Event'),
+            }),
+        }
+        for language, (app_name, sections) in cases.items():
+            self.client.cookies['django_language'] = language
+            index = self.client.get(reverse('admin:app_list', kwargs={'app_label': 'hi'}))
+            self.assertContains(index, app_name)
+            self.assertNotContains(index, 'Companys')
+            self.assertNotContains(index, 'Hi administration')
+            for model, (title, field) in sections.items():
+                with self.subTest(language=language, model=model):
+                    self.assertContains(index, title)
+                    form = self.client.get(reverse(f'admin:hi_{model}_add'))
+                    self.assertContains(form, field)
+            if language == 'ru':
+                for untranslated in ('Company values', 'History items', 'Stats', 'Team members'):
+                    self.assertNotContains(index, untranslated)

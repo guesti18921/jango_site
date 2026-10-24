@@ -1682,6 +1682,72 @@ msgstr ""
 "For files up to 30 GB, use File uploads. Avatars and posters must be at most"
 " 10 MB."
 
+msgid "Медиаколлекция"
+msgstr "Media collection"
+
+msgid "Компании"
+msgstr "Companies"
+
+msgid "Название компании"
+msgstr "Company name"
+
+msgid "Год основания"
+msgstr "Year founded"
+
+msgid "Размер команды"
+msgstr "Team size"
+
+msgid "Миссия"
+msgstr "Mission"
+
+msgid "Электронная почта"
+msgstr "Email address"
+
+msgid "Показатель"
+msgstr "Statistic"
+
+msgid "Показатели"
+msgstr "Statistics"
+
+msgid "Подпись"
+msgstr "Label"
+
+msgid "Значение"
+msgstr "Value"
+
+msgid "Ценность компании"
+msgstr "Company value"
+
+msgid "Ценности компании"
+msgstr "Company values"
+
+msgid "Заголовок"
+msgstr "Title"
+
+msgid "Участник команды"
+msgstr "Team member"
+
+msgid "Участники команды"
+msgstr "Team members"
+
+msgid "Имя"
+msgstr "Name"
+
+msgid "Роль"
+msgstr "Role"
+
+msgid "Событие истории"
+msgstr "History event"
+
+msgid "История"
+msgstr "History"
+
+msgid "Год"
+msgstr "Year"
+
+msgid "Событие"
+msgstr "Event"
+
 #~ msgid "Админ-панель"
 #~ msgstr "Management"
 
