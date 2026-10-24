@@ -17,11 +17,11 @@
   align-items: center;
   flex-direction: column;
   gap: 12px;
-  border: 1px dashed #64764d;
+  border: 1px dashed #454a52;
   padding: 30px;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
-  background: #242e1e;
+  background: #17191c;
   text-align: center;
 }
 .upload-drop > span {
@@ -59,10 +59,10 @@
   border: 0;
   border-radius: 8px;
   overflow: hidden;
-  background: #333d2b;
+  background: #2a2d32;
 }
 #upload-progress::-webkit-progress-bar {
-  background: #333d2b;
+  background: #2a2d32;
 }
 #upload-progress::-webkit-progress-value {
   background: var(--accent);
@@ -92,7 +92,7 @@
   display: block;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  background: #151a13;
+  background: #17191c;
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 14px;

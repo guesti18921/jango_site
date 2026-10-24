@@ -18,7 +18,7 @@
   letter-spacing: .17em;
 }
 .logo:hover .brand-name, #branding .admin-brand:hover .brand-name {
-  color: #d4f58e;
+  color: #c8b89a;
 }
 .auth-brand-art {
   display: block;
@@ -37,4 +37,7 @@
   .brand-mark { width: 32px; height: 32px; }
   .brand-name, #branding .admin-brand > .brand-name { font-size: 17px; letter-spacing: .13em; }
   .logo, #branding .admin-brand { gap: 8px; }
+}
+@media (min-width: 761px) {
+  .signed-in .topbar > .mobile-brand { display: none; }
 }

@@ -1,6 +1,6 @@
 {% extends 'hi/base.html' %}{% load static i18n %}
 {% block title %}{% translate 'Проверка API' %} {% translate "— VEYRA" %}{% endblock %}
-{% block extra_styles %}<link rel="stylesheet" href="{% static 'hi/app.css' %}?v=23">{% endblock %}
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'hi/app.css' %}?v=26">{% endblock %}
 {% block content %}
 <header class="dashboard-header"><h1>{% translate 'Проверка API' %}</h1><p>{% translate 'Данные медиаколлекции из API приложения.' %} <code>/api/media/</code></p></header>
 <div class="dashboard-actions"><button class="btn-primary" type="button" id="refresh-btn">{% translate 'Обновить' %} ↻</button><span class="muted" id="api-status" role="status"></span></div>

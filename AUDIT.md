@@ -90,3 +90,31 @@ Added a supported AdminConfig/AdminSite subclass and removed the old admin-index
 Renamed media presentation metadata to Publication/Publications and Publication title; migration 0014 produces no schema/data SQL. Review also found CompanyAdmin/DeveloperAdmin add overrides that checked only record count, bypassing model add permission. Both now require the inherited permission check plus the existing singleton condition.
 
 Validation: 120 Django tests pass, including three new tests for stable grouped navigation, preserved legacy screens, read-only staff, add-only staff, upload visibility, and denied unauthorized company/developer creation. Bilingual form/index translation checks remain passing. Chromium checks 88 route/language/viewport combinations (eleven admin/dashboard/upload routes × RU/EN × 320/390/768/1440), primary ordering, default-closed legacy groups, keyboard disclosure activation, primary/CTA navigation, and limited-staff access. JavaScript exception collection is empty; desktop and mobile layouts were visually inspected. System checks, catalog checks, static collection and migration consistency pass. User accounts, publication bytes, and existing permission codenames remain unchanged.
+
+
+## VEYRA visual redesign — 2026-10-24
+
+The collection, management dashboard and native Django admin now use a neutral
+charcoal palette (#101113 / #17191C), ivory primary actions and a restrained
+champagne accent (#C8B89A). Legacy green literal colors were normalized across
+authentication, upload and app surfaces. Existing vector branding and all raster
+icons use the same palette; version 26 assets invalidate old browser/PWA styling.
+
+Collection cards have no surrounding filled frame, use 6px media corners and
+compact 15px titles. The grid uses three columns on large screens, two on medium
+screens and one on phones. Stable preview aspect ratios and DOM reading order
+are retained. Video/audio download links remain on detail pages; compact video
+players expose their download recovery link when playback fails. No playback,
+sound, upload, permission or database logic was changed.
+
+Management statistics and tables have quieter surfaces and larger readable
+labels; statistics stack on phones. Native admin lists use horizontal dividers,
+60px rows, ivory action buttons and a 224px navigation panel. Form validation,
+filters, bulk actions and permission-aware links remain native Django behavior.
+
+Validation: Django system checks and migration drift check passed; all 120 tests
+passed. Chromium route checks cover RU/EN at 320, 390, 768 and 1440px: 144
+general-page cases and 88 native-admin/management cases, including limited staff
+permissions, keyboard navigation, icons, JavaScript exceptions and page overflow.
+Screenshots were inspected on desktop and mobile widths. Physical-device checks
+and codec support in Safari remain outside this browser run.

@@ -329,3 +329,31 @@ Editable SVG sources and exported favicon/application icons are in `hi/static/hi
 The prominent Add photos or video action opens the existing resumable upload page (including support for audio and large files). The dashboard uses the same main action and retains a secondary link to the original publication form. MediaContent is displayed as Publication/Publications without changing its model identity, table, API or permission codenames. Company/Developer add checks now enforce both model permission and their existing single-record limit.
 
 Migration 0014 records presentation metadata only. Pull, run migrations, restart Django and refresh with Ctrl+F5. No content is removed by grouping the navigation.
+
+
+## VEYRA visual redesign — 2026-10-24
+
+The collection, management dashboard and native Django admin now use a neutral
+charcoal palette (#101113 / #17191C), ivory primary actions and a restrained
+champagne accent (#C8B89A). Legacy green literal colors were normalized across
+authentication, upload and app surfaces. Existing vector branding and all raster
+icons use the same palette; version 26 assets invalidate old browser/PWA styling.
+
+Collection cards have no surrounding filled frame, use 6px media corners and
+compact 15px titles. The grid uses three columns on large screens, two on medium
+screens and one on phones. Stable preview aspect ratios and DOM reading order
+are retained. Video/audio download links remain on detail pages; compact video
+players expose their download recovery link when playback fails. No playback,
+sound, upload, permission or database logic was changed.
+
+Management statistics and tables have quieter surfaces and larger readable
+labels; statistics stack on phones. Native admin lists use horizontal dividers,
+60px rows, ivory action buttons and a 224px navigation panel. Form validation,
+filters, bulk actions and permission-aware links remain native Django behavior.
+
+Validation: Django system checks and migration drift check passed; all 120 tests
+passed. Chromium route checks cover RU/EN at 320, 390, 768 and 1440px: 144
+general-page cases and 88 native-admin/management cases, including limited staff
+permissions, keyboard navigation, icons, JavaScript exceptions and page overflow.
+Screenshots were inspected on desktop and mobile widths. Physical-device checks
+and codec support in Safari remain outside this browser run.

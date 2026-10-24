@@ -1,6 +1,6 @@
 {% extends 'admin/base_site.html' %}{% load static i18n %}
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'hi/management.css' %}?v=20"><link rel="stylesheet" href="{% static 'hi/admin.css' %}?v=25"><script src="{% static 'hi/site.js' %}?v=24" defer></script>{% endblock %}
-{% block extrahead %}{{ block.super }}{% include 'hi/brand_meta.html' %}<link rel="stylesheet" href="{% static 'hi/brand.css' %}?v=24">{% endblock %}
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'hi/management.css' %}?v=26"><link rel="stylesheet" href="{% static 'hi/admin.css' %}?v=26"><script src="{% static 'hi/site.js' %}?v=24" defer></script>{% endblock %}
+{% block extrahead %}{{ block.super }}{% include 'hi/brand_meta.html' %}<link rel="stylesheet" href="{% static 'hi/brand.css' %}?v=26">{% endblock %}
 {% block nav-sidebar %}{% if user.is_staff %}<aside class="native-management-nav">{% include 'hi/management_nav.html' %}</aside>{% endif %}{% endblock %}
 {% block branding %}{% include 'hi/icons.html' %}<a class="admin-brand" href="{% url 'dashboard' %}">{% include 'hi/brand.html' %} <small>{% translate 'Управление' %}</small></a>{% endblock %}
 {% block userlinks %}{% include 'hi/language_switch.html' %}{{ block.super }}{% endblock %}
