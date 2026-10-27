@@ -1,4 +1,5 @@
 {% extends 'hi/base.html' %}{% load static i18n %}
+{% block body_class %}veyra-management{% endblock %}
 {% block extra_styles %}<link rel="stylesheet" href="{% static 'hi/management.css' %}?v=26">{% endblock %}
 {% block sidebar %}<aside class="sidebar management-sidebar"><a href="{% url 'dashboard' %}" class="logo">{% include 'hi/brand.html' %}</a><span class="management-caption">{% translate 'УПРАВЛЕНИЕ' %}</span>{% include 'hi/management_nav.html' %}<div class="sidebar-account"><a href="{% url 'profile' %}" class="account-identity">{% include 'hi/avatar.html' with account=user avatar_class='avatar-letter' %}<span>{{ user.first_name|default:user.username }}<small>{% translate 'Администратор' %}</small></span></a><form method="post" action="{% url 'logout' %}" class="logout-form">{% csrf_token %}<button type="submit" class="quiet-link">{% translate 'Выйти' %} →</button></form></div></aside>{% endblock %}
 {% block topbar_context %}<span class="desktop-context management-breadcrumb">{% translate 'Панель управления' %}<span>/</span>{{ section_title }}</span>{% endblock %}

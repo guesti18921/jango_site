@@ -1,0 +1,30 @@
+/* Native Django administration: the gallery's palette without motion. */
+:root,html[data-theme="light"],html[data-theme="dark"] {
+ --primary:#b8abff; --accent:#b8abff; --body-bg:#0c101c; --body-fg:#f2efff;
+ --body-quiet-color:#b2b1c4; --body-loud-color:#f2efff; --link-fg:#c5baff;
+ --link-hover-color:#e0d9ff; --link-selected-fg:#e0d9ff; --hairline-color:#303349;
+ --border-color:#303349; --button-bg:#ddd6ff; --button-hover-bg:#f0ecff;
+ --default-button-bg:#ddd6ff; --default-button-hover-bg:#f0ecff;
+ --object-tools-bg:#ddd6ff; --object-tools-hover-bg:#f0ecff;
+ --button-fg:#151426; --object-tools-fg:#151426; --selected-bg:#292744;
+ --selected-row:#24253b; --darkened-bg:#161a2a;
+}
+body,#container,#content { background:#0c101c; color:#f2efff; }
+#header,.native-management-nav,#nav-sidebar { background:#101423; border-color:#303349; }
+div.breadcrumbs,.module,.submit-row,#toolbar,#changelist .actions,#changelist .paginator,#changelist-filter { background:#161a2a; border-color:#303349; }
+.module h2,.module caption,.inline-group h2,#changelist table thead th,#changelist-filter h2 { background:#202439; color:#e8e5fa; }
+#changelist table tbody tr { background:#161a2a; }
+#changelist table tbody tr:hover { background:#202439; }
+#changelist table tbody td,#changelist table tbody th { border-color:#303349; }
+input[type="text"],input[type="password"],input[type="email"],input[type="number"],input[type="url"],textarea,select { background:#101423; color:#f2efff; border-color:#4a4d66; }
+.gallery-admin-card,.gallery-admin-panel { background:#161a2a; }
+.gallery-admin-card:hover { background:#202439; }
+.gallery-admin-cta { background:#ddd6ff; color:#151426 !important; }
+.gallery-admin-cta:hover { background:#f0ecff; }
+.gallery-admin-card > .icon,.gallery-admin-disclosure { color:#b8abff; }
+.gallery-admin-card h2 a { color:#f2efff; }
+.gallery-admin-panel-heading,.gallery-admin-model,.gallery-admin-additional[open] > summary { border-color:#303349; }
+.native-management-nav .management-link.active { color:#e0d9ff; background:#292744; }
+.native-management-nav .management-link:hover { background:#202439; }
+.language-indicator { background:#b8abff; }
+.language-track button[aria-pressed="true"] { color:#151426; }

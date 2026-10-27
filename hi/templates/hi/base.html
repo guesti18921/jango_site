@@ -2,15 +2,16 @@
 <!DOCTYPE html>
 <html lang="{{ language_code|slice:':2' }}">
 <head>
-    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#101113">
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#090d1b">
     <title>{% block title %}VEYRA{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'hi/style.css' %}?v=26">
     {% include 'hi/brand_meta.html' %}
     <link rel="stylesheet" href="{% static 'hi/brand.css' %}?v=26">
     {% block extra_styles %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'hi/night.css' %}?v=27">
     <script src="{% static 'hi/site.js' %}?v=24" defer></script>
 </head>
-<body class="{% if user.is_authenticated %}signed-in{% else %}guest{% endif %}">
+<body class="{% if user.is_authenticated %}signed-in{% else %}guest{% endif %} {% block body_class %}{% endblock %}">
 {% include 'hi/icons.html' %}
 <a class="skip-link" href="#main-content">{% translate 'Перейти к содержимому' %}</a>
 {% if user.is_authenticated %}
