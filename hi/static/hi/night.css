@@ -28,18 +28,11 @@ body:not(.veyra-management)::before {
 .feed-header h1 { font-size:clamp(42px,5vw,72px); font-weight:450; letter-spacing:-.045em; }
 .feed-header p { color:var(--text-muted); }
 .section-heading { margin-bottom:24px; }
-.media-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:36px 20px; align-items:start; }
+.media-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:28px 20px; align-items:stretch; }
 .media-card { overflow:visible; }
 .media-card .media-content { border-radius:3px; box-shadow:0 20px 64px #28224e35; }
 .media-card .media-image-link,.media-card .audio-player,.media-card .media-file,
 .media-card .media-player:not(.audio-player) { aspect-ratio:4/3; }
-.media-card:nth-child(7n+1) { grid-column:span 2; }
-.media-card:nth-child(7n+1) .media-image-link,
-.media-card:nth-child(7n+1) .audio-player,.media-card:nth-child(7n+1) .media-file,
-.media-card:nth-child(7n+1) .media-player:not(.audio-player) { aspect-ratio:16/10; }
-.media-card:nth-child(7n+3) .media-image-link,
-.media-card:nth-child(7n+3) .audio-player,.media-card:nth-child(7n+3) .media-file,
-.media-card:nth-child(7n+3) .media-player:not(.audio-player) { aspect-ratio:4/5; }
 .media-card .media-image-link .post-media-image { object-fit:cover; }
 .media-card .media-player:not(.audio-player) video { width:100%; }
 .media-card .media-body { padding:14px 0 0; }
@@ -70,13 +63,6 @@ body:not(.veyra-management)::before {
   .feed-header { padding:20px 0 25px; }
   .feed-header h1 { font-size:42px; }
   .media-grid { grid-template-columns:minmax(0,1fr); gap:30px; }
-  .media-card:nth-child(7n+1) { grid-column:auto; }
-  .media-card:nth-child(7n+1) .media-image-link,
-  .media-card:nth-child(7n+1) .audio-player,.media-card:nth-child(7n+1) .media-file,
-  .media-card:nth-child(7n+1) .media-player:not(.audio-player) { aspect-ratio:4/3; }
-  .media-card:nth-child(7n+3) .media-image-link,
-  .media-card:nth-child(7n+3) .audio-player,.media-card:nth-child(7n+3) .media-file,
-  .media-card:nth-child(7n+3) .media-player:not(.audio-player) { aspect-ratio:4/3; }
   .mobile-nav { background:#101423f5; }
 }
 @media(prefers-reduced-motion:reduce) {

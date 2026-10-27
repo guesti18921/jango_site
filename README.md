@@ -361,7 +361,7 @@ and codec support in Safari remain outside this browser run.
 ## Night-city theme
 
 VEYRA's night theme uses a subtle animated light background on gallery pages,
-varied gallery tile sizes and a still, readable violet-toned administration.
+an aligned gallery grid and a still, readable violet-toned administration.
 Reduced-motion settings disable ambient movement and reveal transitions. Media
 playback, hover previews, permissions and upload handling are unchanged. Grid
 thumbnails crop to their frame; the publication page keeps the full image.
